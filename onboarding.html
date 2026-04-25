@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Thai Dai - Let's Get Started</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #58CC02;
+      --primary-dark: #4CAF00;
+      --primary-light: #89E219;
+      --secondary: #1CB0F6;
+      --secondary-dark: #1899D6;
+      --accent: #FF9600;
+      --accent-light: #FFC800;
+      --pink: #FF4B4B;
+      --purple: #CE82FF;
+      --background: #F7F4ED;
+      --surface: #FFFFFF;
+      --text: #3C3C3C;
+      --text-light: #777777;
+      --border: #E5E5E5;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .wizard-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      padding: 1.5rem 0;
+    }
+
+    .progress-bar {
+      height: 16px;
+      background: var(--border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius-full);
+      transition: width 0.4s ease;
+      box-shadow: 0 2px 8px rgba(88,204,2,0.3);
+    }
+
+    .step-indicator {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 700;
+      color: var(--text-light);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Wizard Content */
+    .wizard-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
+    .wizard-step {
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .step-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .step-header h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    .step-header p {
+      font-size: 1.125rem;
+      color: var(--text-light);
+    }
+
+    /* Option Cards */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 3px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      text-align: center;
+    }
+
+    .option-card:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: rgba(88,204,2,0.05);
+    }
+
+    .option-card.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.875rem;
+    }
+
+    .option-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .option-title {
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      color: var(--text);
+    }
+
+    .option-desc {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    /* Text Input */
+    .text-input-container {
+      margin-bottom: 2rem;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      border: 3px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(88,204,2,0.1);
+    }
+
+    .text-input::placeholder {
+      color: var(--text-light);
+    }
+
+    /* Tags */
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      padding: 0.75rem 1.25rem;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--primary-light);
+    }
+
+    .tag.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* Range Slider */
+    .range-container {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--border);
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border);
+      border-radius: var(--radius-full);
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(88,204,2,0.4);
+      transition: transform 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .range-value {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 800;
+      font-size: 1.125rem;
+      color: var(--primary);
+    }
+
+    /* Navigation */
+    .wizard-nav {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 2px solid var(--border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: var(--radius-full);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 0 var(--primary-dark), 0 6px 12px rgba(88,204,2,0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--primary-dark), 0 8px 16px rgba(88,204,2,0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--primary-dark), 0 3px 8px rgba(88,204,2,0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 2px 0 var(--primary-dark);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-light);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      background: rgba(0,0,0,0.05);
+    }
+
+    /* Loading State */
+    .loading-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .loading-container.active {
+      display: flex;
+    }
+
+    .loading-animation {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      animation: bounce 1.4s infinite ease-in-out;
+      box-shadow: 0 8px 24px rgba(88,204,2,0.3);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .loading-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .loading-subtext {
+      font-size: 1rem;
+      color: var(--text-light);
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .loading-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: pulse 1.4s infinite ease-in-out;
+    }
+
+    .loading-dot:nth-child(1) { animation-delay: 0s; }
+    .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Results */
+    .results-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 0;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .results-container.active {
+      display: flex;
+    }
+
+    .results-avatar {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 12px 32px rgba(88,204,2,0.3);
+      animation: celebration 1s ease;
+    }
+
+    @keyframes celebration {
+      0% { transform: scale(0) rotate(-180deg); }
+      50% { transform: scale(1.2) rotate(10deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .results-container h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .results-container > p {
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    .learning-path {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      width: 100%;
+      border: 3px solid var(--primary-light);
+      margin-bottom: 2rem;
+    }
+
+    .path-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .path-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .path-info h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .path-info p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .path-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .path-stat {
+      text-align: center;
+      padding: 1rem;
+      background: var(--background);
+      border-radius: var(--radius);
+    }
+
+    .path-stat-number {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .path-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .results-checklist {
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .results-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      font-size: 1rem;
+    }
+
+    .results-checklist .check {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .wizard-container {
+        padding: 1rem;
+      }
+
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .wizard-nav {
+        flex-direction: column-reverse;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .path-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wizard-container">
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 16%"></div>
+      </div>
+      <div class="step-indicator" id="stepIndicator">Step 1 of 6</div>
+    </div>
+
+    <!-- Wizard Steps -->
+    <div class="wizard-content" id="wizardContent">
+      
+      <!-- Step 1: Welcome -->
+      <div class="wizard-step" id="step1">
+        <div class="step-header">
+          <div class="step-icon">🎉</div>
+          <h1>Welcome to Thai Dai!</h1>
+          <p>Let's personalize your Thai learning journey. Just a few quick questions to get you started.</p>
+        </div>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectOption(this, 'experience', 'beginner')">
+            <div class="option-icon">🌱</div>
+            <div class="option-title">Complete Beginner</div>
+            <div class="option-desc">I know almost nothing</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'experience', 'some')">
+            <div class="option-icon">🌳</div>
+            <div class="option-title">Some Basics</div>
+            <div class="option-desc">I know a few words/phrases</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'experience', 'intermediate')">
+            <div class="option-icon">🌴</div>
+            <div class="option-title">Intermediate</div>
+            <div class="option-desc">I can have simple conversations</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'experience', 'advanced')">
+            <div class="option-icon">🌵</div>
+            <div class="option-title">Advanced</div>
+            <div class="option-desc">I want to master fluency</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Goals -->
+      <div class="wizard-step" id="step2" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">🎯</div>
+          <h1>What brings you to Thailand?</h1>
+          <p>This helps us focus on vocabulary that matters to you.</p>
+        </div>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectOption(this, 'goal', 'living')">
+            <div class="option-icon">🏠</div>
+            <div class="option-title">Living Here</div>
+            <div class="option-desc">Daily life, shopping, services</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'goal', 'work')">
+            <div class="option-icon">💼</div>
+            <div class="option-title">Working</div>
+            <div class="option-desc">Business and professional Thai</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'goal', 'travel')">
+            <div class="option-icon">✈️</div>
+            <div class="option-title">Traveling</div>
+            <div class="option-desc">Getting around, food, hotels</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'goal', 'relationship')">
+            <div class="option-icon">❤️</div>
+            <div class="option-title">Relationship</div>
+            <div class="option-desc">Family, friends, dating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Learning Style -->
+      <div class="wizard-step" id="step3" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">⏰</div>
+          <h1>How much time can you commit?</h1>
+          <p>We'll create a realistic daily goal for you.</p>
+        </div>
+        <div class="range-container">
+          <div class="range-labels">
+            <span>5 min/day</span>
+            <span>15 min/day</span>
+            <span>30 min/day</span>
+            <span>1 hour/day</span>
+          </div>
+          <input type="range" min="0" max="3" value="1" id="timeCommitment" oninput="updateTimeLabel(this)">
+          <div class="range-value" id="timeLabel">15 minutes per day</div>
+        </div>
+        <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
+          💡 Consistency beats intensity! Even 10 minutes daily builds strong habits.
+        </p>
+      </div>
+
+      <!-- Step 4: Focus Areas -->
+      <div class="wizard-step" id="step4" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">🎯</div>
+          <h1>What do you want to focus on?</h1>
+          <p>Select all that apply — you can always change this later.</p>
+        </div>
+        <div class="tags-container" id="focusTags">
+          <span class="tag selected" onclick="toggleTag(this)">🍜 Food & Dining</span>
+          <span class="tag selected" onclick="toggleTag(this)">🚕 Transportation</span>
+          <span class="tag" onclick="toggleTag(this)">🛒 Shopping</span>
+          <span class="tag" onclick="toggleTag(this)">📞 Phone Conversations</span>
+          <span class="tag" onclick="toggleTag(this)">🏛️ Temples & Culture</span>
+          <span class="tag" onclick="toggleTag(this)">📱 Social Media Thai</span>
+          <span class="tag" onclick="toggleTag(this)">🙏 Polite Forms</span>
+          <span class="tag" onclick="toggleTag(this)">🌈 Slang & Casual</span>
+        </div>
+      </div>
+
+      <!-- Step 5: Name -->
+      <div class="wizard-step" id="step5" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">👤</div>
+          <h1>What should we call you?</h1>
+          <p>Personalize your learning experience.</p>
+        </div>
+        <div class="text-input-container">
+          <input type="text" class="text-input" id="userName" placeholder="Enter your name (or nickname)" maxlength="20">
+        </div>
+        <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
+          Don't worry, you can skip this if you prefer! 😊
+        </p>
+      </div>
+
+      <!-- Step 6: Motivation -->
+      <div class="wizard-step" id="step6" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">🔥</div>
+          <h1>What's your motivation?</h1>
+          <p>We'll remind you of this when things get challenging!</p>
+        </div>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectOption(this, 'motivation', 'connect')">
+            <div class="option-icon">🤝</div>
+            <div class="option-title">Connect with Locals</div>
+            <div class="option-desc">Build genuine relationships</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'motivation', 'independence')">
+            <div class="option-icon">🙌</div>
+            <div class="option-title">Be Independent</div>
+            <div class="option-desc">Navigate life without help</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'motivation', 'respect')">
+            <div class="option-icon">🏰</div>
+            <div class="option-title">Show Respect</div>
+            <div class="option-desc">Honor the local culture</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'motivation', 'fun')">
+            <div class="option-icon">🎉</div>
+            <div class="option-title">Have More Fun</div>
+            <div class="option-desc">Unlock new experiences</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-container" id="loadingContainer">
+      <div class="loading-animation">🐘</div>
+      <div class="loading-text">Creating your learning path...</div>
+      <div class="loading-subtext">This will only take a moment</div>
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-container" id="resultsContainer">
+      <div class="results-avatar" id="resultsAvatar">🎉</div>
+      <h2>Your Learning Path is Ready!</h2>
+      <p>Here's what we've prepared for you, <span id="resultsName">friend</span>:</p>
+      
+      <div class="learning-path">
+        <div class="path-header">
+          <div class="path-icon">🎯</div>
+          <div class="path-info">
+            <h3 id="pathTitle">Thai Explorer Path</h3>
+            <p id="pathSubtitle">Perfect for beginners living in Thailand</p>
+          </div>
+        </div>
+        <div class="path-stats">
+          <div class="path-stat">
+            <div class="path-stat-number">42</div>
+            <div class="path-stat-label">Lessons</div>
+          </div>
+          <div class="path-stat">
+            <div class="path-stat-number">15</div>
+            <div class="path-stat-label">Min/day</div>
+          </div>
+          <div class="path-stat">
+            <div class="path-stat-number">~3</div>
+            <div class="path-stat-label">Months</div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="results-checklist" style="list-style:none">
+        <li><span class="check">✓</span> Personalized vocabulary based on your goals</li>
+        <li><span class="check">✓</span> Bite-sized lessons matching your schedule</li>
+        <li><span class="check">✓</span> Smart reminders to build your streak</li>
+        <li><span class="check">✓</span> Progress tracking and achievements</li>
+      </ul>
+
+      <a href="learn.html" class="btn btn-primary" style="font-size:1.125rem;padding:1rem 3rem">Start My First Lesson 🚀</a>
+    </div>
+
+    <!-- Navigation -->
+    <div class="wizard-nav" id="wizardNav">
+      <button class="btn btn-ghost" id="backBtn" onclick="prevStep()" style="visibility:hidden">← Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" disabled>Continue →</button>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 6;
+    const selections = {};
+
+    function updateProgress() {
+      const pct = (currentStep / totalSteps) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('stepIndicator').textContent = `Step ${currentStep} of ${totalSteps}`;
+    }
+
+    function selectOption(card, field, value) {
+      const step = document.getElementById(`step${currentStep}`);
+      const cards = step.querySelectorAll('.option-card');
+      cards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selections[field] = value;
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function toggleTag(tag) {
+      tag.classList.toggle('selected');
+    }
+
+    function updateTimeLabel(slider) {
+      const labels = ['5 minutes per day', '15 minutes per day', '30 minutes per day', '1 hour per day'];
+      document.getElementById('timeLabel').textContent = labels[slider.value];
+      selections.timeCommitment = slider.value;
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function validateStep() {
+      if (currentStep === 5) {
+        // Name step - optional, always allow
+        const name = document.getElementById('userName').value.trim();
+        if (name) selections.name = name;
+        return true;
+      }
+      if (currentStep === 4) {
+        // Tags step - optional, always allow
+        const selectedTags = document.querySelectorAll('#focusTags .tag.selected');
+        selections.focusAreas = Array.from(selectedTags).map(t => t.textContent);
+        return true;
+      }
+      if (currentStep === 3) {
+        // Time commitment - has default value
+        selections.timeCommitment = document.getElementById('timeCommitment').value;
+        return true;
+      }
+      return selections[Object.keys(selections).pop()] !== undefined;
+    }
+
+    function nextStep() {
+      if (!validateStep()) return;
+
+      if (currentStep < totalSteps) {
+        document.getElementById(`step${currentStep}`).style.display = 'none';
+        currentStep++;
+        document.getElementById(`step${currentStep}`).style.display = 'block';
+        updateProgress();
+        document.getElementById('backBtn').style.visibility = 'visible';
+        document.getElementById('nextBtn').disabled = true;
+        
+        // Auto-enable for steps with defaults
+        if (currentStep === 3 || currentStep === 4 || currentStep === 5) {
+          document.getElementById('nextBtn').disabled = false;
+        }
+      } else {
+        // Final step - show loading then results
+        finishOnboarding();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`step${currentStep}`).style.display = 'none';
+        currentStep--;
+        document.getElementById(`step${currentStep}`).style.display = 'block';
+        updateProgress();
+        document.getElementById('nextBtn').disabled = false;
+        
+        if (currentStep === 1) {
+          document.getElementById('backBtn').style.visibility = 'hidden';
+        }
+      }
+    }
+
+    function finishOnboarding() {
+      document.getElementById('wizardContent').style.display = 'none';
+      document.getElementById('wizardNav').style.display = 'none';
+      document.getElementById('loadingContainer').classList.add('active');
+
+      // Generate personalized content
+      const names = {
+        beginner: 'Thai Explorer',
+        some: 'Thai Adventurer',
+        intermediate: 'Thai Challenger',
+        advanced: 'Thai Master'
+      };
+      
+      const goals = {
+        living: 'living in Thailand',
+        work: 'working in Thailand',
+        travel: 'traveling through Thailand',
+        relationship: 'connecting with Thai people'
+      };
+
+      document.getElementById('pathTitle').textContent = `${names[selections.experience] || 'Thai Explorer'} Path`;
+      document.getElementById('pathSubtitle').textContent = `Perfect for ${goals[selections.goal] || 'learning Thai'}`;
+      document.getElementById('resultsName').textContent = selections.name || 'friend';
+
+      // Save to localStorage
+      localStorage.setItem('thaiDaiUser', JSON.stringify(selections));
+      localStorage.setItem('thaiDaiOnboarded', 'true');
+
+      setTimeout(() => {
+        document.getElementById('loadingContainer').classList.remove('active');
+        document.getElementById('resultsContainer').classList.add('active');
+      }, 2500);
+    }
+
+    // Initialize
+    updateProgress();
+  </script>
+</body>
+</html>

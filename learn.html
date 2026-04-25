@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Thai - Thai Dai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #58CC02;
+      --primary-dark: #4CAF00;
+      --primary-light: #89E219;
+      --secondary: #1CB0F6;
+      --secondary-dark: #1899D6;
+      --accent: #FF9600;
+      --accent-light: #FFC800;
+      --pink: #FF4B4B;
+      --purple: #CE82FF;
+      --background: #F7F4ED;
+      --surface: #FFFFFF;
+      --text: #3C3C3C;
+      --text-light: #777777;
+      --border: #E5E5E5;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .app-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--surface);
+      border-right: 2px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 3px 0 var(--primary-dark);
+    }
+
+    .nav-menu {
+      list-style: none;
+      flex: 1;
+    }
+
+    .nav-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(88,204,2,0.1);
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 1.25rem;
+    }
+
+    .user-stats {
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--border);
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .stat-item.fire { color: var(--accent); }
+    .stat-item.gem { color: var(--secondary); }
+    .stat-item.heart { color: var(--pink); }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 240px;
+      padding: 2rem;
+      max-width: 900px;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    .page-title p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .daily-goal {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border);
+    }
+
+    .goal-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0% 60%, var(--border) 60% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .goal-ring::before {
+      content: '';
+      position: absolute;
+      width: 38px;
+      height: 38px;
+      background: var(--surface);
+      border-radius: 50%;
+    }
+
+    .goal-ring span {
+      position: relative;
+      font-weight: 800;
+      font-size: 0.75rem;
+    }
+
+    /* Learning Path */
+    .learning-path {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .unit-section {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .unit-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      border-radius: var(--radius-xl);
+      color: white;
+    }
+
+    .unit-header.blue {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+    }
+
+    .unit-header.purple {
+      background: linear-gradient(135deg, var(--purple) 0%, #9C27B0 100%);
+    }
+
+    .unit-header.locked {
+      background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+      color: var(--text);
+    }
+
+    .unit-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .unit-info h3 {
+      font-size: 1.125rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .unit-info p {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    /* Lesson Path */
+    .lessons-path {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lesson-node {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .lesson-node:hover {
+      transform: scale(1.05);
+    }
+
+    .lesson-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-circle.current {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      box-shadow: 0 8px 0 var(--primary-dark), 0 12px 24px rgba(88,204,2,0.3);
+      animation: pulse 2s infinite;
+    }
+
+    .lesson-circle.completed {
+      background: var(--primary);
+      box-shadow: 0 4px 0 var(--primary-dark);
+    }
+
+    .lesson-circle.completed::after {
+      content: '✓';
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 800;
+      color: white;
+      border: 2px solid var(--surface);
+    }
+
+    .lesson-circle.locked {
+      background: #E0E0E0;
+      box-shadow: 0 4px 0 #BDBDBD;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 8px 0 var(--primary-dark), 0 12px 24px rgba(88,204,2,0.3); }
+      50% { box-shadow: 0 10px 0 var(--primary-dark), 0 16px 32px rgba(88,204,2,0.4); }
+    }
+
+    .lesson-label {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .lesson-connector {
+      width: 4px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius-full);
+    }
+
+    .lesson-connector.locked {
+      background: #E0E0E0;
+    }
+
+    /* Floating Start Button */
+    .start-floating {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: 1.125rem;
+      text-decoration: none;
+      box-shadow: 0 6px 0 var(--primary-dark), 0 12px 24px rgba(88,204,2,0.4);
+      cursor: pointer;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.15s;
+      z-index: 50;
+    }
+
+    .start-floating:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 8px 0 var(--primary-dark), 0 16px 32px rgba(88,204,2,0.5);
+    }
+
+    /* Lesson Modal */
+    .lesson-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lesson-modal.active {
+      display: flex;
+    }
+
+    .lesson-container {
+      background: var(--surface);
+      width: 100%;
+      max-width: 800px;
+      height: 90vh;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Lesson Header */
+    .lesson-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .lesson-progress {
+      flex: 1;
+      margin: 0 1.5rem;
+    }
+
+    .lesson-progress-bar {
+      height: 16px;
+      background: var(--border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .lesson-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: var(--radius-full);
+      transition: width 0.3s ease;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      padding: 0.5rem;
+    }
+
+    .lesson-hearts {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-weight: 800;
+      color: var(--pink);
+    }
+
+    /* Exercise Area */
+    .exercise-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exercise-prompt {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .exercise-prompt h2 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .exercise-prompt p {
+      color: var(--text-light);
+    }
+
+    .audio-btn {
+      width: 64px;
+      height: 64px;
+      background: var(--secondary);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin: 1.5rem auto;
+      box-shadow: 0 4px 0 var(--secondary-dark), 0 8px 16px rgba(28,176,246,0.3);
+      transition: all 0.15s;
+    }
+
+    .audio-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--secondary-dark), 0 12px 24px rgba(28,176,246,0.4);
+    }
+
+    .audio-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--secondary-dark);
+    }
+
+    /* Answer Options */
+    .answer-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: auto;
+    }
+
+    .answer-option {
+      background: var(--surface);
+      border: 3px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .answer-option:hover {
+      border-color: var(--primary-light);
+      background: rgba(88,204,2,0.05);
+    }
+
+    .answer-option.correct {
+      border-color: var(--primary);
+      background: rgba(88,204,2,0.1);
+    }
+
+    .answer-option.wrong {
+      border-color: var(--pink);
+      background: rgba(255,75,75,0.1);
+    }
+
+    .option-image {
+      width: 80px;
+      height: 80px;
+      background: var(--background);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .option-text {
+      flex: 1;
+    }
+
+    .option-text .thai {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .option-text .romanized {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    /* Footer */
+    .lesson-footer {
+      padding: 1.5rem;
+      border-top: 2px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: var(--radius-full);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 0 var(--primary-dark), 0 6px 12px rgba(88,204,2,0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--primary-dark), 0 8px 16px rgba(88,204,2,0.35);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 2px 0 var(--primary-dark);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+
+      .answer-options {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Celebration Animation */
+    .celebration {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 8rem;
+      animation: celebrate 1s ease;
+      pointer-events: none;
+      z-index: 2000;
+    }
+
+    @keyframes celebrate {
+      0% { transform: translate(-50%, -50%) scale(0) rotate(-180deg); opacity: 0; }
+      50% { transform: translate(-50%, -50%) scale(1.3) rotate(10deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🐘</div>
+        Thai Dai
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <span class="nav-icon">🎯</span>
+              Learn
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <span class="nav-icon">🏆</span>
+              Leaderboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <span class="nav-icon">📚</span>
+              Practice
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <span class="nav-icon">👤</span>
+              Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <span class="nav-icon">⚙️</span>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="user-stats">
+        <div class="stat-row">
+          <div class="stat-item fire">🔥 12</div>
+          <div class="stat-item gem">💎 245</div>
+          <div class="stat-item heart">💜 5</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="page-title">
+          <h1>Unit 3: Food & Dining</h1>
+          <p>Master ordering food and drinks like a local</p>
+        </div>
+        <div class="daily-goal">
+          <div class="goal-ring"><span>60%</span></div>
+          <div>
+            <div style="font-weight:800;font-size:0.875rem">Daily Goal</div>
+            <div style="font-size:0.75rem;color:var(--text-light)">15 / 25 XP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning Path -->
+      <div class="learning-path">
+        <!-- Unit 1: Basics -->
+        <div class="unit-section">
+          <div class="unit-header">
+            <div class="unit-icon">👋</div>
+            <div class="unit-info">
+              <h3>Unit 1: Basics</h3>
+              <p>Greetings and Introductions • Complete!</p>
+            </div>
+          </div>
+          <div class="lessons-path">
+            <div class="lesson-node" onclick="startLesson(1)">
+              <div class="lesson-circle completed">👋</div>
+              <div class="lesson-label">Hello</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(2)">
+              <div class="lesson-circle completed">🙏</div>
+              <div class="lesson-label">Thanks</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(3)">
+              <div class="lesson-circle completed">👤</div>
+              <div class="lesson-label">Name</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit 2: Numbers -->
+        <div class="unit-section">
+          <div class="unit-header blue">
+            <div class="unit-icon">🔢</div>
+            <div class="unit-info">
+              <h3>Unit 2: Numbers</h3>
+              <p>Counting and Prices • Complete!</p>
+            </div>
+          </div>
+          <div class="lessons-path">
+            <div class="lesson-node" onclick="startLesson(4)">
+              <div class="lesson-circle completed">1⃣</div>
+              <div class="lesson-label">1-10</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(5)">
+              <div class="lesson-circle completed">💰</div>
+              <div class="lesson-label">Money</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit 3: Food & Dining (Current) -->
+        <div class="unit-section">
+          <div class="unit-header">
+            <div class="unit-icon">🍜</div>
+            <div class="unit-info">
+              <h3>Unit 3: Food & Dining</h3>
+              <p>Ordering at Restaurants • In Progress</p>
+            </div>
+          </div>
+          <div class="lessons-path">
+            <div class="lesson-node" onclick="startLesson(6)">
+              <div class="lesson-circle completed">🍜</div>
+              <div class="lesson-label">Noodles</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(7)">
+              <div class="lesson-circle completed">🥤</div>
+              <div class="lesson-label">Drinks</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(8)">
+              <div class="lesson-circle current">🌶️</div>
+              <div class="lesson-label">Spicy?</div>
+            </div>
+            <div class="lesson-connector"></div>
+            <div class="lesson-node" onclick="startLesson(9)">
+              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-label">Order</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit 4: Getting Around -->
+        <div class="unit-section">
+          <div class="unit-header purple locked">
+            <div class="unit-icon">🔒</div>
+            <div class="unit-info">
+              <h3>Unit 4: Getting Around</h3>
+              <p>Transportation and Directions • Locked</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Floating Start Button -->
+  <button class="start-floating" onclick="startCurrentLesson()">🚀 Start Lesson</button>
+
+  <!-- Lesson Modal -->
+  <div class="lesson-modal" id="lessonModal">
+    <div class="lesson-container">
+      <!-- Header -->
+      <div class="lesson-header">
+        <button class="close-btn" onclick="closeLesson()">✕</button>
+        <div class="lesson-progress">
+          <div class="lesson-progress-bar">
+            <div class="lesson-progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="lesson-hearts">💜 5</div>
+      </div>
+
+      <!-- Exercise Area -->
+      <div class="exercise-area">
+        <div class="exercise-prompt">
+          <h2 id="questionText">What does "เผ็ด" mean?</h2>
+          <p>Select the correct answer</p>
+          <button class="audio-btn" onclick="playAudio()">🔊</button>
+        </div>
+
+        <div class="answer-options" id="answerOptions">
+          <div class="answer-option" onclick="selectAnswer(this, 'spicy')">
+            <div class="option-image">🌶️</div>
+            <div class="option-text">
+              <div class="thai">เผ็ด</div>
+              <div class="romanized">(pet)</div>
+            </div>
+          </div>
+          <div class="answer-option" onclick="selectAnswer(this, 'sweet')">
+            <div class="option-image">🍯</div>
+            <div class="option-text">
+              <div class="thai">หวาน</div>
+              <div class="romanized">(wan)</div>
+            </div>
+          </div>
+          <div class="answer-option" onclick="selectAnswer(this, 'sour')">
+            <div class="option-image">🥪</div>
+            <div class="option-text">
+              <div class="thai">เปรี้ยว</div>
+              <div class="romanized">(priaw)</div>
+            </div>
+          </div>
+          <div class="answer-option" onclick="selectAnswer(this, 'salty')">
+            <div class="option-image">🧂</div>
+            <div class="option-text">
+              <div class="thai">เค็ม</div>
+              <div class="romanized">(kem)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="lesson-footer">
+        <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()" disabled>Check</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Lesson Data
+    const exercises = [
+      {
+        question: 'What does "เผ็ด" mean?',
+        audio: 'pet',
+        correct: 'spicy',
+        options: [
+          { value: 'spicy', thai: 'เผ็ด', romanized: '(pet)', icon: '🌶️' },
+          { value: 'sweet', thai: 'หวาน', romanized: '(wan)', icon: '🍯' },
+          { value: 'sour', thai: 'เปรี้ยว', romanized: '(priaw)', icon: '🥪' },
+          { value: 'salty', thai: 'เค็ม', romanized: '(kem)', icon: '🧂' }
+        ]
+      },
+      {
+        question: 'How do you say "I want"?',
+        audio: 'ao',
+        correct: 'ao',
+        options: [
+          { value: 'ao', thai: 'เอา', romanized: '(ao)', icon: '🙋' },
+          { value: 'mai', thai: 'ไม่', romanized: '(mai)', icon: '❌' },
+          { value: 'dai', thai: 'ได้', romanized: '(dai)', icon: '✅' },
+          { value: 'chob', thai: 'ชอบ', romanized: '(chob)', icon: '❤️' }
+        ]
+      },
+      {
+        question: 'What is "กระเทียม"?',
+        audio: 'kratiam',
+        correct: 'water',
+        options: [
+          { value: 'rice', thai: 'ข้าว', romanized: '(khao)', icon: '🍚' },
+          { value: 'noodles', thai: 'ก๋วยเตี๋ยว', romanized: '(kuay tiao)', icon: '🍜' },
+          { value: 'water', thai: 'กระเทียม', romanized: '(nam)', icon: '💧' },
+          { value: 'ice', thai: 'น้ำแข็ง', romanized: '(nam kheng)', icon: '🧊' }
+        ]
+      },
+      {
+        question: 'Translate: "ไม่เผ็ด"',
+        audio: 'mai pet',
+        correct: 'not spicy',
+        options: [
+          { value: 'very spicy', thai: 'เผ็ดมาก', romanized: '(pet mak)', icon: '🔥' },
+          { value: 'not spicy', thai: 'ไม่เผ็ด', romanized: '(mai pet)', icon: '🌶️❌' },
+          { value: 'a little', thai: 'นิดหน่อย', romanized: '(nid noi)', icon: '👆' },
+          { value: 'delicious', thai: 'อร่อย', romanized: '(aroi)', icon: '😋' }
+        ]
+      },
+      {
+        question: 'What does the waiter say?',
+        audio: 'arai krap',
+        correct: 'order',
+        options: [
+          { value: 'hello', thai: 'สวัสดีครับ', romanized: '(sawasdee krab)', icon: '👋' },
+          { value: 'thank you', thai: 'ขอบคุณครับ', romanized: '(kop kun krab)', icon: '🙏' },
+          { value: 'order', thai: 'อะไรครับ', romanized: '(arai krab)', icon: '🍽️' },
+          { value: 'check', thai: 'เช็คบิลครับ', romanized: '(check bin krab)', icon: '🧹' }
+        ]
+      }
+    ];
+
+    let currentExercise = 0;
+    let selectedAnswer = null;
+    let correctAnswers = 0;
+
+    function startLesson(id) {
+      document.getElementById('lessonModal').classList.add('active');
+      currentExercise = 0;
+      correctAnswers = 0;
+      loadExercise();
+    }
+
+    function startCurrentLesson() {
+      startLesson(8);
+    }
+
+    function closeLesson() {
+      document.getElementById('lessonModal').classList.remove('active');
+    }
+
+    function loadExercise() {
+      const exercise = exercises[currentExercise];
+      document.getElementById('questionText').textContent = exercise.question;
+      document.getElementById('progressFill').style.width = `${((currentExercise) / exercises.length) * 100}%`;
+      
+      const optionsHtml = exercise.options.map(opt => `
+        <div class="answer-option" onclick="selectAnswer(this, '${opt.value}')">
+          <div class="option-image">${opt.icon}</div>
+          <div class="option-text">
+            <div class="thai">${opt.thai}</div>
+            <div class="romanized">${opt.romanized}</div>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('answerOptions').innerHTML = optionsHtml;
+      document.getElementById('checkBtn').textContent = 'Check';
+      document.getElementById('checkBtn').disabled = true;
+      selectedAnswer = null;
+    }
+
+    function selectAnswer(element, value) {
+      const options = document.querySelectorAll('.answer-option');
+      options.forEach(opt => opt.classList.remove('correct', 'wrong'));
+      element.classList.add('selected');
+      selectedAnswer = value;
+      document.getElementById('checkBtn').disabled = false;
+    }
+
+    function checkAnswer() {
+      const exercise = exercises[currentExercise];
+      const options = document.querySelectorAll('.answer-option');
+      const selectedOption = Array.from(options).find(opt => opt.onclick.toString().includes(selectedAnswer));
+      
+      if (selectedAnswer === exercise.correct) {
+        selectedOption.classList.add('correct');
+        correctAnswers++;
+        document.getElementById('checkBtn').textContent = 'Continue →';
+        document.getElementById('checkBtn').onclick = nextExercise;
+        
+        // Celebration on final question
+        if (currentExercise === exercises.length - 1) {
+          showCelebration();
+        }
+      } else {
+        selectedOption.classList.add('wrong');
+        const correctOption = Array.from(options).find(opt => opt.onclick.toString().includes(exercise.correct));
+        correctOption.classList.add('correct');
+        document.getElementById('checkBtn').textContent = 'Continue →';
+        document.getElementById('checkBtn').onclick = nextExercise;
+      }
+    }
+
+    function nextExercise() {
+      currentExercise++;
+      if (currentExercise < exercises.length) {
+        loadExercise();
+        document.getElementById('checkBtn').textContent = 'Check';
+        document.getElementById('checkBtn').onclick = checkAnswer;
+      } else {
+        // Lesson complete
+        closeLesson();
+        alert(`🎉 Lesson Complete! You got ${correctAnswers}/${exercises.length} correct! +50 XP earned!`);
+      }
+    }
+
+    function playAudio() {
+      // In a real app, this would play Thai audio
+      console.log('Playing audio for:', exercises[currentExercise].audio);
+    }
+
+    function showCelebration() {
+      const celebration = document.createElement('div');
+      celebration.className = 'celebration';
+      celebration.textContent = '🎉';
+      document.body.appendChild(celebration);
+      setTimeout(() => celebration.remove(), 1500);
+    }
+
+    // Check if user has onboarded
+    if (!localStorage.getItem('thaiDaiOnboarded')) {
+      // Redirect to onboarding if not
+      // window.location.href = 'onboarding.html';
+    }
+  </script>
+</body>
+</html>
