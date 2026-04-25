@@ -1034,127 +1034,77 @@
       const exercise = exercises[currentExercise];
       const word = exercise.audio;
       
-      // Web Audio API Thai Speech Synthesizer
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) {
-        console.log('Web Audio API not supported');
-        return;
-      }
-      
-      const ctx = new AudioContext();
-      
-      // Thai word phoneme mappings with tone patterns
-      const thaiWords = {
-        'pet': { syllables: ['p', 'e', 't'], tone: 'high', duration: 400 },
-        'wan': { syllables: ['w', 'a', 'n'], tone: 'mid', duration: 450 },
-        'priaw': { syllables: ['pr', 'i', 'aw'], tone: 'falling', duration: 500 },
-        'kem': { syllables: ['k', 'e', 'm'], tone: 'high', duration: 400 },
-        'ao': { syllables: ['a', 'o'], tone: 'mid', duration: 400 },
-        'mai': { syllables: ['m', 'a', 'i'], tone: 'high', duration: 400 },
-        'dai': { syllables: ['d', 'a', 'i'], tone: 'falling', duration: 450 },
-        'chob': { syllables: ['ch', 'o', 'b'], tone: 'high', duration: 400 },
-        'khao': { syllables: ['kh', 'a', 'o'], tone: 'falling', duration: 450 },
-        'kuay tiao': { syllables: ['k', 'ua', 'y'], tone: 'rising', duration: 300, second: { syllables: ['t', 'i', 'ao'], tone: 'falling', duration: 400 } },
-        'nam': { syllables: ['n', 'a', 'm'], tone: 'high', duration: 400 },
-        'nam kheng': { syllables: ['n', 'a', 'm'], tone: 'high', duration: 250, second: { syllables: ['kh', 'e', 'ng'], tone: 'low', duration: 400 } },
-        'pet mak': { syllables: ['p', 'e', 't'], tone: 'high', duration: 250, second: { syllables: ['m', 'a', 'k'], tone: 'high', duration: 400 } },
-        'mai pet': { syllables: ['m', 'a', 'i'], tone: 'high', duration: 250, second: { syllables: ['p', 'e', 't'], tone: 'high', duration: 350 } },
-        'nid noi': { syllables: ['n', 'i', 'd'], tone: 'high', duration: 250, second: { syllables: ['n', 'o', 'i'], tone: 'falling', duration: 400 } },
-        'aroi': { syllables: ['a', 'r', 'o', 'i'], tone: 'mid', duration: 500 },
-        'sawasdee krab': { syllables: ['s', 'a', 'w', 'a', 's', 'd', 'ee'], tone: 'rising', duration: 600, second: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
-        'kop kun krab': { syllables: ['k', 'o', 'p'], tone: 'high', duration: 250, second: { syllables: ['k', 'u', 'n'], tone: 'mid', duration: 250 }, third: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
-        'arai krab': { syllables: ['a', 'r', 'a', 'i'], tone: 'falling', duration: 400, second: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
-        'check bin krab': { syllables: ['ch', 'e', 'k'], tone: 'mid', duration: 250, second: { syllables: ['b', 'i', 'n'], tone: 'mid', duration: 250 }, third: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } }
+      // Map audio keys to actual Thai text for speech synthesis
+      const thaiTextMap = {
+        'pet': 'เผ็ด',
+        'wan': 'หวาน',
+        'priaw': 'เปรี้ยว',
+        'kem': 'เค็ม',
+        'ao': 'เอา',
+        'mai': 'ไม่',
+        'dai': 'ได้',
+        'chob': 'ชอบ',
+        'khao': 'ข้าว',
+        'kuay tiao': 'ก๋วยเตี๋ยว',
+        'nam': 'น้ำ',
+        'nam kheng': 'น้ำแข็ง',
+        'pet mak': 'เผ็ดมาก',
+        'mai pet': 'ไม่เผ็ด',
+        'nid noi': 'นิดหน่อย',
+        'aroi': 'อร่อย',
+        'sawasdee krab': 'สวัสดีครับ',
+        'kop kun krab': 'ขอบคุณครับ',
+        'arai krab': 'อะไรครับ',
+        'check bin krab': 'เช็คบิลครับ'
       };
       
-      const wordData = thaiWords[word] || { syllables: [word], tone: 'mid', duration: 400 };
+      const thaiText = thaiTextMap[word] || word;
       
-      function playTone(freq, duration, startTime, toneType = 'mid') {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+      // Use Web Speech API with Thai voice
+      if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
         
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        const utterance = new SpeechSynthesisUtterance(thaiText);
+        utterance.lang = 'th-TH';
+        utterance.rate = 0.9; // Slightly slower for learners
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
         
-        // Base frequency with some variation for natural sound
-        let baseFreq = freq;
-        
-        // Thai tone contours
-        switch(toneType) {
-          case 'high':
-            osc.frequency.setValueAtTime(baseFreq * 1.15, startTime);
-            osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.1, startTime + duration/1000);
-            break;
-          case 'low':
-            osc.frequency.setValueAtTime(baseFreq * 0.85, startTime);
-            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, startTime + duration/1000);
-            break;
-          case 'falling':
-            osc.frequency.setValueAtTime(baseFreq * 1.2, startTime);
-            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, startTime + duration/1000 * 0.6);
-            break;
-          case 'rising':
-            osc.frequency.setValueAtTime(baseFreq * 0.85, startTime);
-            osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.15, startTime + duration/1000);
-            break;
-          default: // mid
-            osc.frequency.setValueAtTime(baseFreq, startTime);
+        // Try to find a Thai voice
+        const voices = window.speechSynthesis.getVoices();
+        const thaiVoice = voices.find(voice => voice.lang === 'th-TH' || voice.lang.startsWith('th'));
+        if (thaiVoice) {
+          utterance.voice = thaiVoice;
         }
         
-        // Use sawtooth for more vocal-like quality, mixed with sine
-        osc.type = 'sawtooth';
+        // Visual feedback
+        const btn = document.querySelector('.audio-btn');
+        if (btn) {
+          btn.style.transform = 'scale(0.95)';
+          btn.innerHTML = '🔊';
+        }
         
-        // Envelope
-        gain.gain.setValueAtTime(0, startTime);
-        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
-        gain.gain.setValueAtTime(0.3, startTime + duration/1000 - 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration/1000);
+        utterance.onend = () => {
+          if (btn) {
+            btn.style.transform = '';
+            btn.innerHTML = '🔊';
+          }
+        };
         
-        osc.start(startTime);
-        osc.stop(startTime + duration/1000);
+        window.speechSynthesis.speak(utterance);
+      } else {
+        // Fallback: show text alert
+        console.log('Speech synthesis not supported');
       }
-      
-      function playSyllable(data, startTime, baseFreq = 220) {
-        // Vowel-based frequency selection
-        let freq = baseFreq;
-        const syl = data.syllables.join('');
-        if (syl.includes('a') || syl.includes('a')) freq = 220; // A sound
-        else if (syl.includes('e') || syl.includes('ee')) freq = 275; // E sound
-        else if (syl.includes('i')) freq = 330; // I sound
-        else if (syl.includes('o')) freq = 196; // O sound
-        else if (syl.includes('u')) freq = 185; // U sound
-        else if (syl.includes('ua') || syl.includes('uay')) freq = 208; // Ua diphthong
-        else if (syl.includes('aw')) freq = 207; // Aw sound
-        else if (syl.includes('ai')) freq = 246; // Ai diphthong
-        
-        playTone(freq, data.duration, startTime, data.tone);
-        return startTime + data.duration/1000 + 0.05; // Add small gap
-      }
-      
-      // Play the word
-      let currentTime = ctx.currentTime;
-      const baseFreq = 220; // A3
-      
-      currentTime = playSyllable(wordData, currentTime, baseFreq);
-      
-      if (wordData.second) {
-        currentTime = playSyllable(wordData.second, currentTime, baseFreq);
-      }
-      
-      if (wordData.third) {
-        playSyllable(wordData.third, currentTime, baseFreq);
-      }
-      
-      // Visual feedback
-      const btn = document.querySelector('.audio-btn');
-      if (btn) {
-        btn.style.transform = 'scale(0.95)';
-        btn.style.background = '#149bd6';
-        setTimeout(() => {
-          btn.style.transform = '';
-          btn.style.background = '';
-        }, 200);
-      }
+    }
+    
+    // Pre-load voices (required for some browsers)
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
     }
 
     function showCelebration() {
