@@ -1031,8 +1031,130 @@
     }
 
     function playAudio() {
-      // In a real app, this would play Thai audio
-      console.log('Playing audio for:', exercises[currentExercise].audio);
+      const exercise = exercises[currentExercise];
+      const word = exercise.audio;
+      
+      // Web Audio API Thai Speech Synthesizer
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) {
+        console.log('Web Audio API not supported');
+        return;
+      }
+      
+      const ctx = new AudioContext();
+      
+      // Thai word phoneme mappings with tone patterns
+      const thaiWords = {
+        'pet': { syllables: ['p', 'e', 't'], tone: 'high', duration: 400 },
+        'wan': { syllables: ['w', 'a', 'n'], tone: 'mid', duration: 450 },
+        'priaw': { syllables: ['pr', 'i', 'aw'], tone: 'falling', duration: 500 },
+        'kem': { syllables: ['k', 'e', 'm'], tone: 'high', duration: 400 },
+        'ao': { syllables: ['a', 'o'], tone: 'mid', duration: 400 },
+        'mai': { syllables: ['m', 'a', 'i'], tone: 'high', duration: 400 },
+        'dai': { syllables: ['d', 'a', 'i'], tone: 'falling', duration: 450 },
+        'chob': { syllables: ['ch', 'o', 'b'], tone: 'high', duration: 400 },
+        'khao': { syllables: ['kh', 'a', 'o'], tone: 'falling', duration: 450 },
+        'kuay tiao': { syllables: ['k', 'ua', 'y'], tone: 'rising', duration: 300, second: { syllables: ['t', 'i', 'ao'], tone: 'falling', duration: 400 } },
+        'nam': { syllables: ['n', 'a', 'm'], tone: 'high', duration: 400 },
+        'nam kheng': { syllables: ['n', 'a', 'm'], tone: 'high', duration: 250, second: { syllables: ['kh', 'e', 'ng'], tone: 'low', duration: 400 } },
+        'pet mak': { syllables: ['p', 'e', 't'], tone: 'high', duration: 250, second: { syllables: ['m', 'a', 'k'], tone: 'high', duration: 400 } },
+        'mai pet': { syllables: ['m', 'a', 'i'], tone: 'high', duration: 250, second: { syllables: ['p', 'e', 't'], tone: 'high', duration: 350 } },
+        'nid noi': { syllables: ['n', 'i', 'd'], tone: 'high', duration: 250, second: { syllables: ['n', 'o', 'i'], tone: 'falling', duration: 400 } },
+        'aroi': { syllables: ['a', 'r', 'o', 'i'], tone: 'mid', duration: 500 },
+        'sawasdee krab': { syllables: ['s', 'a', 'w', 'a', 's', 'd', 'ee'], tone: 'rising', duration: 600, second: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
+        'kop kun krab': { syllables: ['k', 'o', 'p'], tone: 'high', duration: 250, second: { syllables: ['k', 'u', 'n'], tone: 'mid', duration: 250 }, third: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
+        'arai krab': { syllables: ['a', 'r', 'a', 'i'], tone: 'falling', duration: 400, second: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } },
+        'check bin krab': { syllables: ['ch', 'e', 'k'], tone: 'mid', duration: 250, second: { syllables: ['b', 'i', 'n'], tone: 'mid', duration: 250 }, third: { syllables: ['kr', 'a', 'b'], tone: 'high', duration: 350 } }
+      };
+      
+      const wordData = thaiWords[word] || { syllables: [word], tone: 'mid', duration: 400 };
+      
+      function playTone(freq, duration, startTime, toneType = 'mid') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        // Base frequency with some variation for natural sound
+        let baseFreq = freq;
+        
+        // Thai tone contours
+        switch(toneType) {
+          case 'high':
+            osc.frequency.setValueAtTime(baseFreq * 1.15, startTime);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.1, startTime + duration/1000);
+            break;
+          case 'low':
+            osc.frequency.setValueAtTime(baseFreq * 0.85, startTime);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, startTime + duration/1000);
+            break;
+          case 'falling':
+            osc.frequency.setValueAtTime(baseFreq * 1.2, startTime);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, startTime + duration/1000 * 0.6);
+            break;
+          case 'rising':
+            osc.frequency.setValueAtTime(baseFreq * 0.85, startTime);
+            osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.15, startTime + duration/1000);
+            break;
+          default: // mid
+            osc.frequency.setValueAtTime(baseFreq, startTime);
+        }
+        
+        // Use sawtooth for more vocal-like quality, mixed with sine
+        osc.type = 'sawtooth';
+        
+        // Envelope
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+        gain.gain.setValueAtTime(0.3, startTime + duration/1000 - 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration/1000);
+        
+        osc.start(startTime);
+        osc.stop(startTime + duration/1000);
+      }
+      
+      function playSyllable(data, startTime, baseFreq = 220) {
+        // Vowel-based frequency selection
+        let freq = baseFreq;
+        const syl = data.syllables.join('');
+        if (syl.includes('a') || syl.includes('a')) freq = 220; // A sound
+        else if (syl.includes('e') || syl.includes('ee')) freq = 275; // E sound
+        else if (syl.includes('i')) freq = 330; // I sound
+        else if (syl.includes('o')) freq = 196; // O sound
+        else if (syl.includes('u')) freq = 185; // U sound
+        else if (syl.includes('ua') || syl.includes('uay')) freq = 208; // Ua diphthong
+        else if (syl.includes('aw')) freq = 207; // Aw sound
+        else if (syl.includes('ai')) freq = 246; // Ai diphthong
+        
+        playTone(freq, data.duration, startTime, data.tone);
+        return startTime + data.duration/1000 + 0.05; // Add small gap
+      }
+      
+      // Play the word
+      let currentTime = ctx.currentTime;
+      const baseFreq = 220; // A3
+      
+      currentTime = playSyllable(wordData, currentTime, baseFreq);
+      
+      if (wordData.second) {
+        currentTime = playSyllable(wordData.second, currentTime, baseFreq);
+      }
+      
+      if (wordData.third) {
+        playSyllable(wordData.third, currentTime, baseFreq);
+      }
+      
+      // Visual feedback
+      const btn = document.querySelector('.audio-btn');
+      if (btn) {
+        btn.style.transform = 'scale(0.95)';
+        btn.style.background = '#149bd6';
+        setTimeout(() => {
+          btn.style.transform = '';
+          btn.style.background = '';
+        }, 200);
+      }
     }
 
     function showCelebration() {
