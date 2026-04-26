@@ -659,8 +659,37 @@
         </div>
       </div>
 
-      <!-- Step 3: Learning Style -->
+      <!-- Step 3: Gender Selection (NEW) -->
       <div class="wizard-step" id="step3" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">👤</div>
+          <h1>Choose your polite particle</h1>
+          <p>This determines how you'll speak politely in Thai. You can change this anytime in settings.</p>
+        </div>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectOption(this, 'gender', 'male')">
+            <div class="option-icon">👨</div>
+            <div class="option-title">Male</div>
+            <div class="option-desc">I'll use ครับ (kráp) - "krab"</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'gender', 'female')">
+            <div class="option-icon">👩</div>
+            <div class="option-title">Female</div>
+            <div class="option-desc">I'll use ค่ะ (khâ) - "ka"</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'gender', 'other')">
+            <div class="option-icon">✨</div>
+            <div class="option-title">Prefer not to say</div>
+            <div class="option-desc">Show me both forms</div>
+          </div>
+        </div>
+        <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
+          💡 Thai uses different polite endings based on your gender. This is essential for natural conversation!
+        </p>
+      </div>
+
+      <!-- Step 4: Learning Style -->
+      <div class="wizard-step" id="step4" style="display:none">
         <div class="step-header">
           <div class="step-icon">⏰</div>
           <h1>How much time can you commit?</h1>
@@ -681,8 +710,8 @@
         </p>
       </div>
 
-      <!-- Step 4: Focus Areas -->
-      <div class="wizard-step" id="step4" style="display:none">
+      <!-- Step 5: Focus Areas -->
+      <div class="wizard-step" id="step5" style="display:none">
         <div class="step-header">
           <div class="step-icon">🎯</div>
           <h1>What do you want to focus on?</h1>
@@ -700,8 +729,8 @@
         </div>
       </div>
 
-      <!-- Step 5: Name -->
-      <div class="wizard-step" id="step5" style="display:none">
+      <!-- Step 6: Name -->
+      <div class="wizard-step" id="step6" style="display:none">
         <div class="step-header">
           <div class="step-icon">👤</div>
           <h1>What should we call you?</h1>
@@ -715,8 +744,8 @@
         </p>
       </div>
 
-      <!-- Step 6: Motivation -->
-      <div class="wizard-step" id="step6" style="display:none">
+      <!-- Step 7: Motivation -->
+      <div class="wizard-step" id="step7" style="display:none">
         <div class="step-header">
           <div class="step-icon">🔥</div>
           <h1>What's your motivation?</h1>
@@ -809,7 +838,7 @@
 
   <script>
     let currentStep = 1;
-    const totalSteps = 6;
+    const totalSteps = 7;
     const selections = {};
 
     function updateProgress() {
@@ -839,19 +868,19 @@
     }
 
     function validateStep() {
-      if (currentStep === 5) {
+      if (currentStep === 6) {
         // Name step - optional, always allow
         const name = document.getElementById('userName').value.trim();
         if (name) selections.name = name;
         return true;
       }
-      if (currentStep === 4) {
+      if (currentStep === 5) {
         // Tags step - optional, always allow
         const selectedTags = document.querySelectorAll('#focusTags .tag.selected');
         selections.focusAreas = Array.from(selectedTags).map(t => t.textContent);
         return true;
       }
-      if (currentStep === 3) {
+      if (currentStep === 4) {
         // Time commitment - has default value
         selections.timeCommitment = document.getElementById('timeCommitment').value;
         return true;
@@ -871,7 +900,7 @@
         document.getElementById('nextBtn').disabled = true;
         
         // Auto-enable for steps with defaults
-        if (currentStep === 3 || currentStep === 4 || currentStep === 5) {
+        if (currentStep === 4 || currentStep === 5 || currentStep === 6) {
           document.getElementById('nextBtn').disabled = false;
         }
       } else {

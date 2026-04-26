@@ -959,13 +959,34 @@
           </div>
         </div>
 
-        <!-- Unit 4: Getting Around -->
+        <!-- Unit 4: Getting Around (Now Unlocked with Content) -->
         <div class="unit-section">
-          <div class="unit-header purple locked">
-            <div class="unit-icon">🔒</div>
+          <div class="unit-header purple">
+            <div class="unit-icon">🚕</div>
             <div class="unit-info">
               <h3>Unit 4: Getting Around</h3>
-              <p>Transportation and Directions • Locked</p>
+              <p>Transportation and Directions • 4 Lessons</p>
+            </div>
+          </div>
+          <div class="lessons-path">
+            <div class="lesson-node" onclick="startLesson(10)">
+              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-label">Hail Taxi</div>
+            </div>
+            <div class="lesson-connector locked"></div>
+            <div class="lesson-node" onclick="startLesson(11)">
+              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-label">Directions</div>
+            </div>
+            <div class="lesson-connector locked"></div>
+            <div class="lesson-node" onclick="startLesson(12)">
+              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-label">Negotiate</div>
+            </div>
+            <div class="lesson-connector locked"></div>
+            <div class="lesson-node" onclick="startLesson(13)">
+              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-label">Pay & Go</div>
             </div>
           </div>
         </div>
@@ -1095,15 +1116,195 @@
           { value: 'check', thai: 'เช็คบิลครับ', romanized: '(chék-bin kráp)', icon: '🧹', note: 'Male: kráp' }
         ]
       },
-      // Note: ครับ (kráp) is male polite particle, ค่ะ (khâ) is female
-      // Tone guide: á=high, à=low, â=falling, ǎ=rising, a=mid
-    ];
+    const lessonData = {
+      // Unit 3: Food & Dining (Lessons 6-9)
+      6: [
+        {
+          question: 'What does "เผ็ด" mean?',
+          audio: 'pet',
+          correct: 'spicy',
+          options: [
+            { value: 'spicy', thai: 'เผ็ด', romanized: '(pèt)', icon: '🌶️', note: 'High tone' },
+            { value: 'sweet', thai: 'หวาน', romanized: '(wǎn)', icon: '🍯', note: 'Rising tone' },
+            { value: 'sour', thai: 'เปรี้ยว', romanized: '(prîaw)', icon: '🥪', note: 'Falling tone' },
+            { value: 'salty', thai: 'เค็ม', romanized: '(khém)', icon: '🧂', note: 'High tone' }
+          ]
+        }
+      ],
+      7: [
+        {
+          question: 'How do you say "I want"?',
+          audio: 'ao',
+          correct: 'ao',
+          options: [
+            { value: 'ao', thai: 'เอา', romanized: '(ao)', icon: '🙋', note: 'Mid tone' },
+            { value: 'mai', thai: 'ไม่', romanized: '(mâi)', icon: '❌', note: 'High tone' },
+            { value: 'dai', thai: 'ได้', romanized: '(dâi)', icon: '✅', note: 'Falling tone' },
+            { value: 'chob', thai: 'ชอบ', romanized: '(chòp)', icon: '❤️', note: 'Low tone' }
+          ]
+        }
+      ],
+      8: [
+        {
+          question: 'What is "น้ำ"?',
+          audio: 'nam',
+          correct: 'water',
+          options: [
+            { value: 'rice', thai: 'ข้าว', romanized: '(khâo)', icon: '🍚', note: 'Falling tone' },
+            { value: 'noodles', thai: 'ก๋วยเตี๋ยว', romanized: '(gǎo dtīei)', icon: '🍜', note: 'Rising + rising tones' },
+            { value: 'water', thai: 'น้ำ', romanized: '(nám)', icon: '💧', note: 'High tone' },
+            { value: 'ice', thai: 'น้ำแข็ง', romanized: '(nám khǎo)', icon: '🧊', note: 'High + low tones' }
+          ]
+        }
+      ],
+      9: [
+        {
+          question: 'Translate: "ไม่เผ็ด"',
+          audio: 'mai pet',
+          correct: 'not spicy',
+          options: [
+            { value: 'very spicy', thai: 'เผ็ดมาก', romanized: '(pèt mâak)', icon: '🔥', note: 'High + falling tones' },
+            { value: 'not spicy', thai: 'ไม่เผ็ด', romanized: '(mâi pèt)', icon: '🌶️❌', note: 'High + high tones' },
+            { value: 'a little', thai: 'นิดหน่อย', romanized: '(nít nòi)', icon: '👆', note: 'High + falling tones' },
+            { value: 'delicious', thai: 'อร่อย', romanized: '(à-ròi)', icon: '😋', note: 'Low tone' }
+          ]
+        }
+      ],
+      // Unit 4: Getting Around (Lessons 10-13) - HIGH QUALITY TAXI CONTENT
+      10: [
+        // Lesson: Hail a Taxi
+        {
+          question: 'How do you say "Use the meter"?',
+          audio: 'meter',
+          correct: 'meter',
+          options: [
+            { value: 'meter', thai: 'เปิดมิเตอร์', romanized: '(pòoet mi-dtoo)', icon: '🛑', note: 'Low + mid tones' },
+            { value: 'expensive', thai: 'แพง', romanized: '(phaaeng)', icon: '💸', note: 'Falling tone' },
+            { value: 'cheap', thai: 'ถูก', romanized: '(thùuk)', icon: '💰', note: 'Low tone' },
+            { value: 'fast', thai: 'เร็ว', romanized: '(riau)', icon: '⚡', note: 'Falling tone' }
+          ]
+        },
+        {
+          question: 'What does "ไปที่..." mean?',
+          audio: 'pai thi',
+          correct: 'go to',
+          options: [
+            { value: 'go to', thai: 'ไปที่...', romanized: '(pai thîi...)', icon: '📍', note: 'Mid + falling tones' },
+            { value: 'from where', thai: 'มาจาก', romanized: '(maa jàak)', icon: '🛣️', note: 'High + low tones' },
+            { value: 'stop here', thai: 'จอดตรงนี้', romanized: '(jàwt dtrong níi)', icon: '🛑', note: 'Low + mid + mid tones' },
+            { value: 'turn around', thai: 'กลับรถ', romanized: '(klàp rót)', icon: '🚗', note: 'Low + mid tones' }
+          ]
+        },
+        {
+          question: 'Translate: "กี่บาท"',
+          audio: 'gee baht',
+          correct: 'how many baht',
+          options: [
+            { value: 'how many baht', thai: 'กี่บาท', romanized: '(kìi bàat)', icon: '💵', note: 'Rising + mid tones' },
+            { value: 'how far', thai: 'ไกล', romanized: '(glài)', icon: '🞵', note: 'Low tone' },
+            { value: 'how long', thai: 'นาน', romanized: '(nâan)', icon: '⏰', note: 'Falling tone' },
+            { value: 'how many km', thai: 'กี่กิโล', romanized: '(kìi gî-loo)', icon: '🏁', note: 'Rising + mid tones' }
+          ]
+        }
+      ],
+      11: [
+        // Lesson: Directions
+        {
+          question: 'How do you say "Turn left"?',
+          audio: 'liaw sai',
+          correct: 'left',
+          options: [
+            { value: 'left', thai: 'เลี้ยวซ้าย', romanized: '(líaw sáai)', icon: '⬅️', note: 'High + rising tones' },
+            { value: 'right', thai: 'เลี้ยวขวา', romanized: '(líaw khwǎa)', icon: '➡️', note: 'High + falling tones' },
+            { value: 'straight', thai: 'ตรงไป', romanized: '(dtrong pai)', icon: '⬆️', note: 'Mid + mid tones' },
+            { value: 'uturn', thai: 'กลับรถ', romanized: '(klàp rót)', icon: '🔄', note: 'Low + mid tones' }
+          ]
+        },
+        {
+          question: 'What does "จอดตรงนี้" mean?',
+          audio: 'jawt dtrong nee',
+          correct: 'stop here',
+          options: [
+            { value: 'stop here', thai: 'จอดตรงนี้', romanized: '(jàwt dtrong níi)', icon: '🛑', note: 'Low + mid + mid tones' },
+            { value: 'go ahead', thai: 'ไปเลย', romanized: '(pai loei)', icon: '➡️', note: 'Mid + falling tones' },
+            { value: 'slow down', thai: 'ช้าลง', romanized: '(cháa long)', icon: '🚕', note: 'High + mid tones' },
+            { value: 'speed up', thai: 'เร็วขึ้น', romanized: '(riau khéun)', icon: '🏎️', note: 'Falling + high tones' }
+          ]
+        },
+        {
+          question: 'Translate: "เลี้ยวขวา"',
+          audio: 'liaw khwa',
+          correct: 'turn right',
+          options: [
+            { value: 'turn right', thai: 'เลี้ยวขวา', romanized: '(líaw khwǎa)', icon: '➡️', note: 'High + falling tones' },
+            { value: 'turn left', thai: 'เลี้ยวซ้าย', romanized: '(líaw sáai)', icon: '⬅️', note: 'High + rising tones' },
+            { value: 'at corner', thai: 'ตรงมุม', romanized: '(dtrong múm)', icon: '🚦', note: 'Mid + mid tones' },
+            { value: 'next to', thai: 'ข้าง', romanized: '(khâang)', icon: '📳', note: 'Falling tone' }
+          ]
+        }
+      ],
+      12: [
+        // Lesson: Negotiate
+        {
+          question: 'How do you say "Too expensive"?',
+          audio: 'phaeng pai',
+          correct: 'expensive',
+          options: [
+            { value: 'expensive', thai: 'แพงไป', romanized: '(phaaeng pai)', icon: '💸', note: 'Falling + mid tones' },
+            { value: 'cheap', thai: 'ถูก', romanized: '(thùuk)', icon: '💰', note: 'Low tone' },
+            { value: 'can discount', thai: 'ลดได้ไหม', romanized: '(lót dâi mǎi)', icon: '🎯', note: 'High + falling + high tones' },
+            { value: 'fixed price', thai: 'ราคาต่อรอง', romanized: '(râa-khâa dtòr rong)', icon: '🚫', note: 'Falling + mid + high tones' }
+          ]
+        },
+        {
+          question: 'What does "ถูกกว่านี้ได้ไหม" mean?',
+          audio: 'thuk gwa nee dai mai',
+          correct: 'can cheaper',
+          options: [
+            { value: 'can cheaper', thai: 'ถูกกว่านี้ได้ไหม', romanized: '(thùuk gwàa níi dâi mǎi)', icon: '💵', note: 'Low + mid + mid + fall + high tones' },
+            { value: 'too expensive', thai: 'แพงไป', romanized: '(phaaeng pai)', icon: '😱', note: 'Falling + mid tones' },
+            { value: 'I don\'t want', thai: 'ไม่เอา', romanized: '(mâi ao)', icon: '🙅', note: 'High + mid tones' },
+            { value: 'okay deal', thai: 'ได้เลย', romanized: '(dâi loei)', icon: '✅', note: 'Falling + falling tones' }
+          ]
+        }
+      ],
+      13: [
+        // Lesson: Pay & Go
+        {
+          question: 'How do you say "Here" (when paying)?',
+          audio: 'na khrap',
+          correct: 'here',
+          options: [
+            { value: 'here', thai: 'นะครับ', romanized: '(ná khrap)', icon: '💳', note: 'High + mid tones' },
+            { value: 'keep change', thai: 'ไม่ต้องทอน', romanized: '(mâi dtòrng thâawn)', icon: '👍', note: 'High + falling + high tones' },
+            { value: 'receipt', thai: 'ใบเสร็จ', romanized: '(bai sèrt)', icon: '🧻', note: 'Mid + falling tones' },
+            { value: 'thank you', thai: 'ขอบคุณ', romanized: '(khòp-khun)', icon: '🙏', note: 'Low + mid tones' }
+          ]
+        },
+        {
+          question: 'What does "เช็คบิล" mean?',
+          audio: 'check bin',
+          correct: 'check bill',
+          options: [
+            { value: 'check bill', thai: 'เช็คบิล', romanized: '(chék bin)', icon: '🧹', note: 'Low + mid tones' },
+            { value: 'cash', thai: 'เงินสด', romanized: '(ngǐn sòt)', icon: '💵', note: 'Rising + low tones' },
+            { value: 'credit card', thai: 'บัตรเครดิต', romanized: '(bàt khray-dît)', icon: '💳', note: 'Mid + mid tones' },
+            { value: 'tip', thai: 'ทิป', romanized: '(thíp)', icon: '💸', note: 'Low tone' }
+          ]
+        }
+      ]
+    };
 
+    // Default exercises for current lesson (Unit 3, Lesson 8)
+    let currentLessonId = 8;
+    let exercises = lessonData[currentLessonId] || lessonData[8];
     let currentExercise = 0;
     let selectedAnswer = null;
     let correctAnswers = 0;
 
     function startLesson(id) {
+      currentLessonId = id;
+      exercises = lessonData[id] || lessonData[8];
       document.getElementById('lessonModal').classList.add('active');
       currentExercise = 0;
       correctAnswers = 0;
@@ -1210,7 +1411,18 @@
         'sawasdee krab': 'สวัสดีครับ',
         'kop kun krab': 'ขอบคุณครับ',
         'arai krab': 'อะไรครับ',
-        'check bin krab': 'เช็คบิลครับ'
+        'check bin krab': 'เช็คบิลครับ',
+        // Unit 4: Getting Around (Taxi content)
+        'meter': 'เปิดมิเตอร์',
+        'pai thi': 'ไปที่',
+        'gee baht': 'กี่บาท',
+        'liaw sai': 'เลี้ยวซ้าย',
+        'liaw khwa': 'เลี้ยวขวา',
+        'jawt dtrong nee': 'จอดตรงนี้',
+        'phaeng pai': 'แพงไป',
+        'thuk gwa nee dai mai': 'ถูกกว่านี้ได้ไหม',
+        'na khrap': 'นะครับ',
+        'check bin': 'เช็คบิล'
       };
       
       const thaiText = thaiTextMap[word] || word;
