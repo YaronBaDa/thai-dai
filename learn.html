@@ -610,6 +610,13 @@
       color: var(--text-light);
     }
 
+    .tone-note {
+      font-size: clamp(0.625rem, 2vw, 0.75rem);
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
     /* Footer */
     .lesson-footer {
       padding: 1rem 1.5rem;
@@ -1038,10 +1045,10 @@
         audio: 'pet',
         correct: 'spicy',
         options: [
-          { value: 'spicy', thai: 'เผ็ด', romanized: '(pet)', icon: '🌶️' },
-          { value: 'sweet', thai: 'หวาน', romanized: '(wan)', icon: '🍯' },
-          { value: 'sour', thai: 'เปรี้ยว', romanized: '(priaw)', icon: '🥪' },
-          { value: 'salty', thai: 'เค็ม', romanized: '(kem)', icon: '🧂' }
+          { value: 'spicy', thai: 'เผ็ด', romanized: '(pèt)', icon: '🌶️', note: 'High tone' },
+          { value: 'sweet', thai: 'หวาน', romanized: '(wǎn)', icon: '🍯', note: 'Rising tone' },
+          { value: 'sour', thai: 'เปรี้ยว', romanized: '(prîaw)', icon: '🥪', note: 'Falling tone' },
+          { value: 'salty', thai: 'เค็ม', romanized: '(khém)', icon: '🧂', note: 'High tone' }
         ]
       },
       {
@@ -1049,10 +1056,10 @@
         audio: 'ao',
         correct: 'ao',
         options: [
-          { value: 'ao', thai: 'เอา', romanized: '(ao)', icon: '🙋' },
-          { value: 'mai', thai: 'ไม่', romanized: '(mai)', icon: '❌' },
-          { value: 'dai', thai: 'ได้', romanized: '(dai)', icon: '✅' },
-          { value: 'chob', thai: 'ชอบ', romanized: '(chob)', icon: '❤️' }
+          { value: 'ao', thai: 'เอา', romanized: '(ao)', icon: '🙋', note: 'Mid tone' },
+          { value: 'mai', thai: 'ไม่', romanized: '(mâi)', icon: '❌', note: 'High tone' },
+          { value: 'dai', thai: 'ได้', romanized: '(dâi)', icon: '✅', note: 'Falling tone' },
+          { value: 'chob', thai: 'ชอบ', romanized: '(chòp)', icon: '❤️', note: 'Low tone' }
         ]
       },
       {
@@ -1060,10 +1067,10 @@
         audio: 'nam',
         correct: 'water',
         options: [
-          { value: 'rice', thai: 'ข้าว', romanized: '(khao)', icon: '🍚' },
-          { value: 'noodles', thai: 'ก๋วยเตี๋ยว', romanized: '(kuay tiao)', icon: '🍜' },
-          { value: 'water', thai: 'น้ำ', romanized: '(nam)', icon: '💧' },
-          { value: 'ice', thai: 'น้ำแข็ง', romanized: '(nam kheng)', icon: '🧊' }
+          { value: 'rice', thai: 'ข้าว', romanized: '(khâo)', icon: '🍚', note: 'Falling tone' },
+          { value: 'noodles', thai: 'ก๋วยเตี๋ยว', romanized: '(gǎo dtīei)', icon: '🍜', note: 'Rising + rising tones' },
+          { value: 'water', thai: 'น้ำ', romanized: '(nám)', icon: '💧', note: 'High tone' },
+          { value: 'ice', thai: 'น้ำแข็ง', romanized: '(nám khǎo)', icon: '🧊', note: 'High + low tones' }
         ]
       },
       {
@@ -1071,10 +1078,10 @@
         audio: 'mai pet',
         correct: 'not spicy',
         options: [
-          { value: 'very spicy', thai: 'เผ็ดมาก', romanized: '(pet mak)', icon: '🔥' },
-          { value: 'not spicy', thai: 'ไม่เผ็ด', romanized: '(mai pet)', icon: '🌶️❌' },
-          { value: 'a little', thai: 'นิดหน่อย', romanized: '(nid noi)', icon: '👆' },
-          { value: 'delicious', thai: 'อร่อย', romanized: '(aroi)', icon: '😋' }
+          { value: 'very spicy', thai: 'เผ็ดมาก', romanized: '(pèt mâak)', icon: '🔥', note: 'High + falling tones' },
+          { value: 'not spicy', thai: 'ไม่เผ็ด', romanized: '(mâi pèt)', icon: '🌶️❌', note: 'High + high tones' },
+          { value: 'a little', thai: 'นิดหน่อย', romanized: '(nít nòi)', icon: '👆', note: 'High + falling tones' },
+          { value: 'delicious', thai: 'อร่อย', romanized: '(à-ròi)', icon: '😋', note: 'Low tone' }
         ]
       },
       {
@@ -1082,14 +1089,14 @@
         audio: 'arai krap',
         correct: 'order',
         options: [
-          { value: 'hello', thai: 'สวัสดีครับ', romanized: '(sawasdee krab)', icon: '👋' },
-          { value: 'thank you', thai: 'ขอบคุณครับ', romanized: '(kop kun krab)', icon: '🙏' },
-          { value: 'order', thai: 'อะไรครับ', romanized: '(arai krab)', icon: '🍽️' },
-          { value: 'check', thai: 'เช็คบิลครับ', romanized: '(check bin krab)', icon: '🧹' }
+          { value: 'hello', thai: 'สวัสดีครับ', romanized: '(sà-wàt-dii kráp)', icon: '👋', note: 'Male: kráp' },
+          { value: 'thank you', thai: 'ขอบคุณครับ', romanized: '(khòp-khun kráp)', icon: '🙏', note: 'Male: kráp' },
+          { value: 'order', thai: 'อะไรครับ', romanized: '(à-rai kráp)', icon: '🍽️', note: 'Male: kráp' },
+          { value: 'check', thai: 'เช็คบิลครับ', romanized: '(chék-bin kráp)', icon: '🧹', note: 'Male: kráp' }
         ]
       },
-      // Note: ครับ (krab) is male polite particle, ค่ะ (ka) is female
-      // Thai learners should use the appropriate form for their gender
+      // Note: ครับ (kráp) is male polite particle, ค่ะ (khâ) is female
+      // Tone guide: á=high, à=low, â=falling, ǎ=rising, a=mid
     ];
 
     let currentExercise = 0;
@@ -1122,6 +1129,7 @@
           <div class="option-text">
             <div class="thai">${opt.thai}</div>
             <div class="romanized">${opt.romanized}</div>
+            ${opt.note ? `<div class="tone-note">${opt.note}</div>` : ''}
           </div>
         </div>
       `).join('');
