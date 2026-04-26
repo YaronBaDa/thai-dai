@@ -48,15 +48,115 @@
     .wizard-container {
       max-width: 700px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1rem;
       min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile */
       display: flex;
       flex-direction: column;
+    }
+
+    /* Mobile responsiveness - Fit everything in viewport */
+    @media (max-height: 800px) {
+      .wizard-container {
+        padding: 0.5rem 1rem;
+      }
+      
+      .progress-container {
+        padding: 0.75rem 0;
+      }
+      
+      .step-header {
+        margin-bottom: 1rem;
+      }
+      
+      .step-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .step-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .step-header p {
+        font-size: 0.95rem;
+      }
+      
+      .options-grid {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .option-card {
+        padding: 1rem;
+      }
+      
+      .option-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .option-title {
+        font-size: 0.9rem;
+      }
+      
+      .option-desc {
+        font-size: 0.8rem;
+      }
+      
+      .tags-container {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .tag {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.85rem;
+      }
+      
+      .range-container {
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .text-input-container {
+        margin-bottom: 1rem;
+      }
+      
+      .wizard-nav {
+        padding-top: 0.75rem;
+      }
+      
+      .btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Very small screens */
+    @media (max-height: 600px) {
+      .step-icon {
+        font-size: 2rem;
+      }
+      
+      .step-header h1 {
+        font-size: 1.25rem;
+      }
+      
+      .option-card {
+        padding: 0.75rem;
+      }
+      
+      .option-icon {
+        font-size: 1.5rem;
+      }
     }
 
     /* Progress Bar */
     .progress-container {
       padding: 1.5rem 0;
+      flex-shrink: 0;
     }
 
     .progress-bar {
@@ -90,12 +190,16 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 2rem 0;
+      justify-content: flex-start;
+      padding: 0.5rem 0;
+      overflow-y: auto;
+      min-height: 0;
     }
 
     .wizard-step {
       animation: fadeIn 0.4s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     @keyframes fadeIn {

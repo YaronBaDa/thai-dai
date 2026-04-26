@@ -1312,22 +1312,127 @@
 
     // Default exercises for current lesson (Unit 3, Lesson 8)
     let currentLessonId = 8;
-    let exercises = lessonData[currentLessonId] || lessonData[8];
+    let exercises = [];
     let currentExercise = 0;
     let selectedAnswer = null;
     let correctAnswers = 0;
+    let lessonCompleted = false;
+
+    // Shuffle array (Fisher-Yates algorithm)
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    // Save progress to localStorage
+    function saveProgress() {
+      const progress = {
+        currentLessonId: currentLessonId,
+        currentExercise: currentExercise,
+        correctAnswers: correctAnswers,
+        completedLessons: JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]'),
+        lastVisit: new Date().toISOString()
+      };
+      localStorage.setItem('thaiDaiProgress', JSON.stringify(progress));
+    }
+
+    // Load progress from localStorage
+    function loadProgress() {
+      const saved = localStorage.getItem('thaiDaiProgress');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      return null;
+    }
+
+    // Mark lesson as completed
+    function markLessonCompleted(lessonId) {
+      const completed = JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]');
+      if (!completed.includes(lessonId)) {
+        completed.push(lessonId);
+        localStorage.setItem('thaiDaiCompletedLessons', JSON.stringify(completed));
+      }
+      // Clear in-progress lesson data
+      localStorage.removeItem('thaiDaiProgress');
+      updateLessonUI();
+    }
+
+    // Update lesson UI (unlock lessons, show progress)
+    function updateLessonUI() {
+      const completed = JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]');
+      
+      // Update lesson circles to show completed/locked status
+      document.querySelectorAll('.lesson-node').forEach((node, index) => {
+        const lessonId = index + 1; // Assuming lessons start at 1
+        const circle = node.querySelector('.lesson-circle');
+        
+        if (completed.includes(lessonId)) {
+          // Completed lesson
+          circle.classList.remove('locked', 'current');
+          circle.classList.add('completed');
+          circle.innerHTML = '✓';
+        } else if (completed.includes(lessonId - 1) || lessonId === 1) {
+          // Current/unlocked lesson
+          circle.classList.remove('locked');
+          circle.classList.add('current');
+        }
+      });
+
+      // Update connectors
+      document.querySelectorAll('.lesson-connector').forEach((connector, index) => {
+        if (completed.includes(index + 1)) {
+          connector.classList.remove('locked');
+        }
+      });
+    }
 
     function startLesson(id) {
       currentLessonId = id;
-      exercises = lessonData[id] || lessonData[8];
+      lessonCompleted = false;
+      
+      // Get lesson data and shuffle questions
+      const lessonQuestions = lessonData[id] || lessonData[8];
+      exercises = shuffleArray(lessonQuestions);
+      
+      // Check if there's saved progress for this lesson
+      const saved = loadProgress();
+      if (saved && saved.currentLessonId === id && !saved.completedLessons.includes(id)) {
+        // Restore progress but still shuffle remaining questions
+        currentExercise = saved.currentExercise || 0;
+        correctAnswers = saved.correctAnswers || 0;
+      } else {
+        currentExercise = 0;
+        correctAnswers = 0;
+      }
+      
       document.getElementById('lessonModal').classList.add('active');
-      currentExercise = 0;
-      correctAnswers = 0;
       loadExercise();
+      saveProgress();
     }
 
     function startCurrentLesson() {
-      startLesson(8);
+      // Start from the first unlocked lesson
+      const completed = JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]');
+      let nextLesson = 1;
+      
+      // Find the next incomplete lesson
+      for (let i = 1; i <= 13; i++) {
+        if (!completed.includes(i)) {
+          nextLesson = i;
+          break;
+        }
+      }
+      
+      // If all lessons completed, start from lesson 1 for review
+      if (completed.length >= 13) {
+        nextLesson = 1;
+      }
+      
+      startLesson(nextLesson);
     }
 
     function closeLesson() {
@@ -1390,12 +1495,16 @@
 
     function nextExercise() {
       currentExercise++;
+      saveProgress(); // Save progress after each question
+      
       if (currentExercise < exercises.length) {
         loadExercise();
         document.getElementById('checkBtn').textContent = 'Check';
         document.getElementById('checkBtn').onclick = checkAnswer;
       } else {
         // Lesson complete
+        lessonCompleted = true;
+        markLessonCompleted(currentLessonId);
         closeLesson();
         alert(`🎉 Lesson Complete! You got ${correctAnswers}/${exercises.length} correct! +50 XP earned!`);
       }
@@ -1497,11 +1606,16 @@
       setTimeout(() => celebration.remove(), 1500);
     }
 
-    // Check if user has onboarded
-    if (!localStorage.getItem('thaiDaiOnboarded')) {
-      // Redirect to onboarding if not
-      // window.location.href = 'onboarding.html';
-    }
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateLessonUI();
+      
+      // Check if user has onboarded
+      if (!localStorage.getItem('thaiDaiOnboarded')) {
+        // Redirect to onboarding if not
+        window.location.href = 'onboarding.html';
+      }
+    });
   </script>
 </body>
 </html>
