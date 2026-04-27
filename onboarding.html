@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#58CC02">
   <title>Welcome to Thai Dai - Let's Get Started</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -43,6 +46,11 @@
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    html {
+      overflow-x: hidden;
     }
 
     .wizard-container {
@@ -779,7 +787,7 @@
           <div class="option-card" onclick="selectOption(this, 'gender', 'female')">
             <div class="option-icon">👩</div>
             <div class="option-title">Female</div>
-            <div class="option-desc">I'll use ค่ะ (khâ) - "ka"</div>
+            <div class="option-desc">I'll use ค่ะ (khà) - "ka"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'other')">
             <div class="option-icon">✨</div>
