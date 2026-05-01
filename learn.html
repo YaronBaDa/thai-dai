@@ -2126,7 +2126,7 @@
       "5": [
             {
                   "question": "How do you ask \"How much?\" in Thai?",
-                  "audio": "gee baht",
+                  "audio": "thao rai",
                   "correct": "how much",
                   "options": [
                         {
@@ -2515,7 +2515,7 @@
             },
             {
                   "question": "How do you politely say \"I would like\" (male)?",
-                  "audio": "kor arai krab",
+                  "audio": "kor krab",
                   "correct": "would like male",
                   "options": [
                         {
@@ -4017,33 +4017,121 @@
       if (!exercise) return;
       const word = exercise.audio;
       
-      const thaiTextMap = {
-        'sawasdee': 'สวัสดี', 'khun': 'คุณ', 'khob khun': 'ขอบคุณ',
-        'khob khun mak ka': 'ขอบคุณมากค่ะ', 'yin dee': 'ยินดี',
-        'phom cheu': 'ผมชื่อ', 'khun cheu arai': 'คุณชื่ออะไร',
-        'dee jai thi dai roojak': 'ดีใจที่ได้รู้จัก', 'sabai dee mai': 'สบายดีไหม',
-        'sawasdee krab': 'สวัสดีครับ', 'sawasdee ka': 'สวัสดีค่ะ',
-        'laa gawn': 'ลาก่อน', 'khaw thot': 'ขอโทษ', 'mai pen rai': 'ไม่เป็นไร',
-        'chan cheu': 'ฉันชื่อ', 'neung': 'หนึ่ง', 'see': 'สี่', 'haa': 'ห้า',
-        'sip': 'สิบ', 'yee sip': 'ยี่สิบ', 'gee baht': 'กี่บาท', 'phaeng': 'แพง',
-        'lot dai mai': 'ลดได้ไหม', 'thuk': 'ถูก', 'chan ao arai nee ka': 'ฉันเอาอันนี้ค่ะ',
-        'pet': 'เผ็ด', 'wan': 'หวาน', 'priaw': 'เปรี้ยว', 'jeut': 'จืด',
-        'mai pet': 'ไม่เผ็ด', 'ao': 'เอา', 'kor arai krab': 'ขอครับ',
-        'mai ao': 'ไม่เอา', 'chob': 'ชอบ', 'aroi': 'อร่อย', 'nam': 'น้ำ',
-        'khao': 'ข้าว', 'kuay tiao': 'ก๋วยเตี๋ยว', 'pad thai': 'ผัดไทย',
-        'chan gin jay ka': 'ฉันกินเจค่ะ', 'pet mak': 'เผ็ดมาก', 'nid noi': 'นิดหน่อย',
-        'check bin krab': 'เช็คบิลครับ', 'chan im laew ka': 'ฉันอิ่มแล้วค่ะ',
-        'meter': 'เปิดมิเตอร์', 'pai thi': 'ไปที่', 'glai mai': 'ไกลไหม',
-        'reo noi krab': 'เร็วหน่อยครับ', 'liaw sai': 'เลี้ยวซ้าย',
-        'jawt dtrong nee': 'จอดตรงนี้', 'liaw khwa': 'เลี้ยวขวา',
-        'dtrong pai': 'ตรงไป', 'klap rot': 'กลับรถ', 'phaeng pai': 'แพงไป',
-        'thuk gwa nee dai mai': 'ถูกกว่านี้ได้ไหม', 'ra kha tao rai': 'ราคาเท่าไหร่',
-        'dai krab': 'ได้ครับ', 'chan ha khun khwa ka': 'ฉันหาคันอื่นค่ะ',
-        'na khrap': 'นะครับ', 'check bin': 'เช็คบิล', 'mai dtong thon': 'ไม่ต้องทอน',
-        'khob khun ka laew joo gan': 'ขอบคุณค่ะ แล้วเจอกัน', 'chok dee': 'โชคดี'
+      const thaiDict = {
+        // ─── UNIT 1: GREETINGS ───
+        'sawasdee': { thai: 'สวัสดี', tts: 'สวัสดี', ipa: '/sà.wàt.diː/', tones: 'Low + High + Mid', type: 'word', lit: 'Hello / Goodbye', usage: 'Universal greeting. Add kráp/khà for politeness.' },
+        'sawasdee krab': { thai: 'สวัสดีครับ', tts: 'สวัสดีครับ', ipa: '/sà.wàt.diː kráp/', tones: 'L+H+M + M', type: 'phrase', lit: 'Hello (male)', usage: 'Male polite particle kráp (mid tone).' },
+        'sawasdee ka': { thai: 'สวัสดีค่ะ', tts: 'สวัสดีค่ะ', ipa: '/sà.wàt.diː kʰà/', tones: 'L+H+M + L', type: 'phrase', lit: 'Hello (female)', usage: 'Female polite particle khà (low tone).' },
+        'khun': { thai: 'คุณ', tts: 'คุณ', ipa: '/kʰun/', tones: 'Mid', type: 'word', lit: 'You (polite)', usage: 'Polite pronoun for anyone.' },
+        'phom cheu': { thai: 'ผมชื่อ...', tts: 'ผมชื่อ', ipa: '/pʰǒm tɕʰɯː/', tones: 'Rising + Mid', type: 'pattern', lit: 'My name is... (male)', usage: 'Replace ... with your name. Male speaker.' },
+        'chan cheu': { thai: 'ฉันชื่อ...', tts: 'ฉันชื่อ', ipa: '/tɕǎn tɕʰɯː/', tones: 'Rising + Mid', type: 'pattern', lit: 'My name is... (female)', usage: 'Replace ... with your name. Female speaker.' },
+        'khun cheu arai': { thai: 'คุณชื่ออะไร', tts: 'คุณชื่ออะไร', ipa: '/kʰun tɕʰɯː ʔà.ràj/', tones: 'M + M + M + M', type: 'phrase', lit: 'What is your name?', usage: 'Polite question. Reply with phǒm/tɕǎn chɯ̂u + name.' },
+        'khob khun': { thai: 'ขอบคุณ', tts: 'ขอบคุณ', ipa: '/kʰɔ̀p.kʰun/', tones: 'Low + Mid', type: 'word', lit: 'Thank you', usage: 'Always add kráp/khà in formal situations.' },
+        'khob khun mak ka': { thai: 'ขอบคุณมากค่ะ', tts: 'ขอบคุณมากค่ะ', ipa: '/kʰɔ̀p.kʰun mâak kʰà/', tones: 'L + M + Fall + L', type: 'phrase', lit: 'Thank you very much (female)', usage: 'Female. mâak = very (falling tone).' },
+        'yin dee': { thai: 'ยินดี', tts: 'ยินดี', ipa: '/jin.diː/', tones: 'Mid + Mid', type: 'word', lit: 'You\'re welcome / Glad to', usage: 'Reply to khòp-khun. Also means "gladly".' },
+        'dee jai thi dai roojak': { thai: 'ดีใจที่ได้รู้จัก', tts: 'ดีใจที่ได้รู้จัก', ipa: '/diː.tɕaj tʰîː dâj rúː.tɕàk/', tones: 'M + M + L + F + H + L', type: 'phrase', lit: 'Nice to meet you', usage: 'Follows introduction.' },
+        'sabai dee mai': { thai: 'สบายดีไหม', tts: 'สบายดีไหม', ipa: '/sà.baːj diː mǎj/', tones: 'L + M + M + F', type: 'phrase', lit: 'How are you?', usage: 'Casual greeting. Reply: sà-baːj diː.' },
+        'laa gawn': { thai: 'ลาก่อน', tts: 'ลาก่อน', ipa: '/laː kɔ̀ːn/', tones: 'Mid + Falling', type: 'word', lit: 'Goodbye', usage: 'Formal goodbye.' },
+        'khaw thot': { thai: 'ขอโทษ', tts: 'ขอโทษ', ipa: '/kʰɔ̌ː tʰôːt/', tones: 'Rising + Falling', type: 'word', lit: 'Sorry / Excuse me', usage: 'When bumping into someone or apologizing.' },
+        'mai pen rai': { thai: 'ไม่เป็นไร', tts: 'ไม่เป็นไร', ipa: '/mâj pen raj/', tones: 'F + M + M + M', type: 'phrase', lit: 'It\'s okay / Never mind', usage: 'Reply to khǎaw-thôːt.' },
+
+        // ─── UNIT 2: NUMBERS & SHOPPING ───
+        'neung': { thai: 'หนึ่ง', tts: 'หนึ่ง', ipa: '/nɯ̀ŋ/', tones: 'Low', type: 'word', lit: 'One', usage: 'Low tone. Common alternative: nùeng.' },
+        'see': { thai: 'สี่', tts: 'สี่', ipa: '/sìː/', tones: 'Low', type: 'word', lit: 'Four', usage: 'Low tone. Avoid confusion with sǐi (color).' },
+        'haa': { thai: 'ห้า', tts: 'ห้า', ipa: '/hâː/', tones: 'Falling', type: 'word', lit: 'Five', usage: 'Falling tone.' },
+        'sip': { thai: 'สิบ', tts: 'สิบ', ipa: '/sìp/', tones: 'Low', type: 'word', lit: 'Ten', usage: 'Low tone.' },
+        'yee sip': { thai: 'ยี่สิบ', tts: 'ยี่สิบ', ipa: '/jîː sìp/', tones: 'Falling + Low', type: 'word', lit: 'Twenty', usage: 'yîi is special form for 20.' },
+        'thao rai': { thai: 'เท่าไหร่', tts: 'เท่าไหร่', ipa: '/tʰâw ràj/', tones: 'Falling + Mid', type: 'phrase', lit: 'How much?', usage: 'Universal price question.' },
+        'gee baht': { thai: 'กี่บาท', tts: 'กี่บาท', ipa: '/kìː bàːt/', tones: 'Low + Low', type: 'phrase', lit: 'How many baht?', usage: 'Direct price question (casual).' },
+        'phaeng': { thai: 'แพง', tts: 'แพง', ipa: '/pʰɛːŋ/', tones: 'Mid', type: 'word', lit: 'Expensive', usage: 'Mid tone.' },
+        'thuk': { thai: 'ถูก', tts: 'ถูก', ipa: '/tʰùːk/', tones: 'Low', type: 'word', lit: 'Cheap / Correct', usage: 'Low tone. Context determines meaning.' },
+        'lot dai mai': { thai: 'ลดได้ไหม', tts: 'ลดได้ไหม', ipa: '/lót dâj mǎj/', tones: 'F + F + F', type: 'phrase', lit: 'Can you discount?', usage: 'Shopping / taxi negotiation.' },
+        'thuk gwa nee dai mai': { thai: 'ถูกกว่านี้ได้ไหม', tts: 'ถูกกว่านี้ได้ไหม', ipa: '/tʰùːk kwàː níː dâj mǎj/', tones: 'L + F + M + F + F', type: 'phrase', lit: 'Can it be cheaper than this?', usage: 'Bargaining phrase.' },
+        'ra kha tao rai': { thai: 'ราคาเท่าไหร่', tts: 'ราคาเท่าไหร่', ipa: '/raː.kʰaː tʰâw ràj/', tones: 'M+M + F+M', type: 'phrase', lit: 'What is the price?', usage: 'More formal than thâw-ràj alone.' },
+        'chan ao arai nee ka': { thai: 'ฉันเอาอันนี้ค่ะ', tts: 'ฉันเอาอันนี้ค่ะ', ipa: '/tɕǎn ʔaw ʔan.níː kʰà/', tones: 'R+M+M+M+L', type: 'phrase', lit: 'I\'ll take this one (female)', usage: 'Shopping. Male: phǒm ʔaw an-níi kráp.' },
+
+        // ─── UNIT 3: FOOD & DINING ───
+        'pet': { thai: 'เผ็ด', tts: 'เผ็ด', ipa: '/pʰèt/', tones: 'Low', type: 'word', lit: 'Spicy', usage: 'Low tone. Essential for ordering food.' },
+        'wan': { thai: 'หวาน', tts: 'หวาน', ipa: '/wǎːn/', tones: 'Rising', type: 'word', lit: 'Sweet', usage: 'Rising tone.' },
+        'priaw': { thai: 'เปรี้ยว', tts: 'เปรี้ยว', ipa: '/príaːw/', tones: 'Falling', type: 'word', lit: 'Sour', usage: 'Falling tone.' },
+        'jeut': { thai: 'จืด', tts: 'จืด', ipa: '/tɕɯ̀ːt/', tones: 'Low', type: 'word', lit: 'Bland / Not salty', usage: 'Low tone.' },
+        'mai pet': { thai: 'ไม่เผ็ด', tts: 'ไม่เผ็ด', ipa: '/mâj pʰèt/', tones: 'F + L', type: 'phrase', lit: 'Not spicy', usage: 'mâi + adjective = negation.' },
+        'pet mak': { thai: 'เผ็ดมาก', tts: 'เผ็ดมาก', ipa: '/pʰèt mâːk/', tones: 'L + F', type: 'phrase', lit: 'Very spicy', usage: 'mâak = very (falling tone).' },
+        'nid noi': { thai: 'นิดหน่อย', tts: 'นิดหน่อย', ipa: '/nít nɔ̀ːj/', tones: 'High + Low', type: 'phrase', lit: 'A little bit', usage: 'nít nòi after adjective.' },
+        'ao': { thai: 'เอา', tts: 'เอา', ipa: '/ʔaw/', tones: 'Mid', type: 'word', lit: 'Want / Take', usage: 'Casual "I want". Also used in shopping.' },
+        'mai ao': { thai: 'ไม่เอา', tts: 'ไม่เอา', ipa: '/mâj ʔaw/', tones: 'F + M', type: 'phrase', lit: 'Don\'t want', usage: 'Declining offers.' },
+        'chob': { thai: 'ชอบ', tts: 'ชอบ', ipa: '/tɕʰɔ̀ːp/', tones: 'Low', type: 'word', lit: 'Like', usage: 'Low tone.' },
+        'aroi': { thai: 'อร่อย', tts: 'อร่อย', ipa: '/ʔà.rɔ̀ːj/', tones: 'L + L', type: 'word', lit: 'Delicious', usage: 'Both syllables low tone.' },
+        'nam': { thai: 'น้ำ', tts: 'น้ำ', ipa: '/náːm/', tones: 'High', type: 'word', lit: 'Water', usage: 'High tone. náam = water; nâam = liquid prefix.' },
+        'khao': { thai: 'ข้าว', tts: 'ข้าว', ipa: '/kʰâːw/', tones: 'Falling', type: 'word', lit: 'Rice / Meal', usage: 'Falling tone. Also means food/meal generally.' },
+        'kuay tiao': { thai: 'ก๋วยเตี๋ยว', tts: 'ก๋วยเตี๋ยว', ipa: '/gǔaːj tǐaːw/', tones: 'R + F', type: 'word', lit: 'Noodles', usage: 'Rising + falling tones.' },
+        'pad thai': { thai: 'ผัดไทย', tts: 'ผัดไทย', ipa: '/pʰàt tʰaj/', tones: 'L + M', type: 'word', lit: 'Pad Thai', usage: 'Thailand\'s famous stir-fried noodle dish.' },
+        'chan gin jay ka': { thai: 'ฉันกินเจค่ะ', tts: 'ฉันกินเจค่ะ', ipa: '/tɕǎn kin tɕeː kʰà/', tones: 'R+M+M+L', type: 'phrase', lit: 'I\'m vegetarian (female)', usage: 'During vegetarian festival or when ordering.' },
+        'check bin krab': { thai: 'เช็คบิลครับ', tts: 'เช็คบิลครับ', ipa: '/tɕék bin kráp/', tones: 'L+M + M', type: 'phrase', lit: 'Check please (male)', usage: 'At restaurants. Female: chék-bin khà.' },
+        'check bin': { thai: 'เช็คบิล', tts: 'เช็คบิล', ipa: '/tɕék bin/', tones: 'Low + Mid', type: 'word', lit: 'Bill / Check', usage: 'Loanword from English.' },
+        'chan im laew ka': { thai: 'ฉันอิ่มแล้วค่ะ', tts: 'ฉันอิ่มแล้วค่ะ', ipa: '/tɕǎn ʔìm lɛ́ːw kʰà/', tones: 'R+L+H+L', type: 'phrase', lit: 'I\'m full (female)', usage: 'After eating. Male: phǒm ʔìm lɛ́ːw kráp.' },
+        'kor krab': { thai: 'ขอ...ครับ', tts: 'ขอครับ', ipa: '/kʰɔ̌ː kráp/', tones: 'R + M', type: 'pattern', lit: 'I would like [X] (male)', usage: 'Polite request. Replace ... with item. Female: khǎaw... khà.' },
+
+        // ─── UNIT 4: TAXI & TRANSPORT ───
+        'meter': { thai: 'เปิดมิเตอร์', tts: 'เปิดมิเตอร์', ipa: '/pə̀ːt mi.təː/', tones: 'L + M + M', type: 'phrase', lit: 'Turn on the meter', usage: 'Essential when entering a taxi.' },
+        'pai thi': { thai: 'ไปที่...', tts: 'ไปที่', ipa: '/ paj tʰîː/', tones: 'M + L', type: 'pattern', lit: 'Go to [place]', usage: 'Taxi direction. Replace ... with destination.' },
+        'glai mai': { thai: 'ไกลไหม', tts: 'ไกลไหม', ipa: '/glaj mǎj/', tones: 'M + F', type: 'phrase', lit: 'Is it far?', usage: 'Asking driver about distance.' },
+        'reo noi krab': { thai: 'เร็วหน่อยครับ', tts: 'เร็วหน่อยครับ', ipa: '/rew nɔ̀ːj kráp/', tones: 'M + L + M', type: 'phrase', lit: 'A bit faster please (male)', usage: 'Hurry up politely. reo = fast (mid tone).' },
+        'liaw sai': { thai: 'เลี้ยวซ้าย', tts: 'เลี้ยวซ้าย', ipa: '/líaːw sáːj/', tones: 'F + H', type: 'phrase', lit: 'Turn left', usage: 'Falling + high tones.' },
+        'liaw khwa': { thai: 'เลี้ยวขวา', tts: 'เลี้ยวขวา', ipa: '/líaːw kʰwǎː/', tones: 'F + R', type: 'phrase', lit: 'Turn right', usage: 'Falling + rising tones.' },
+        'dtrong pai': { thai: 'ตรงไป', tts: 'ตรงไป', ipa: '/troŋ paj/', tones: 'M + M', type: 'phrase', lit: 'Go straight', usage: 'Both mid tones.' },
+        'jawt dtrong nee': { thai: 'จอดตรงนี้', tts: 'จอดตรงนี้', ipa: '/tɕɔ̀ːt troŋ níː/', tones: 'L + M + M', type: 'phrase', lit: 'Stop here', usage: 'Getting off taxi or bus.' },
+        'klap rot': { thai: 'กลับรถ', tts: 'กลับรถ', ipa: '/klàp rót/', tones: 'L + H', type: 'phrase', lit: 'U-turn', usage: 'Literally "return car".' },
+        'phaeng pai': { thai: 'แพงไป', tts: 'แพงไป', ipa: '/pʰɛːŋ paj/', tones: 'M + M', type: 'phrase', lit: 'Too expensive', usage: 'pai = "go" used as "too much".' },
+        'dai krab': { thai: 'ได้ครับ', tts: 'ได้ครับ', ipa: '/dâj kráp/', tones: 'F + M', type: 'phrase', lit: 'Yes / Okay (male)', usage: 'Agreement. Female: dâj khà.' },
+        'chan ha khun khwa ka': { thai: 'ฉันหาคันอื่นค่ะ', tts: 'ฉันหาคันอื่นค่ะ', ipa: '/tɕǎn hǎː kʰan ʔɯ̀ːn kʰà/', tones: 'R+R+M+L+L', type: 'phrase', lit: 'I\'ll find another one (female)', usage: 'Declining taxi. Male: phǒm hǎa... kráp.' },
+        'na khrap': { thai: 'นะครับ', tts: 'นะครับ', ipa: '/ná kráp/', tones: 'H + M', type: 'phrase', lit: 'Softener (male)', usage: 'Makes requests gentler. Female: ná khà.' },
+        'mai dtong thon': { thai: 'ไม่ต้องทอน', tts: 'ไม่ต้องทอน', ipa: '/mâj tʰɔ̂ːn tʰɔːn/', tones: 'F + F + M', type: 'phrase', lit: 'Keep the change', usage: 'No need for change.' },
+        'khob khun ka laew joo gan': { thai: 'ขอบคุณค่ะ แล้วเจอกัน', tts: 'ขอบคุณค่ะ แล้วเจอกัน', ipa: '/kʰɔ̀p.kʰun kʰà lɛ́ːw tɕəː kan/', tones: 'L+M + L + H + M + M', type: 'phrase', lit: 'Thanks, see you (female)', usage: 'Leaving taxi. Male: khòp-khun kráp...' },
+        'chok dee': { thai: 'โชคดี', tts: 'โชคดี', ipa: '/tɕʰôːk diː/', tones: 'F + M', type: 'word', lit: 'Good luck', usage: 'Farewell wish.' },
+
+        // ─── EXPANDED VOCABULARY ───
+        'bpai': { thai: 'ไป', tts: 'ไป', ipa: '/paj/', tones: 'Mid', type: 'word', lit: 'Go', usage: 'Basic directional verb.' },
+        'maa': { thai: 'มา', tts: 'มา', ipa: '/maː/', tones: 'Mid', type: 'word', lit: 'Come', usage: 'Basic directional verb.' },
+        'nai': { thai: 'ไหน', tts: 'ไหน', ipa: '/nǎj/', tones: 'Rising', type: 'word', lit: 'Where', usage: 'Question word. Rising tone.' },
+        'arai': { thai: 'อะไร', tts: 'อะไร', ipa: '/ʔà.raj/', tones: 'L + M', type: 'word', lit: 'What', usage: 'Question word.' },
+        'meuan gan': { thai: 'เหมือนกัน', tts: 'เหมือนกัน', ipa: '/mɯ̌aŋ kan/', tones: 'R + M', type: 'phrase', lit: 'Same / Me too', usage: 'Reply to sà-baːj diː mǎj.' },
+        'gin khao': { thai: 'กินข้าว', tts: 'กินข้าว', ipa: '/kin kʰâːw/', tones: 'M + F', type: 'phrase', lit: 'Eat rice / Have a meal', usage: 'General term for eating.' },
+        'hong nam': { thai: 'ห้องน้ำ', tts: 'ห้องน้ำ', ipa: '/hɔ̂ːŋ náːm/', tones: 'F + H', type: 'phrase', lit: 'Bathroom', usage: 'hɔ̂ŋ = room, náam = water.' },
+        'rot fai': { thai: 'รถไฟ', tts: 'รถไฟ', ipa: '/rót faj/', tones: 'H + M', type: 'phrase', lit: 'Train', usage: 'rót = vehicle, fai = fire.' },
+        'rot mee': { thai: 'รถเมล์', tts: 'รถเมล์', ipa: '/rót meː/', tones: 'H + M', type: 'phrase', lit: 'Bus', usage: 'Loanword from English "mail".' },
+        'sanam bin': { thai: 'สนามบิน', tts: 'สนามบิน', ipa: '/sà.nǎːm bin/', tones: 'L + R + M', type: 'phrase', lit: 'Airport', usage: 'sà-nǎam = field, bin = fly.' },
+        'ta naam': { thai: 'ท่าน้ำ', tts: 'ท่าน้ำ', ipa: '/tʰâː náːm/', tones: 'F + H', type: 'phrase', lit: 'Pier / Ferry dock', usage: 'For river transport in Bangkok.' },
+        'rot dtap': { thai: 'รถติด', tts: 'รถติด', ipa: '/rót tìt/', tones: 'H + L', type: 'phrase', lit: 'Traffic jam', usage: 'rót = car, tìt = stuck.' },
+        'pang': { thai: 'ปัง', tts: 'ปัง', ipa: '/paŋ/', tones: 'Mid', type: 'word', lit: 'Bread', usage: 'Short for khanǒm-pang.' },
+        'kaffe': { thai: 'กาแฟ', tts: 'กาแฟ', ipa: '/kaː fɛː/', tones: 'M + M', type: 'word', lit: 'Coffee', usage: 'Loanword from Portuguese.' },
+        'nam khaeng': { thai: 'น้ำแข็ง', tts: 'น้ำแข็ง', ipa: '/náːm kʰɛ̌ːŋ/', tones: 'H + R', type: 'phrase', lit: 'Ice', usage: 'náam = water, khɛ̌ŋ = hard/frozen.' },
+        'nam pla': { thai: 'น้ำปลา', tts: 'น้ำปลา', ipa: '/náːm plaː/', tones: 'H + M', type: 'phrase', lit: 'Fish sauce', usage: 'Essential Thai condiment.' },
+        'nam man': { thai: 'น้ำมัน', tts: 'น้ำมัน', ipa: '/náːm man/', tones: 'H + M', type: 'phrase', lit: 'Cooking oil / Gasoline', usage: 'Context determines meaning.' },
+        'nam sot': { thai: 'น้ำสด', tts: 'น้ำสด', ipa: '/náːm sòt/', tones: 'H + L', type: 'phrase', lit: 'Drinking water', usage: 'sòt = fresh.' },
+        'nam phon la mai': { thai: 'น้ำผลไม้', tts: 'น้ำผลไม้', ipa: '/náːm pʰǒn.laː.máj/', tones: 'H + H + M + M', type: 'phrase', lit: 'Fruit juice', usage: 'pʰǒn-lá-máj = fruit.' },
+        'cha yen': { thai: 'ชาเย็น', tts: 'ชาเย็น', ipa: '/tɕʰaː jen/', tones: 'M + M', type: 'phrase', lit: 'Iced tea', usage: 'Cha = tea, yen = cold.' },
+        'cha ron': { thai: 'ชาร้อน', tts: 'ชาร้อน', ipa: '/tɕʰaː rɔ́ːn/', tones: 'M + H', type: 'phrase', lit: 'Hot tea', usage: 'rɔ́ːn = hot.' },
+        'bia': { thai: 'เบียร์', tts: 'เบียร์', ipa: '/bíaː/', tones: 'Falling', type: 'word', lit: 'Beer', usage: 'Loanword.' },
+        'lao': { thai: 'เหล้า', tts: 'เหล้า', ipa: '/lâw/', tones: 'Falling', type: 'word', lit: 'Liquor / Spirits', usage: 'Generic term for alcohol.' },
+        'rot tam ruat': { thai: 'รถตำรวจ', tts: 'รถตำรวจ', ipa: '/rót tam.rùːaːt/', tones: 'H + M + L', type: 'phrase', lit: 'Police car', usage: 'tam-rùat = police.' },
+        'hong yaak': { thai: 'โรงพยาบาล', tts: 'โรงพยาบาล', ipa: '/roːŋ pʰá.jaː.baːn/', tones: 'M + H + M + M', type: 'word', lit: 'Hospital', usage: 'Often shortened to rong-pha-ya-baan.' },
+        'ran ahan': { thai: 'ร้านอาหาร', tts: 'ร้านอาหาร', ipa: '/râːn ʔaː.hǎːn/', tones: 'H + M + R', type: 'phrase', lit: 'Restaurant', usage: 'râan = shop, ʔa-hǎan = food.' },
+        'dtalaat': { thai: 'ตลาด', tts: 'ตลาด', ipa: '/tà.làːt/', tones: 'L + L', type: 'word', lit: 'Market', usage: 'Both syllables low tone.' },
+        'tlot': { thai: 'ตลอด', tts: 'ตลอด', ipa: '/tà.lɔ̀ːt/', tones: 'L + L', type: 'word', lit: 'All the way / Through', usage: 'tà-lɔ̀t thûŋ = all the way to.' },
+        'hong nam yuu thi nai': { thai: 'ห้องน้ำอยู่ที่ไหน', tts: 'ห้องน้ำอยู่ที่ไหน', ipa: '/hɔ̂ːŋ náːm jùː tʰîː nǎj/', tones: 'F+H + M + L + R', type: 'phrase', lit: 'Where is the bathroom?', usage: 'Essential survival phrase.' },
+        'kit thung': { thai: 'คิดถึง', tts: 'คิดถึง', ipa: '/kʰít tʰɯ̌ŋ/', tones: 'H + R', type: 'phrase', lit: 'Miss (someone)', usage: 'kʰít tʰɯ̌ŋ + name.' },
+        'rak': { thai: 'รัก', tts: 'รัก', ipa: '/rák/', tones: 'High', type: 'word', lit: 'Love', usage: 'High tone. Very strong word in Thai culture.' },
+        'jing jing': { thai: 'จริงๆ', tts: 'จริงๆ', ipa: '/tɕiŋ tɕiŋ/', tones: 'H + H', type: 'word', lit: 'Really / Truly', usage: 'Repeat for emphasis.' },
+        'mai chai': { thai: 'ไม่ใช่', tts: 'ไม่ใช่', ipa: '/mâj tɕʰâj/', tones: 'F + F', type: 'phrase', lit: 'No (it isn\'t)', usage: 'Correcting a false statement.' },
+        'chai': { thai: 'ใช่', tts: 'ใช่', ipa: '/tɕʰâj/', tones: 'Falling', type: 'word', lit: 'Yes (it is)', usage: 'Falling tone. Affirmative.' },
+        'dai': { thai: 'ได้', tts: 'ได้', ipa: '/dâj/', tones: 'Falling', type: 'word', lit: 'Can / Get / Okay', usage: 'Falling tone. Very versatile.' },
+        'mai dai': { thai: 'ไม่ได้', tts: 'ไม่ได้', ipa: '/mâj dâj/', tones: 'F + F', type: 'phrase', lit: 'Cannot / Not okay', usage: 'Negative of dâj.' }
+
       };
       
-      const thaiText = thaiTextMap[word] || word;
+      const entry = thaiDict[word];
+      const thaiText = entry ? entry.tts || entry.thai : word;
       
       if (!('speechSynthesis' in window)) {
         console.log('Speech synthesis not supported');
