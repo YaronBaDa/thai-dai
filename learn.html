@@ -1374,28 +1374,28 @@
         </div>
 
         <div class="answer-options" id="answerOptions">
-          <div class="answer-option" onclick="selectAnswer(this, 'spicy')">
+          <div class="answer-option" onclick="selectAnswer(this)">
             <div class="option-image">🌶️</div>
             <div class="option-text">
               <div class="thai">เผ็ด</div>
               <div class="romanized">(pet)</div>
             </div>
           </div>
-          <div class="answer-option" onclick="selectAnswer(this, 'sweet')">
+          <div class="answer-option" onclick="selectAnswer(this)">
             <div class="option-image">🍯</div>
             <div class="option-text">
               <div class="thai">หวาน</div>
               <div class="romanized">(wan)</div>
             </div>
           </div>
-          <div class="answer-option" onclick="selectAnswer(this, 'sour')">
+          <div class="answer-option" onclick="selectAnswer(this)">
             <div class="option-image">🥪</div>
             <div class="option-text">
               <div class="thai">เปรี้ยว</div>
               <div class="romanized">(priaw)</div>
             </div>
           </div>
-          <div class="answer-option" onclick="selectAnswer(this, 'salty')">
+          <div class="answer-option" onclick="selectAnswer(this)">
             <div class="option-image">🧂</div>
             <div class="option-text">
               <div class="thai">เค็ม</div>
@@ -3760,22 +3760,30 @@
 
     // Mark lesson as completed
     function markLessonCompleted(lessonId) {
+      const today = new Date().toDateString();
+      const lastVisit = localStorage.getItem('thaiDaiLastVisit');
+      let streak = parseInt(localStorage.getItem('thaiDaiStreak') || '0');
+      
+      // Update streak: if last visit was yesterday, increment; otherwise reset to 1
+      if (lastVisit) {
+        const lastDate = new Date(lastVisit);
+        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+        if (lastDate.toDateString() === yesterday.toDateString()) {
+          streak += 1;
+        } else if (lastDate.toDateString() !== today) {
+          streak = 1;
+        }
+        // If same day, don't change streak
+      } else {
+        streak = 1;
+      }
+      localStorage.setItem('thaiDaiStreak', String(streak));
+      localStorage.setItem('thaiDaiLastVisit', today);
+      
       // Add XP
       const currentXP = parseInt(localStorage.getItem('thaiDaiXP') || '0');
       localStorage.setItem('thaiDaiXP', String(currentXP + 50));
-      // Update streak
-      const lastVisit = localStorage.getItem('thaiDaiLastVisit');
-      const today = new Date().toDateString();
-      if (lastVisit !== today) {
-        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-        const streak = parseInt(localStorage.getItem('thaiDaiStreak') || '0');
-        if (lastVisit === yesterday.toDateString()) {
-          localStorage.setItem('thaiDaiStreak', String(streak + 1));
-        } else {
-          localStorage.setItem('thaiDaiStreak', '1');
-        }
-        localStorage.setItem('thaiDaiLastVisit', today);
-      }
+      
       const completed = JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]');
       if (!completed.includes(lessonId)) {
         completed.push(lessonId);
@@ -3792,18 +3800,23 @@
       
       // Update lesson circles to show completed/locked status
       document.querySelectorAll('.lesson-node').forEach((node, index) => {
-        const lessonId = index + 1; // Assuming lessons start at 1
+        const lessonId = index + 1;
         const circle = node.querySelector('.lesson-circle');
+        const label = node.querySelector('.lesson-label');
+        
+        if (!circle) return;
         
         if (completed.includes(lessonId)) {
-          // Completed lesson
           circle.classList.remove('locked', 'current');
           circle.classList.add('completed');
-          circle.innerHTML = '✓';
+          // Keep original emoji, checkmark is added via CSS ::after
         } else if (completed.includes(lessonId - 1) || lessonId === 1) {
-          // Current/unlocked lesson
-          circle.classList.remove('locked');
+          circle.classList.remove('locked', 'completed');
           circle.classList.add('current');
+        } else {
+          circle.classList.remove('current', 'completed');
+          circle.classList.add('locked');
+          if (label) label.style.opacity = '0.5';
         }
       });
 
@@ -3811,16 +3824,28 @@
       document.querySelectorAll('.lesson-connector').forEach((connector, index) => {
         if (completed.includes(index + 1)) {
           connector.classList.remove('locked');
+        } else {
+          connector.classList.add('locked');
         }
       });
     }
 
+    let lessonHearts = 5;
+    const MAX_HEARTS = 5;
+    
+    function updateHeartsDisplay() {
+      const el = document.querySelector('.lesson-hearts');
+      if (el) el.innerHTML = '💜 ' + lessonHearts;
+    }
+    
     function startLesson(id) {
       currentLessonId = id;
       lessonCompleted = false;
+      lessonHearts = MAX_HEARTS;
+      updateHeartsDisplay();
       
       // Close mobile sidebar if open
-      if (window.innerWidth <= 900) {
+      if (window.innerWidth <= 768) {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.getElementById('sidebarOverlay');
         const hamburger = document.querySelector('.hamburger-btn');
@@ -3890,7 +3915,7 @@
     function loadExercise() {
       const exercise = exercises[currentExercise];
       document.getElementById('questionText').textContent = exercise.question;
-      document.getElementById('progressFill').style.width = `${((currentExercise) / exercises.length) * 100}%`;
+      document.getElementById('progressFill').style.width = `${((currentExercise + 1) / exercises.length) * 100}%`;
       
       // Detect question direction: if question contains Thai chars, user answers in English
       const hasThaiInQuestion = /[\u0E00-\u0E7F]/.test(exercise.question);
@@ -3951,6 +3976,18 @@
         correctOption.classList.add('correct');
         document.getElementById('checkBtn').textContent = 'Continue →';
         document.getElementById('checkBtn').onclick = nextExercise;
+        
+        // Lose a heart
+        lessonHearts--;
+        updateHeartsDisplay();
+        if (lessonHearts <= 0) {
+          document.getElementById('checkBtn').textContent = 'Try Again';
+          document.getElementById('checkBtn').onclick = () => {
+            closeLesson();
+            localStorage.removeItem('thaiDaiProgress');
+            alert('💜 Out of hearts! Try the lesson again.');
+          };
+        }
       }
     }
 
@@ -3971,123 +4008,96 @@
       }
     }
 
+    // Audio system with debounce and Chrome bug workaround
+    let audioState = { speaking: false, retryCount: 0, maxRetries: 2 };
+    
     function playAudio() {
       const exercise = exercises[currentExercise];
+      if (!exercise) return;
       const word = exercise.audio;
       
       const thaiTextMap = {
-        'sawasdee': 'สวัสดี',
-        'khun': 'คุณ',
-        'khob khun': 'ขอบคุณ',
-        'khob khun mak ka': 'ขอบคุณมากค่ะ',
-        'yin dee': 'ยินดี',
-        'phom cheu': 'ผมชื่อ',
-        'khun cheu arai': 'คุณชื่ออะไร',
-        'dee jai thi dai roojak': 'ดีใจที่ได้รู้จัก',
-        'sabai dee mai': 'สบายดีไหม',
-        'sawasdee krab': 'สวัสดีครับ',
-        'sawasdee ka': 'สวัสดีค่ะ',
-        'laa gawn': 'ลาก่อน',
-        'khaw thot': 'ขอโทษ',
-        'mai pen rai': 'ไม่เป็นไร',
-        'chan cheu': 'ฉันชื่อ',
-        'neung': 'หนึ่ง',
-        'see': 'สี่',
-        'haa': 'ห้า',
-        'sip': 'สิบ',
-        'yee sip': 'ยี่สิบ',
-        'gee baht': 'กี่บาท',
-        'phaeng': 'แพง',
-        'lot dai mai': 'ลดได้ไหม',
-        'thuk': 'ถูก',
-        'chan ao arai nee ka': 'ฉันเอาอันนี้ค่ะ',
-        'pet': 'เผ็ด',
-        'wan': 'หวาน',
-        'priaw': 'เปรี้ยว',
-        'jeut': 'จืด',
-        'mai pet': 'ไม่เผ็ด',
-        'ao': 'เอา',
-        'kor arai krab': 'ขอครับ',
-        'mai ao': 'ไม่เอา',
-        'chob': 'ชอบ',
-        'aroi': 'อร่อย',
-        'nam': 'น้ำ',
-        'khao': 'ข้าว',
-        'kuay tiao': 'ก๋วยเตี๋ยว',
-        'pad thai': 'ผัดไทย',
-        'chan gin jay ka': 'ฉันกินเจค่ะ',
-        'pet mak': 'เผ็ดมาก',
-        'nid noi': 'นิดหน่อย',
-        'check bin krab': 'เช็คบิลครับ',
-        'chan im laew ka': 'ฉันอิ่มแล้วค่ะ',
-        'meter': 'เปิดมิเตอร์',
-        'pai thi': 'ไปที่',
-        'glai mai': 'ไกลไหม',
-        'reo noi krab': 'เร็วหน่อยครับ',
-        'liaw sai': 'เลี้ยวซ้าย',
-        'jawt dtrong nee': 'จอดตรงนี้',
-        'liaw khwa': 'เลี้ยวขวา',
-        'dtrong pai': 'ตรงไป',
-        'klap rot': 'กลับรถ',
-        'phaeng pai': 'แพงไป',
-        'thuk gwa nee dai mai': 'ถูกกว่านี้ได้ไหม',
-        'ra kha tao rai': 'ราคาเท่าไหร่',
-        'dai krab': 'ได้ครับ',
-        'chan ha khun khwa ka': 'ฉันหาคันอื่นค่ะ',
-        'na khrap': 'นะครับ',
-        'check bin': 'เช็คบิล',
-        'mai dtong thon': 'ไม่ต้องทอน',
-        'khob khun ka laew joo gan': 'ขอบคุณค่ะ แล้วเจอกัน',
-        'chok dee': 'โชคดี',
+        'sawasdee': 'สวัสดี', 'khun': 'คุณ', 'khob khun': 'ขอบคุณ',
+        'khob khun mak ka': 'ขอบคุณมากค่ะ', 'yin dee': 'ยินดี',
+        'phom cheu': 'ผมชื่อ', 'khun cheu arai': 'คุณชื่ออะไร',
+        'dee jai thi dai roojak': 'ดีใจที่ได้รู้จัก', 'sabai dee mai': 'สบายดีไหม',
+        'sawasdee krab': 'สวัสดีครับ', 'sawasdee ka': 'สวัสดีค่ะ',
+        'laa gawn': 'ลาก่อน', 'khaw thot': 'ขอโทษ', 'mai pen rai': 'ไม่เป็นไร',
+        'chan cheu': 'ฉันชื่อ', 'neung': 'หนึ่ง', 'see': 'สี่', 'haa': 'ห้า',
+        'sip': 'สิบ', 'yee sip': 'ยี่สิบ', 'gee baht': 'กี่บาท', 'phaeng': 'แพง',
+        'lot dai mai': 'ลดได้ไหม', 'thuk': 'ถูก', 'chan ao arai nee ka': 'ฉันเอาอันนี้ค่ะ',
+        'pet': 'เผ็ด', 'wan': 'หวาน', 'priaw': 'เปรี้ยว', 'jeut': 'จืด',
+        'mai pet': 'ไม่เผ็ด', 'ao': 'เอา', 'kor arai krab': 'ขอครับ',
+        'mai ao': 'ไม่เอา', 'chob': 'ชอบ', 'aroi': 'อร่อย', 'nam': 'น้ำ',
+        'khao': 'ข้าว', 'kuay tiao': 'ก๋วยเตี๋ยว', 'pad thai': 'ผัดไทย',
+        'chan gin jay ka': 'ฉันกินเจค่ะ', 'pet mak': 'เผ็ดมาก', 'nid noi': 'นิดหน่อย',
+        'check bin krab': 'เช็คบิลครับ', 'chan im laew ka': 'ฉันอิ่มแล้วค่ะ',
+        'meter': 'เปิดมิเตอร์', 'pai thi': 'ไปที่', 'glai mai': 'ไกลไหม',
+        'reo noi krab': 'เร็วหน่อยครับ', 'liaw sai': 'เลี้ยวซ้าย',
+        'jawt dtrong nee': 'จอดตรงนี้', 'liaw khwa': 'เลี้ยวขวา',
+        'dtrong pai': 'ตรงไป', 'klap rot': 'กลับรถ', 'phaeng pai': 'แพงไป',
+        'thuk gwa nee dai mai': 'ถูกกว่านี้ได้ไหม', 'ra kha tao rai': 'ราคาเท่าไหร่',
+        'dai krab': 'ได้ครับ', 'chan ha khun khwa ka': 'ฉันหาคันอื่นค่ะ',
+        'na khrap': 'นะครับ', 'check bin': 'เช็คบิล', 'mai dtong thon': 'ไม่ต้องทอน',
+        'khob khun ka laew joo gan': 'ขอบคุณค่ะ แล้วเจอกัน', 'chok dee': 'โชคดี'
       };
       
       const thaiText = thaiTextMap[word] || word;
       
-      // Use Web Speech API with Thai voice
-      if ('speechSynthesis' in window) {
-        // Cancel any ongoing speech
-        window.speechSynthesis.cancel();
-        
+      if (!('speechSynthesis' in window)) {
+        console.log('Speech synthesis not supported');
+        return;
+      }
+      
+      // Debounce: ignore clicks while speaking
+      if (audioState.speaking) return;
+      audioState.speaking = true;
+      audioState.retryCount = 0;
+      
+      const btn = document.querySelector('.audio-btn');
+      if (btn) { btn.style.transform = 'scale(0.92)'; btn.innerHTML = '🔊'; }
+      
+      function doSpeak() {
         const utterance = new SpeechSynthesisUtterance(thaiText);
         utterance.lang = 'th-TH';
-        utterance.rate = 0.9; // Slightly slower for learners
+        utterance.rate = 0.9;
         utterance.pitch = 1.0;
         utterance.volume = 1.0;
         
-        // Try to find a Thai voice
         const voices = window.speechSynthesis.getVoices();
-        const thaiVoice = voices.find(voice => voice.lang === 'th-TH' || voice.lang.startsWith('th'));
-        if (thaiVoice) {
-          utterance.voice = thaiVoice;
-        }
-        
-        // Visual feedback
-        const btn = document.querySelector('.audio-btn');
-        if (btn) {
-          btn.style.transform = 'scale(0.95)';
-          btn.innerHTML = '🔊';
-        }
+        const thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang.startsWith('th'));
+        if (thaiVoice) utterance.voice = thaiVoice;
         
         utterance.onend = () => {
-          if (btn) {
-            btn.style.transform = '';
-            btn.innerHTML = '🔊';
+          audioState.speaking = false;
+          if (btn) { btn.style.transform = ''; btn.innerHTML = '🔊'; }
+        };
+        
+        utterance.onerror = (e) => {
+          console.error('Speech error:', e.error);
+          audioState.speaking = false;
+          if (btn) { btn.style.transform = ''; btn.innerHTML = '🔊'; }
+          // Retry on certain errors
+          if (audioState.retryCount < audioState.maxRetries && (e.error === 'canceled' || e.error === 'interrupted')) {
+            audioState.retryCount++;
+            setTimeout(doSpeak, 300);
           }
         };
         
         window.speechSynthesis.speak(utterance);
-      } else {
-        // Fallback: show text alert
-        console.log('Speech synthesis not supported');
       }
-    }
-    
-    // Pre-load voices (required for some browsers)
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.getVoices();
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
+      
+      // Chrome bug workaround: resume if paused
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+      
+      // If voices not loaded yet, wait
+      if (window.speechSynthesis.getVoices().length === 0) {
+        window.speechSynthesis.onvoiceschanged = () => { doSpeak(); };
+      } else {
+        doSpeak();
+      }
     }
 
     function showCelebration() {
