@@ -3920,7 +3920,8 @@
       // Detect question direction: if question contains Thai chars, user answers in English
       const hasThaiInQuestion = /[\u0E00-\u0E7F]/.test(exercise.question);
       
-      const optionsHtml = exercise.options.map((opt, idx) => {
+      const shuffledOptions = shuffleArray(exercise.options);
+      const optionsHtml = shuffledOptions.map((opt, idx) => {
         const mainText = hasThaiInQuestion ? opt.value : opt.thai;
         const subText = hasThaiInQuestion ? opt.romanized : opt.romanized;
         const noteText = opt.note || '';
