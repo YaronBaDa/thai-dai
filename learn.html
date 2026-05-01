@@ -640,6 +640,11 @@
       line-height: 1.3;
     }
 
+    .mode-thai-to-eng .option-text .thai {
+      font-size: clamp(1.25rem, 4.5vw, 1.75rem);
+      text-transform: capitalize;
+    }
+
     .option-text .romanized {
       font-size: clamp(0.75rem, 2.5vw, 0.875rem);
       color: var(--text-light);
@@ -3887,16 +3892,23 @@
       document.getElementById('questionText').textContent = exercise.question;
       document.getElementById('progressFill').style.width = `${((currentExercise) / exercises.length) * 100}%`;
       
-      const optionsHtml = exercise.options.map((opt, idx) => `
-        <div class="answer-option" data-value="${opt.value}" onclick="selectAnswer(this)">
+      // Detect question direction: if question contains Thai chars, user answers in English
+      const hasThaiInQuestion = /[\u0E00-\u0E7F]/.test(exercise.question);
+      
+      const optionsHtml = exercise.options.map((opt, idx) => {
+        const mainText = hasThaiInQuestion ? opt.value : opt.thai;
+        const subText = hasThaiInQuestion ? opt.romanized : opt.romanized;
+        const noteText = opt.note || '';
+        return `
+        <div class="answer-option ${hasThaiInQuestion ? 'mode-thai-to-eng' : 'mode-eng-to-thai'}" data-value="${opt.value}" onclick="selectAnswer(this)">
           <div class="option-image">${opt.icon}</div>
           <div class="option-text">
-            <div class="thai">${opt.thai}</div>
-            <div class="romanized">${opt.romanized}</div>
-            ${opt.note ? `<div class="tone-note">${opt.note}</div>` : ''}
+            <div class="thai">${mainText}</div>
+            ${!hasThaiInQuestion ? `<div class="romanized">${subText}</div>` : ''}
+            ${noteText ? `<div class="tone-note">${noteText}</div>` : ''}
           </div>
         </div>
-      `).join('');
+      `}).join('');
       
       document.getElementById('answerOptions').innerHTML = optionsHtml;
       document.getElementById('checkBtn').textContent = 'Check';
