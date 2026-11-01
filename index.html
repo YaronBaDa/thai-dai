@@ -1474,5 +1474,15 @@
       drawer.classList.toggle('open', isOpen);
     }
   </script>
+  <script>
+    // Returning users: point "Sign Up" CTAs at their learning path instead of onboarding
+    (function () {
+      if (localStorage.getItem('thaiDaiOnboarded') !== 'true') return;
+      document.querySelectorAll('a[href="onboarding.html"]').forEach(function (a) {
+        a.setAttribute('href', 'learn.html');
+        if (/Sign Up/i.test(a.textContent)) a.textContent = 'Continue Learning';
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -1108,6 +1108,40 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<style id="soStyles">
+/* ===== SPEAK-ONLY MODE ===== */
+.so-mode .lesson-hearts { display: none; }
+.so-mode-pill { cursor:pointer; background:#fff; border:2px solid var(--primary); color:var(--primary); border-radius:999px; padding:0.35rem 0.9rem; font-weight:800; font-size:0.8rem; white-space:nowrap; margin-left:auto; }
+.so-card { padding:0.25rem 0; text-align:center; }
+.so-prompt { font-weight:800; font-size:1.1rem; }
+.so-phonetic { font-size:1.9rem; font-weight:800; line-height:1.5; margin:0.75rem 0; }
+.so-syl { display:inline-block; margin:0 1px; }
+.so-glyph { font-size:0.7rem; opacity:0.9; vertical-align:super; margin-left:1px; }
+.so-english { color:var(--text-light); font-size:1.05rem; margin:0.4rem 0 1.1rem; }
+.so-audio-btn { width:72px; height:72px; border-radius:50%; border:none; cursor:pointer; background:var(--secondary); color:#fff; font-size:1.6rem; box-shadow:0 4px 0 var(--secondary-dark); margin:0 auto 0.9rem; display:block; }
+.so-audio-btn:active { transform:translateY(2px); box-shadow:0 2px 0 var(--secondary-dark); }
+.so-speed { display:flex; gap:0.5rem; justify-content:center; margin-bottom:1.1rem; }
+.so-speed button { border:2px solid var(--border); background:#fff; border-radius:8px; padding:0.3rem 0.85rem; font-weight:800; cursor:pointer; }
+.so-speed button.active { border-color:var(--secondary); color:var(--secondary); }
+.so-breakdown { display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; margin:0.5rem 0 1.1rem; }
+.so-syl-chip { background:#fff; border:1.5px solid var(--border); border-radius:8px; padding:0.25rem 0.6rem; font-size:0.85rem; font-weight:700; display:inline-flex; align-items:center; gap:4px; }
+.so-done-btn { width:100%; padding:0.9rem; border:none; border-radius:12px; cursor:pointer; background:var(--primary); color:#fff; font-weight:800; font-size:1rem; box-shadow:0 4px 0 var(--primary-dark); margin-top:0.25rem; }
+.so-done-btn:active { transform:translateY(2px); box-shadow:0 2px 0 var(--primary-dark); }
+.so-options { display:flex; flex-direction:column; gap:0.7rem; margin-top:0.9rem; }
+.so-option { padding:0.95rem; border:2px solid var(--border); border-radius:12px; background:#fff; cursor:pointer; font-size:1.02rem; font-weight:700; text-align:center; line-height:1.4; }
+.so-option:hover { border-color:var(--secondary); }
+.so-option.correct { border-color:var(--primary); background:#eefbe8; }
+.so-option.wrong { border-color:var(--pink); background:#fdeeee; }
+.so-chips { display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center; margin:0.8rem 0; }
+.so-chip { padding:0.55rem 1rem; border:2px solid var(--secondary); color:var(--secondary); border-radius:999px; cursor:pointer; font-weight:800; font-size:1rem; background:#fff; }
+.so-chip:active { transform:scale(0.96); }
+.so-build-row { min-height:3.1rem; display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; align-items:center; border:2px dashed var(--border); border-radius:12px; padding:0.6rem; margin:0.6rem 0; }
+.so-build-row .so-chip { background:var(--secondary); color:#fff; cursor:pointer; }
+.so-context { font-size:0.9rem; color:var(--text-light); font-weight:800; }
+.so-scenario-phonetic { font-size:1.4rem; font-weight:800; margin:0.7rem 0 0.2rem; }
+.so-scenario-eng { color:var(--text-light); margin-bottom:0.7rem; }
+</style>
+
 </head>
 <body>
   <div class="app-container">
@@ -4449,6 +4483,799 @@
       document.body.classList.add('modal-open');
       loadExercise();
     }
+</script>
+<script>
+// ==================== SPEAK-ONLY MODE ENGINE (Thai Dai) ====================
+// Curriculum is injected at build time: const SO_CURRICULUM = <json>;
+const SO_CURRICULUM = {
+  "meta": {
+    "track": "speak_only",
+    "romanization": "paiboon",
+    "version": 1,
+    "note": "Phonetics use Paiboon romanization. `tts` is the Thai script used ONLY for speech synthesis (never displayed in speak-only mode)."
+  },
+  "units": [
+    {
+      "id": "unit_1_survival_basics",
+      "title": "Unit 1: Street Survival & Politeness",
+      "description": "Essential courtesies and binary switches you need within 10 minutes of landing.",
+      "lessons": [
+        {
+          "id": "u1_l1_polite_social",
+          "title": "The Golden Words",
+          "items": [
+            {
+              "id": "w_hello",
+              "type": "audio_repeat",
+              "phonetic": "sà-wàt-dii {{particle}}",
+              "english": "Hello / Goodbye",
+              "tts": "สวัสดี"
+            },
+            {
+              "id": "w_thank_you",
+              "type": "audio_repeat",
+              "phonetic": "khòp-khun {{particle}}",
+              "english": "Thank you",
+              "tts": "ขอบคุณ"
+            },
+            {
+              "id": "w_sorry_excuse_me",
+              "type": "audio_repeat",
+              "phonetic": "khǎaw-thôot {{particle}}",
+              "english": "Excuse me / Sorry (use to flag waiters & drivers)",
+              "tts": "ขอโทษ"
+            },
+            {
+              "id": "w_mai_bpen_rai",
+              "type": "audio_repeat",
+              "phonetic": "mâi-pen-rai {{particle}}",
+              "english": "No problem / You're welcome",
+              "tts": "ไม่เป็นไร"
+            }
+          ]
+        },
+        {
+          "id": "u1_l2_switches",
+          "title": "The 4 Power Switches",
+          "items": [
+            {
+              "id": "w_yes_no",
+              "type": "audio_repeat",
+              "phonetic": "châi / mâi-châi",
+              "english": "Yes (correct) / No (not correct)",
+              "tts": "ใช่ ไม่ใช่"
+            },
+            {
+              "id": "w_can_cannot",
+              "type": "audio_repeat",
+              "phonetic": "dâi / mâi-dâi",
+              "english": "Can / Cannot",
+              "tts": "ได้ ไม่ได้"
+            },
+            {
+              "id": "w_want_dont_want",
+              "type": "audio_repeat",
+              "phonetic": "ao / mâi-ao",
+              "english": "I want / I don't want (for street orders)",
+              "tts": "เอา ไม่เอา"
+            },
+            {
+              "id": "w_have_dont_have",
+              "type": "audio_repeat",
+              "phonetic": "mii / mâi-mii",
+              "english": "Have / Don't have (ask if shop has item)",
+              "tts": "มี ไม่มี"
+            }
+          ]
+        },
+        {
+          "id": "u1_l3_numbers_money",
+          "title": "Numbers & Baht",
+          "items": [
+            {
+              "id": "n_1_5",
+              "type": "audio_repeat",
+              "phonetic": "nèung, sǎawng, sǎam, sìi, hâa",
+              "english": "1, 2, 3, 4, 5",
+              "tts": "หนึ่ง สอง สาม สี่ ห้า"
+            },
+            {
+              "id": "n_6_10",
+              "type": "audio_repeat",
+              "phonetic": "hòk, jèt, bpàaet, gâo, sìp",
+              "english": "6, 7, 8, 9, 10",
+              "tts": "หก เจ็ด แปด เก้า สิบ"
+            },
+            {
+              "id": "n_multiples",
+              "type": "audio_repeat",
+              "phonetic": "yîi-sìp (20), rói (100), phan (1,000), bàat (Baht)",
+              "english": "20, 100, 1000, Baht",
+              "tts": "ยี่สิบ ร้อย พัน บาท"
+            },
+            {
+              "id": "phrase_how_much",
+              "type": "phrase_builder",
+              "chips": [
+                "thâo-rài",
+                "{{particle}}"
+              ],
+              "phonetic": "thâo-rài {{particle}}?",
+              "english": "How much?",
+              "tts": "เท่าไหร่"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit_2_food_drink",
+      "title": "Unit 2: Ordering Food & Drinks",
+      "description": "Never get accidentally burned by chili again.",
+      "lessons": [
+        {
+          "id": "u2_l1_spiciness_customs",
+          "title": "Spice & Sweetness Control",
+          "items": [
+            {
+              "id": "f_phet_noi",
+              "type": "phrase_builder",
+              "chips": [
+                "phèt",
+                "nòi",
+                "{{particle}}"
+              ],
+              "phonetic": "phèt nòi {{particle}}",
+              "english": "A little spicy",
+              "tts": "เผ็ดหน่อย"
+            },
+            {
+              "id": "f_mai_phet",
+              "type": "phrase_builder",
+              "chips": [
+                "mâi",
+                "phèt",
+                "{{particle}}"
+              ],
+              "phonetic": "mâi phèt {{particle}}",
+              "english": "Not spicy at all",
+              "tts": "ไม่เผ็ด"
+            },
+            {
+              "id": "f_mai_sai_namtan",
+              "type": "audio_repeat",
+              "phonetic": "mâi sài nám-taan",
+              "english": "Don't add sugar",
+              "tts": "ไม่ใส่น้ำตาล"
+            },
+            {
+              "id": "f_aroi",
+              "type": "audio_repeat",
+              "phonetic": "à-ròi mâak!",
+              "english": "Very delicious!",
+              "tts": "อร่อยมาก"
+            }
+          ]
+        },
+        {
+          "id": "u2_l2_drinks_water",
+          "title": "Water & Bill",
+          "items": [
+            {
+              "id": "f_water",
+              "type": "audio_repeat",
+              "phonetic": "nám-bplàao",
+              "english": "Plain drinking water",
+              "tts": "น้ำเปล่า"
+            },
+            {
+              "id": "f_ice",
+              "type": "audio_repeat",
+              "phonetic": "nám-khǎeng",
+              "english": "Ice",
+              "tts": "น้ำแข็ง"
+            },
+            {
+              "id": "f_bill",
+              "type": "audio_repeat",
+              "phonetic": "gèp-dtang / chék-bin {{particle}}",
+              "english": "Check please / Bill",
+              "tts": "เก็บตังค์ เช็คบิล"
+            },
+            {
+              "id": "f_takeaway",
+              "type": "phrase_builder",
+              "chips": [
+                "sài",
+                "thǔng",
+                "{{particle}}"
+              ],
+              "phonetic": "sài thǔng {{particle}}",
+              "english": "Takeaway / In a bag",
+              "tts": "ใส่ถุง"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit_3_navigation_rides",
+      "title": "Unit 3: Taxis, Grab & Directions",
+      "description": "Direct your driver clearly in Bangkok traffic.",
+      "lessons": [
+        {
+          "id": "u3_l1_driver_commands",
+          "title": "Navigating the Ride",
+          "items": [
+            {
+              "id": "t_straight",
+              "type": "audio_repeat",
+              "phonetic": "dtrong-bpai",
+              "english": "Go straight",
+              "tts": "ตรงไป"
+            },
+            {
+              "id": "t_turn_left",
+              "type": "audio_repeat",
+              "phonetic": "líao-sáai",
+              "english": "Turn left",
+              "tts": "เลี้ยวซ้าย"
+            },
+            {
+              "id": "t_turn_right",
+              "type": "audio_repeat",
+              "phonetic": "líao-khwǎa",
+              "english": "Turn right",
+              "tts": "เลี้ยวขวา"
+            },
+            {
+              "id": "t_stop_here",
+              "type": "phrase_builder",
+              "chips": [
+                "jàawt",
+                "dtrong-níi",
+                "{{particle}}"
+              ],
+              "phonetic": "jàawt dtrong-níi {{particle}}",
+              "english": "Stop here / Pull over here",
+              "tts": "จอดตรงนี้"
+            },
+            {
+              "id": "t_meter",
+              "type": "audio_repeat",
+              "phonetic": "châi mí-dtôe mǎi {{particle}}?",
+              "english": "Will you use the meter?",
+              "tts": "ใช้มิเตอร์ไหม"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "minimal_pairs": [
+    {
+      "pair": [
+        "khâao",
+        "khǎao"
+      ],
+      "english": [
+        "rice",
+        "white"
+      ],
+      "tts": [
+        "ข้าว",
+        "ขาว"
+      ]
+    },
+    {
+      "pair": [
+        "glâi",
+        "glai"
+      ],
+      "english": [
+        "near",
+        "far"
+      ],
+      "tts": [
+        "ใกล้",
+        "ไกล"
+      ]
+    },
+    {
+      "pair": [
+        "máa",
+        "mǎa"
+      ],
+      "english": [
+        "horse",
+        "dog"
+      ],
+      "tts": [
+        "ม้า",
+        "หมา"
+      ]
+    },
+    {
+      "pair": [
+        "khài",
+        "khǎai"
+      ],
+      "english": [
+        "egg",
+        "to sell"
+      ],
+      "tts": [
+        "ไข่",
+        "ขาย"
+      ]
+    },
+    {
+      "pair": [
+        "sǔea",
+        "sûea"
+      ],
+      "english": [
+        "tiger",
+        "shirt"
+      ],
+      "tts": [
+        "เสือ",
+        "เสื้อ"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "s_bag",
+      "context": "7-Eleven cashier",
+      "phonetic": "ráp thǔng mǎi kráp?",
+      "english": "Do you want a plastic bag?",
+      "tts": "รับถุงไหมครับ",
+      "options": [
+        {
+          "phonetic": "mâi-ao kráp",
+          "english": "No thanks (don't want)",
+          "tts": "ไม่เอาครับ",
+          "correct": true
+        },
+        {
+          "phonetic": "ao kráp",
+          "english": "Yes, a bag please",
+          "tts": "เอาครับ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "s_destination",
+      "context": "Taxi driver",
+      "phonetic": "bpai nǎi kráp?",
+      "english": "Where are you going?",
+      "tts": "ไปไหนครับ",
+      "options": [
+        {
+          "phonetic": "bpai ... kráp",
+          "english": "I'm going to [place]",
+          "tts": "ไปครับ",
+          "correct": true
+        },
+        {
+          "phonetic": "jàawt dtrong-níi kráp",
+          "english": "Stop right here",
+          "tts": "จอดตรงนี้ครับ",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "s_drink",
+      "context": "Restaurant server",
+      "phonetic": "ao nám à-rai kráp?",
+      "english": "What would you like to drink?",
+      "tts": "เอาน้ำอะไรครับ",
+      "options": [
+        {
+          "phonetic": "nám-bplàao kráp",
+          "english": "Plain water please",
+          "tts": "น้ำเปล่าครับ",
+          "correct": true
+        },
+        {
+          "phonetic": "nám-khǎeng kráp",
+          "english": "Ice please",
+          "tts": "น้ำแข็งครับ",
+          "correct": false
+        }
+      ]
+    }
+  ]
+};
+
+const SO_TONE = {
+  mid:      { name: 'Mid',     color: '#64748B', glyph: '\u2014' },
+  low:      { name: 'Low',     color: '#3B82F6', glyph: '\\' },
+  falling:  { name: 'Falling', color: '#F59E0B', glyph: '^' },
+  high:     { name: 'High',    color: '#EF4444', glyph: '/' },
+  rising:   { name: 'Rising',  color: '#8B5CF6', glyph: 'v' },
+  particle: { name: 'Polite',  color: '#10B981', glyph: '\u2726' }
+};
+
+// phonetic-chip -> Thai for speech synthesis (particle handled separately)
+const SO_WORD_TTS = {
+  'thâo-rài': 'เท่าไหร่', 'phèt': 'เผ็ด', 'nòi': 'หน่อย', 'mâi': 'ไม่',
+  'sài': 'ใส่', 'thǔng': 'ถุง', 'jàawt': 'จอด', 'dtrong-níi': 'ตรงนี้'
+};
+
+function soUser() { try { return JSON.parse(localStorage.getItem('thaiDaiUser') || '{}'); } catch (e) { return {}; } }
+function soTrack() { return soUser().learning_track || 'speak_and_read'; }
+function soParticle() { return soUser().preferred_particle === 'khâ' ? 'khâ' : 'kráp'; }
+function soParticleThai() { return soParticle() === 'khâ' ? 'ค่ะ' : 'ครับ'; }
+
+function soToneOf(syl) {
+  if (syl.indexOf('{{particle}}') === 0) return 'particle';
+  if (/[âîêôû]/.test(syl)) return 'falling';
+  if (/[ǎǐǒǔě]/.test(syl)) return 'rising';
+  if (/[áíéóú]/.test(syl)) return 'high';
+  if (/[àìèòù]/.test(syl)) return 'low';
+  return 'mid';
+}
+
+function soResolveParticle(phonetic) {
+  return String(phonetic).split('{{particle}}').join(soParticle());
+}
+
+function soRenderPhonetic(phonetic) {
+  const resolved = soResolveParticle(phonetic);
+  let html = '';
+  const tokens = resolved.split(/([-\s\/,()]+)/);
+  for (const t of tokens) {
+    if (!t) continue;
+    if (/^[-\s\/,()]+$/.test(t)) {
+      html += t;
+    } else {
+      const tone = soToneOf(t);
+      const T = SO_TONE[tone] || SO_TONE.mid;
+      html += '<span class="so-syl" style="color:' + T.color + '">' + t +
+              '<span class="so-glyph" style="color:' + T.color + '">' + T.glyph + '</span></span>';
+    }
+  }
+  return html;
+}
+
+function soBreakdown(phonetic) {
+  const resolved = soResolveParticle(phonetic);
+  const tokens = resolved.split(/([-\s\/,()]+)/).filter(function (t) {
+    return t && !/^[-\s\/,()]+$/.test(t);
+  });
+  return tokens.map(function (t) {
+    const tone = soToneOf(t);
+    const T = SO_TONE[tone] || SO_TONE.mid;
+    return '<span class="so-syl-chip" style="border-color:' + T.color + ';color:' + T.color + '">' +
+           t + ' <span style="opacity:0.75">' + T.name + ' ' + T.glyph + '</span></span>';
+  }).join('');
+}
+
+function soTTS(item) {
+  let tts = item.tts || '';
+  if (String(item.phonetic || '').indexOf('{{particle}}') >= 0) tts += ' ' + soParticleThai();
+  return tts;
+}
+
+function soChipTTS(chip) {
+  if (chip === '{{particle}}') return soParticleThai();
+  return SO_WORD_TTS[chip] || chip;
+}
+
+function soSpeak(thaiText, rate) {
+  if (!('speechSynthesis' in window)) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  const u = new SpeechSynthesisUtterance(thaiText);
+  u.lang = 'th-TH';
+  u.rate = rate || soRate;
+  u.pitch = 1; u.volume = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find(function (x) { return x.lang && x.lang.toLowerCase().indexOf('th') === 0; });
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+// ---- state ----
+let soLessons = [];
+let soCards = [];
+let soIndex = 0;
+let soCorrect = 0;
+let soAnswerable = 0;
+let soCur = null;
+let soRate = 1;
+let soCurrentLessonIdx = 0;
+
+// ---- lesson assembly ----
+function soCardsForLesson(lesson) {
+  const cards = [];
+  (lesson.items || []).forEach(function (item) {
+    cards.push({ kind: item.type === 'phrase_builder' ? 'phrase_builder' : 'audio_repeat', item: item });
+  });
+  return cards;
+}
+
+function soCardsToneLab() {
+  return (SO_CURRICULUM.minimal_pairs || []).map(function (p) {
+    return { kind: 'tone_picker', pair: p };
+  });
+}
+
+function soCardsScenarios() {
+  return (SO_CURRICULUM.scenarios || []).map(function (s) {
+    return { kind: 'street_scenario', scenario: s };
+  });
+}
+
+function soBuildLessons() {
+  const lessons = [];
+  (SO_CURRICULUM.units || []).forEach(function (unit) {
+    (unit.lessons || []).forEach(function (ls) {
+      lessons.push({ id: ls.id, title: ls.title, unit: unit.title, cards: soCardsForLesson(ls) });
+    });
+  });
+  lessons.push({ id: 'tone_lab', title: 'Tone Lab', unit: 'Practice Arenas', cards: soCardsToneLab() });
+  lessons.push({ id: 'street_scenarios', title: 'Street Scenarios', unit: 'Practice Arenas', cards: soCardsScenarios() });
+  return lessons;
+}
+
+function soUnitIcon(unitName) {
+  if (/food|drink/i.test(unitName)) return '🍜';
+  if (/taxi|grab|navigat/i.test(unitName)) return '🚕';
+  if (/survival|politeness/i.test(unitName)) return '🙏';
+  return '🎯';
+}
+
+function soRenderPath() {
+  const done = JSON.parse(localStorage.getItem('thaiDaiSODone') || '[]');
+  const byUnit = {};
+  soLessons.forEach(function (ls, i) { (byUnit[ls.unit] = byUnit[ls.unit] || []).push({ ls: ls, i: i }); });
+  let html = '';
+  Object.keys(byUnit).forEach(function (unitName) {
+    const list = byUnit[unitName];
+    html += '<div class="unit-section"><div class="unit-header"><div class="unit-icon">' + soUnitIcon(unitName) +
+      '</div><div class="unit-info"><h3>' + unitName + '</h3><p>' + list.length + ' lesson' +
+      (list.length > 1 ? 's' : '') + '</p></div></div><div class="lessons-path">';
+    list.forEach(function (entry, j) {
+      const ls = entry.ls, i = entry.i;
+      const isDone = done.indexOf(ls.id) >= 0;
+      const unlocked = i === 0 || done.indexOf(soLessons[i - 1].id) >= 0;
+      const state = isDone ? 'completed' : (unlocked ? 'current' : 'locked');
+      const emoji = unlocked ? '🎧' : '🔒';
+      html += '<div class="lesson-node so-lesson-node" onclick="soStartLesson(' + i + ')">' +
+        '<div class="lesson-circle ' + state + '">' + emoji + '</div>' +
+        '<div class="lesson-label">' + ls.title + '</div></div>';
+      if (j < list.length - 1) html += '<div class="lesson-connector"></div>';
+    });
+    html += '</div></div>';
+  });
+  return html;
+}
+
+// ---- card rendering ----
+function soRenderCard() {
+  const card = soCards[soIndex];
+  document.getElementById('progressFill').style.width = ((soIndex + 1) / soCards.length * 100) + '%';
+  const area = document.querySelector('.exercise-area');
+  if (area) area.innerHTML = soCardHTML(card);
+}
+
+function soCardHTML(card) {
+  if (card.kind === 'audio_repeat') return soHTMLRepeat(card.item);
+  if (card.kind === 'phrase_builder') return soHTMLBuild(card.item);
+  if (card.kind === 'tone_picker') return soHTMLTone(card.pair);
+  if (card.kind === 'street_scenario') return soHTMLScenario(card.scenario);
+  return '';
+}
+
+function soHTMLRepeat(item) {
+  soCur = { tts: soTTS(item) };
+  return '<div class="so-card">' +
+    '<div class="so-phonetic">' + soRenderPhonetic(item.phonetic) + '</div>' +
+    '<div class="so-english">' + item.english + '</div>' +
+    '<button class="so-audio-btn" onclick="soPlayCurrent()">🔊</button>' +
+    '<div class="so-speed">' +
+      '<button class="' + (soRate === 1 ? 'active' : '') + '" onclick="soSetRate(1)">1×</button>' +
+      '<button class="' + (soRate === 0.75 ? 'active' : '') + '" onclick="soSetRate(0.75)">0.75×</button>' +
+    '</div>' +
+    '<div class="so-breakdown">' + soBreakdown(item.phonetic) + '</div>' +
+    '<button class="so-done-btn" onclick="soAdvance()">✓ I repeated this aloud</button>' +
+  '</div>';
+}
+
+function soHTMLBuild(item) {
+  soCur = { item: item, tts: soTTS(item), chips: shuffleArray(item.chips.slice()), built: [] };
+  return '<div class="so-card">' +
+    '<div class="so-prompt">Say: <span style="color:var(--primary)">"' + item.english + '"</span></div>' +
+    '<div class="so-english">Tap the chips in order — each tap plays its sound</div>' +
+    '<button class="so-audio-btn" onclick="soPlayCurrent()">🔊</button>' +
+    '<div class="so-build-row" id="soBuildRow"></div>' +
+    '<div class="so-chips" id="soChips"></div>' +
+    '<button class="so-done-btn" onclick="soCheckBuild()">Check</button>' +
+  '</div>';
+}
+
+function soHTMLTone(pair) {
+  const playIdx = Math.random() < 0.5 ? 0 : 1;
+  soCur = { pair: pair, playIdx: playIdx, answered: false };
+  const opts = [{ ph: pair.pair[0], en: pair.english[0], idx: 0 },
+                { ph: pair.pair[1], en: pair.english[1], idx: 1 }];
+  if (Math.random() < 0.5) opts.reverse();
+  return '<div class="so-card">' +
+    '<div class="so-prompt">Which word did you hear?</div>' +
+    '<button class="so-audio-btn" onclick="soPlayTone()">🔊</button>' +
+    '<div class="so-options">' + opts.map(function (o) {
+      const tone = soToneOf(o.ph);
+      const T = SO_TONE[tone] || SO_TONE.mid;
+      return '<button class="so-option" data-idx="' + o.idx + '" onclick="soPickTone(' + o.idx + ')">' +
+        '<span style="font-weight:800;color:' + T.color + '">' + o.ph + ' <span class="so-glyph">' + T.glyph + '</span></span>' +
+        '<span style="color:var(--text-light)"> — ' + o.en + '</span></button>';
+    }).join('') + '</div>' +
+  '</div>';
+}
+
+function soHTMLScenario(sc) {
+  soCur = { scenario: sc, answered: false };
+  return '<div class="so-card">' +
+    '<div class="so-context">🏪 ' + sc.context + '</div>' +
+    '<button class="so-audio-btn" onclick="soPlayScenario()">🔊</button>' +
+    '<div class="so-scenario-phonetic">"' + soRenderPhonetic(sc.phonetic) + '"</div>' +
+    '<div class="so-scenario-eng">' + sc.english + '</div>' +
+    '<div class="so-options">' + sc.options.map(function (o, i) {
+      return '<button class="so-option" data-i="' + i + '" onclick="soPickScenario(' + i + ')">' +
+        '<span style="font-weight:800">' + o.phonetic + '</span><br>' +
+        '<span style="color:var(--text-light)">' + o.english + '</span></button>';
+    }).join('') + '</div>' +
+  '</div>';
+}
+
+// ---- interactions ----
+function soPlayCurrent() { soSpeak(soCur.tts); }
+function soSetRate(r) { soRate = r; soRenderCard(); }
+function soPlayTone() { soSpeak(soCur.pair.tts[soCur.playIdx]); }
+function soPlayScenario() { soSpeak(soCur.scenario.tts); }
+
+function soRenderBuild() {
+  const chipsEl = document.getElementById('soChips');
+  const rowEl = document.getElementById('soBuildRow');
+  if (!chipsEl || !rowEl) return;
+  chipsEl.innerHTML = soCur.chips.map(function (c, i) {
+    const label = c === '{{particle}}' ? soParticle() : c;
+    return '<button class="so-chip" onclick="soTapChip(' + i + ')">' + label + '</button>';
+  }).join('');
+  rowEl.innerHTML = soCur.built.length
+    ? soCur.built.map(function (c, i) {
+        const label = c === '{{particle}}' ? soParticle() : c;
+        return '<button class="so-chip" onclick="soTapBuilt(' + i + ')">' + label + '</button>';
+      }).join('')
+    : '<span style="color:var(--text-light);font-size:0.85rem">Tap chips below to build the phrase</span>';
+}
+
+function soTapChip(i) {
+  const c = soCur.chips.splice(i, 1)[0];
+  soCur.built.push(c);
+  soSpeak(soChipTTS(c));
+  soRenderBuild();
+}
+function soTapBuilt(i) {
+  const c = soCur.built.splice(i, 1)[0];
+  soCur.chips.push(c);
+  soRenderBuild();
+}
+function soCheckBuild() {
+  const target = soCur.item.chips.map(function (c) { return c === '{{particle}}' ? soParticle() : c; }).join(' ');
+  const got = soCur.built.join(' ');
+  if (got === target) {
+    soCorrect++;
+    soAdvance();
+  } else {
+    const row = document.getElementById('soBuildRow');
+    if (row) { row.style.borderColor = 'var(--pink)'; setTimeout(function () { row.style.borderColor = ''; }, 600); }
+  }
+}
+
+function soPickTone(idx) {
+  if (soCur.answered) return;
+  soCur.answered = true;
+  const correct = idx === soCur.playIdx;
+  if (correct) soCorrect++;
+  document.querySelectorAll('#lessonModal .so-option').forEach(function (b) {
+    b.disabled = true;
+    if (parseInt(b.dataset.idx) === soCur.playIdx) b.classList.add('correct');
+    else if (parseInt(b.dataset.idx) === idx) b.classList.add('wrong');
+  });
+  setTimeout(soAdvance, 1000);
+}
+
+function soPickScenario(i) {
+  if (soCur.answered) return;
+  soCur.answered = true;
+  const o = soCur.scenario.options[i];
+  if (o.correct) soCorrect++;
+  document.querySelectorAll('#lessonModal .so-option').forEach(function (b) {
+    b.disabled = true;
+    if (parseInt(b.dataset.i) === i && !o.correct) b.classList.add('wrong');
+    if (soCur.scenario.options[parseInt(b.dataset.i)].correct) b.classList.add('correct');
+  });
+  setTimeout(soAdvance, 1000);
+}
+
+function soAdvance() {
+  soIndex++;
+  if (soIndex < soCards.length) { soRenderCard(); }
+  else { soCompleteLesson(); }
+}
+
+function soCompleteLesson() {
+  const ls = soLessons[soCurrentLessonIdx];
+  const done = JSON.parse(localStorage.getItem('thaiDaiSODone') || '[]');
+  if (done.indexOf(ls.id) < 0) done.push(ls.id);
+  localStorage.setItem('thaiDaiSODone', JSON.stringify(done));
+  closeLesson();
+  document.querySelector('.lesson-footer').style.display = '';
+  alert('🎉 Lesson complete! ' + soCorrect + '/' + soAnswerable + ' correct.');
+  const path = document.querySelector('.learning-path');
+  if (path) path.innerHTML = soRenderPath();
+}
+
+function soStartLesson(i) {
+  const ls = soLessons[i];
+  if (!ls) return;
+  if (i > 0) {
+    const done = JSON.parse(localStorage.getItem('thaiDaiSODone') || '[]');
+    if (done.indexOf(soLessons[i - 1].id) < 0) { alert('🔒 Finish the previous lesson first!'); return; }
+  }
+  soCurrentLessonIdx = i;
+  soCards = shuffleArray(ls.cards.slice());
+  soIndex = 0; soCorrect = 0;
+  soAnswerable = soCards.filter(function (c) { return c.kind !== 'audio_repeat'; }).length;
+  document.getElementById('lessonModal').classList.add('active');
+  document.body.classList.add('modal-open');
+  document.querySelector('.lesson-footer').style.display = 'none';
+  soRenderCard();
+}
+
+// ---- mode switch + init ----
+function soInjectModeSwitch() {
+  const bar = document.querySelector('.top-bar');
+  if (!bar) return;
+  const isSO = soTrack() === 'speak_only';
+  const pill = document.createElement('button');
+  pill.className = 'so-mode-pill';
+  pill.textContent = isSO ? '🎧 Speak Only → 📖 Read' : '📖 Speak + Read → 🎧 Speak Only';
+  pill.onclick = function () {
+    const u = soUser();
+    u.learning_track = isSO ? 'speak_and_read' : 'speak_only';
+    localStorage.setItem('thaiDaiUser', JSON.stringify(u));
+    location.reload();
+  };
+  bar.appendChild(pill);
+}
+
+function soInit() {
+  soInjectModeSwitch();
+  if (soTrack() !== 'speak_only') return;
+  document.body.classList.add('so-mode');
+  const t = document.querySelector('.page-title');
+  if (t) t.innerHTML = '<h1>🎧 Speak Only</h1><p>Audio-first Thai — sound & tone curves, no script</p>';
+  const rb = document.getElementById('reviewBtn');
+  if (rb) rb.style.display = 'none';
+  soLessons = soBuildLessons();
+  const path = document.querySelector('.learning-path');
+  if (path) path.innerHTML = soRenderPath();
+  window.startCurrentLesson = function () { soStartLesson(0); };
+  window.updateLessonUI = function () { /* speak-only: path handled by soRenderPath */ };
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', soInit);
+} else {
+  soInit();
+}
+
 </script>
 </body>
 </html>

@@ -787,7 +787,7 @@
           <div class="option-card" onclick="selectOption(this, 'gender', 'female')">
             <div class="option-icon">👩</div>
             <div class="option-title">Female</div>
-            <div class="option-desc">I'll use ค่ะ (khà) - "ka"</div>
+            <div class="option-desc">I'll use ค่ะ (khâ) - "ka"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'other')">
             <div class="option-icon">✨</div>
@@ -887,6 +887,30 @@
         </div>
       </div>
 
+      <!-- Step 8: Learning Track -->
+      <div class="wizard-step" id="step8" style="display:none">
+        <div class="step-header">
+          <div class="step-icon">🗣️</div>
+          <h1>How do you want to learn?</h1>
+          <p>Pick a mode. You can switch anytime from the app's settings.</p>
+        </div>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_only')">
+            <div class="option-icon">🎧</div>
+            <div class="option-title">Speak Only</div>
+            <div class="option-desc">Audio-first — no Thai script, just sound &amp; tone curves</div>
+          </div>
+          <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_and_read')">
+            <div class="option-icon">📖</div>
+            <div class="option-title">Speak + Read</div>
+            <div class="option-desc">Full course with Thai script &amp; spelling</div>
+          </div>
+        </div>
+        <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
+          💡 Speak Only is perfect if you just want to communicate fast on the street.
+        </p>
+      </div>
+
     </div>
 
     <!-- Loading State -->
@@ -958,8 +982,12 @@
   </div>
 
   <script>
+    // Returning users: skip onboarding and go straight to learning
+    if (localStorage.getItem('thaiDaiOnboarded') === 'true') {
+      location.href = 'learn.html';
+    }
     let currentStep = 1;
-    const totalSteps = 7;
+    const totalSteps = 8;
     const selections = {};
 
     function updateProgress() {
@@ -1005,6 +1033,10 @@
         // Time commitment - has default value
         selections.timeCommitment = document.getElementById('timeCommitment').value;
         return true;
+      }
+      if (currentStep === 8) {
+        // Learning track - required
+        return selections.learning_track !== undefined;
       }
       return selections[Object.keys(selections).pop()] !== undefined;
     }
@@ -1067,6 +1099,11 @@
       document.getElementById('pathTitle').textContent = `${names[selections.experience] || 'Thai Explorer'} Path`;
       document.getElementById('pathSubtitle').textContent = `Perfect for ${goals[selections.goal] || 'learning Thai'}`;
       document.getElementById('resultsName').textContent = selections.name || 'friend';
+
+      // Map gender to polite particle + set learning track
+      const particleByGender = { male: 'kráp', female: 'khâ', other: 'kráp' };
+      selections.preferred_particle = particleByGender[selections.gender] || 'kráp';
+      selections.learning_track = selections.learning_track || 'speak_and_read';
 
       // Save to localStorage
       localStorage.setItem('thaiDaiUser', JSON.stringify(selections));

@@ -1,0 +1,182 @@
+{
+  "meta": {
+    "track": "speak_only",
+    "romanization": "paiboon",
+    "version": 1,
+    "note": "Phonetics use Paiboon romanization. `tts` is the Thai script used ONLY for speech synthesis (never displayed in speak-only mode)."
+  },
+  "units": [
+    {
+      "id": "unit_1_survival_basics",
+      "title": "Unit 1: Street Survival & Politeness",
+      "description": "Essential courtesies and binary switches you need within 10 minutes of landing.",
+      "lessons": [
+        {
+          "id": "u1_l1_polite_social",
+          "title": "The Golden Words",
+          "items": [
+            {
+              "id": "w_hello",
+              "type": "audio_repeat",
+              "phonetic": "sà-wàt-dii {{particle}}",
+              "english": "Hello / Goodbye",
+              "tts": "สวัสดี"
+            },
+            {
+              "id": "w_thank_you",
+              "type": "audio_repeat",
+              "phonetic": "khòp-khun {{particle}}",
+              "english": "Thank you",
+              "tts": "ขอบคุณ"
+            },
+            {
+              "id": "w_sorry_excuse_me",
+              "type": "audio_repeat",
+              "phonetic": "khǎaw-thôot {{particle}}",
+              "english": "Excuse me / Sorry (use to flag waiters & drivers)",
+              "tts": "ขอโทษ"
+            },
+            {
+              "id": "w_mai_bpen_rai",
+              "type": "audio_repeat",
+              "phonetic": "mâi-pen-rai {{particle}}",
+              "english": "No problem / You're welcome",
+              "tts": "ไม่เป็นไร"
+            }
+          ]
+        },
+        {
+          "id": "u1_l2_switches",
+          "title": "The 4 Power Switches",
+          "items": [
+            {
+              "id": "w_yes_no",
+              "type": "audio_repeat",
+              "phonetic": "châi / mâi-châi",
+              "english": "Yes (correct) / No (not correct)",
+              "tts": "ใช่ ไม่ใช่"
+            },
+            {
+              "id": "w_can_cannot",
+              "type": "audio_repeat",
+              "phonetic": "dâi / mâi-dâi",
+              "english": "Can / Cannot",
+              "tts": "ได้ ไม่ได้"
+            },
+            {
+              "id": "w_want_dont_want",
+              "type": "audio_repeat",
+              "phonetic": "ao / mâi-ao",
+              "english": "I want / I don't want (for street orders)",
+              "tts": "เอา ไม่เอา"
+            },
+            {
+              "id": "w_have_dont_have",
+              "type": "audio_repeat",
+              "phonetic": "mii / mâi-mii",
+              "english": "Have / Don't have (ask if shop has item)",
+              "tts": "มี ไม่มี"
+            }
+          ]
+        },
+        {
+          "id": "u1_l3_numbers_money",
+          "title": "Numbers & Baht",
+          "items": [
+            { "id": "n_1_5", "type": "audio_repeat", "phonetic": "nèung, sǎawng, sǎam, sìi, hâa", "english": "1, 2, 3, 4, 5", "tts": "หนึ่ง สอง สาม สี่ ห้า" },
+            { "id": "n_6_10", "type": "audio_repeat", "phonetic": "hòk, jèt, bpàaet, gâo, sìp", "english": "6, 7, 8, 9, 10", "tts": "หก เจ็ด แปด เก้า สิบ" },
+            { "id": "n_multiples", "type": "audio_repeat", "phonetic": "yîi-sìp (20), rói (100), phan (1,000), bàat (Baht)", "english": "20, 100, 1000, Baht", "tts": "ยี่สิบ ร้อย พัน บาท" },
+            { "id": "phrase_how_much", "type": "phrase_builder", "chips": ["thâo-rài", "{{particle}}"], "phonetic": "thâo-rài {{particle}}?", "english": "How much?", "tts": "เท่าไหร่" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit_2_food_drink",
+      "title": "Unit 2: Ordering Food & Drinks",
+      "description": "Never get accidentally burned by chili again.",
+      "lessons": [
+        {
+          "id": "u2_l1_spiciness_customs",
+          "title": "Spice & Sweetness Control",
+          "items": [
+            { "id": "f_phet_noi", "type": "phrase_builder", "chips": ["phèt", "nòi", "{{particle}}"], "phonetic": "phèt nòi {{particle}}", "english": "A little spicy", "tts": "เผ็ดหน่อย" },
+            { "id": "f_mai_phet", "type": "phrase_builder", "chips": ["mâi", "phèt", "{{particle}}"], "phonetic": "mâi phèt {{particle}}", "english": "Not spicy at all", "tts": "ไม่เผ็ด" },
+            { "id": "f_mai_sai_namtan", "type": "audio_repeat", "phonetic": "mâi sài nám-taan", "english": "Don't add sugar", "tts": "ไม่ใส่น้ำตาล" },
+            { "id": "f_aroi", "type": "audio_repeat", "phonetic": "à-ròi mâak!", "english": "Very delicious!", "tts": "อร่อยมาก" }
+          ]
+        },
+        {
+          "id": "u2_l2_drinks_water",
+          "title": "Water & Bill",
+          "items": [
+            { "id": "f_water", "type": "audio_repeat", "phonetic": "nám-bplàao", "english": "Plain drinking water", "tts": "น้ำเปล่า" },
+            { "id": "f_ice", "type": "audio_repeat", "phonetic": "nám-khǎeng", "english": "Ice", "tts": "น้ำแข็ง" },
+            { "id": "f_bill", "type": "audio_repeat", "phonetic": "gèp-dtang / chék-bin {{particle}}", "english": "Check please / Bill", "tts": "เก็บตังค์ เช็คบิล" },
+            { "id": "f_takeaway", "type": "phrase_builder", "chips": ["sài", "thǔng", "{{particle}}"], "phonetic": "sài thǔng {{particle}}", "english": "Takeaway / In a bag", "tts": "ใส่ถุง" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unit_3_navigation_rides",
+      "title": "Unit 3: Taxis, Grab & Directions",
+      "description": "Direct your driver clearly in Bangkok traffic.",
+      "lessons": [
+        {
+          "id": "u3_l1_driver_commands",
+          "title": "Navigating the Ride",
+          "items": [
+            { "id": "t_straight", "type": "audio_repeat", "phonetic": "dtrong-bpai", "english": "Go straight", "tts": "ตรงไป" },
+            { "id": "t_turn_left", "type": "audio_repeat", "phonetic": "líao-sáai", "english": "Turn left", "tts": "เลี้ยวซ้าย" },
+            { "id": "t_turn_right", "type": "audio_repeat", "phonetic": "líao-khwǎa", "english": "Turn right", "tts": "เลี้ยวขวา" },
+            { "id": "t_stop_here", "type": "phrase_builder", "chips": ["jàawt", "dtrong-níi", "{{particle}}"], "phonetic": "jàawt dtrong-níi {{particle}}", "english": "Stop here / Pull over here", "tts": "จอดตรงนี้" },
+            { "id": "t_meter", "type": "audio_repeat", "phonetic": "châi mí-dtôe mǎi {{particle}}?", "english": "Will you use the meter?", "tts": "ใช้มิเตอร์ไหม" }
+          ]
+        }
+      ]
+    }
+  ],
+  "minimal_pairs": [
+    { "pair": ["khâao", "khǎao"], "english": ["rice", "white"], "tts": ["ข้าว", "ขาว"] },
+    { "pair": ["glâi", "glai"], "english": ["near", "far"], "tts": ["ใกล้", "ไกล"] },
+    { "pair": ["máa", "mǎa"], "english": ["horse", "dog"], "tts": ["ม้า", "หมา"] },
+    { "pair": ["khài", "khǎai"], "english": ["egg", "to sell"], "tts": ["ไข่", "ขาย"] },
+    { "pair": ["sǔea", "sûea"], "english": ["tiger", "shirt"], "tts": ["เสือ", "เสื้อ"] }
+  ],
+  "scenarios": [
+    {
+      "id": "s_bag",
+      "context": "7-Eleven cashier",
+      "phonetic": "ráp thǔng mǎi kráp?",
+      "english": "Do you want a plastic bag?",
+      "tts": "รับถุงไหมครับ",
+      "options": [
+        { "phonetic": "mâi-ao kráp", "english": "No thanks (don't want)", "tts": "ไม่เอาครับ", "correct": true },
+        { "phonetic": "ao kráp", "english": "Yes, a bag please", "tts": "เอาครับ", "correct": false }
+      ]
+    },
+    {
+      "id": "s_destination",
+      "context": "Taxi driver",
+      "phonetic": "bpai nǎi kráp?",
+      "english": "Where are you going?",
+      "tts": "ไปไหนครับ",
+      "options": [
+        { "phonetic": "bpai ... kráp", "english": "I'm going to [place]", "tts": "ไปครับ", "correct": true },
+        { "phonetic": "jàawt dtrong-níi kráp", "english": "Stop right here", "tts": "จอดตรงนี้ครับ", "correct": false }
+      ]
+    },
+    {
+      "id": "s_drink",
+      "context": "Restaurant server",
+      "phonetic": "ao nám à-rai kráp?",
+      "english": "What would you like to drink?",
+      "tts": "เอาน้ำอะไรครับ",
+      "options": [
+        { "phonetic": "nám-bplàao kráp", "english": "Plain water please", "tts": "น้ำเปล่าครับ", "correct": true },
+        { "phonetic": "nám-khǎeng kráp", "english": "Ice please", "tts": "น้ำแข็งครับ", "correct": false }
+      ]
+    }
+  ]
+}
