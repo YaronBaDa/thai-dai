@@ -5071,19 +5071,57 @@ function soCardHTML(card) {
   return '';
 }
 
+function soEnglishPool() {
+  const pool = [];
+  (SO_CURRICULUM.units || []).forEach(function (u) {
+    (u.lessons || []).forEach(function (l) {
+      (l.items || []).forEach(function (it) { pool.push(it.english); });
+    });
+  });
+  return pool;
+}
+
 function soHTMLRepeat(item) {
-  soCur = { tts: soTTS(item) };
+  soCur = { item: item, tts: soTTS(item), phase: 'shadow', answered: false };
   return '<div class="so-card">' +
     '<div class="so-phonetic">' + soRenderPhonetic(item.phonetic) + '</div>' +
-    '<div class="so-english">' + item.english + '</div>' +
     '<button class="so-audio-btn" onclick="soPlayCurrent()">🔊</button>' +
     '<div class="so-speed">' +
       '<button class="' + (soRate === 1 ? 'active' : '') + '" onclick="soSetRate(1)">1×</button>' +
       '<button class="' + (soRate === 0.75 ? 'active' : '') + '" onclick="soSetRate(0.75)">0.75×</button>' +
     '</div>' +
     '<div class="so-breakdown">' + soBreakdown(item.phonetic) + '</div>' +
-    '<button class="so-done-btn" onclick="soAdvance()">✓ I repeated this aloud</button>' +
+    '<button class="so-done-btn" id="soShadowBtn" onclick="soRevealQuiz()">✓ I repeated this aloud</button>' +
+    '<div id="soQuiz"></div>' +
   '</div>';
+}
+
+function soRevealQuiz() {
+  const quiz = document.getElementById('soQuiz');
+  if (!quiz) return;
+  const correct = soCur.item.english;
+  const dist = shuffleArray(soEnglishPool().filter(function (e) { return e !== correct; })).slice(0, 3);
+  const opts = shuffleArray([correct].concat(dist));
+  soCur.quizOpts = opts;
+  quiz.innerHTML = '<div class="so-prompt" style="margin-top:0.25rem;">What does it mean? 🤔</div>' +
+    '<div class="so-options">' + opts.map(function (e, i) {
+      return '<button class="so-option" data-i="' + i + '" onclick="soPickMeaning(' + i + ')">' + e + '</button>';
+    }).join('') + '</div>';
+  const btn = document.getElementById('soShadowBtn');
+  if (btn) btn.style.display = 'none';
+}
+
+function soPickMeaning(i) {
+  if (soCur.answered) return;
+  soCur.answered = true;
+  const correct = soCur.quizOpts[i] === soCur.item.english;
+  if (correct) soCorrect++;
+  document.querySelectorAll('#soQuiz .so-option').forEach(function (b) {
+    b.disabled = true;
+    if (soCur.quizOpts[parseInt(b.dataset.i)] === soCur.item.english) b.classList.add('correct');
+    else if (parseInt(b.dataset.i) === i) b.classList.add('wrong');
+  });
+  setTimeout(soAdvance, 1000);
 }
 
 function soHTMLBuild(item) {
@@ -5216,7 +5254,7 @@ function soCompleteLesson() {
   localStorage.setItem('thaiDaiSODone', JSON.stringify(done));
   closeLesson();
   document.querySelector('.lesson-footer').style.display = '';
-  alert('🎉 Lesson complete! ' + soCorrect + '/' + soAnswerable + ' correct.');
+  alert(soAnswerable > 0 ? '🎉 Lesson complete! ' + soCorrect + '/' + soAnswerable + ' correct.' : '🎉 Lesson complete! Nice shadowing!');
   const path = document.querySelector('.learning-path');
   if (path) path.innerHTML = soRenderPath();
 }
@@ -5231,7 +5269,7 @@ function soStartLesson(i) {
   soCurrentLessonIdx = i;
   soCards = shuffleArray(ls.cards.slice());
   soIndex = 0; soCorrect = 0;
-  soAnswerable = soCards.filter(function (c) { return c.kind !== 'audio_repeat'; }).length;
+  soAnswerable = soCards.length;
   document.getElementById('lessonModal').classList.add('active');
   document.body.classList.add('modal-open');
   document.querySelector('.lesson-footer').style.display = 'none';
