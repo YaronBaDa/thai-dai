@@ -269,7 +269,7 @@
     }
 
     .option-card.selected::after {
-      content: '✓';
+      content: '<i data-lucide="check"></i>';
       position: absolute;
       top: 8px;
       right: 8px;
@@ -695,6 +695,8 @@
       }
     }
   </style>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>svg.lucide{width:1em;height:1em;vertical-align:-0.125em;}</style>
 </head>
 <body>
   <div class="wizard-container">
@@ -712,28 +714,28 @@
       <!-- Step 1: Welcome -->
       <div class="wizard-step" id="step1">
         <div class="step-header">
-          <div class="step-icon">🎉</div>
+          <div class="step-icon"><i data-lucide="party-popper"></i></div>
           <h1>Welcome to Thai Dai!</h1>
           <p>Let's personalize your Thai learning journey. Just a few quick questions to get you started.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'experience', 'beginner')">
-            <div class="option-icon">🌱</div>
+            <div class="option-icon"><i data-lucide="sprout"></i></div>
             <div class="option-title">Complete Beginner</div>
             <div class="option-desc">I know almost nothing</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'some')">
-            <div class="option-icon">🌳</div>
+            <div class="option-icon"><i data-lucide="tree-deciduous"></i></div>
             <div class="option-title">Some Basics</div>
             <div class="option-desc">I know a few words/phrases</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'intermediate')">
-            <div class="option-icon">🌴</div>
+            <div class="option-icon"><i data-lucide="tree-palm"></i></div>
             <div class="option-title">Intermediate</div>
             <div class="option-desc">I can have simple conversations</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'advanced')">
-            <div class="option-icon">🌵</div>
+            <div class="option-icon"><i data-lucide="cactus"></i></div>
             <div class="option-title">Advanced</div>
             <div class="option-desc">I want to master fluency</div>
           </div>
@@ -743,28 +745,28 @@
       <!-- Step 2: Goals -->
       <div class="wizard-step" id="step2" style="display:none">
         <div class="step-header">
-          <div class="step-icon">🎯</div>
+          <div class="step-icon"><i data-lucide="target"></i></div>
           <h1>What brings you to Thailand?</h1>
           <p>This helps us focus on vocabulary that matters to you.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'goal', 'living')">
-            <div class="option-icon">🏠</div>
+            <div class="option-icon"><i data-lucide="house"></i></div>
             <div class="option-title">Living Here</div>
             <div class="option-desc">Daily life, shopping, services</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'work')">
-            <div class="option-icon">💼</div>
+            <div class="option-icon"><i data-lucide="briefcase"></i></div>
             <div class="option-title">Working</div>
             <div class="option-desc">Business and professional Thai</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'travel')">
-            <div class="option-icon">✈️</div>
+            <div class="option-icon"><i data-lucide="plane"></i></div>
             <div class="option-title">Traveling</div>
             <div class="option-desc">Getting around, food, hotels</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'relationship')">
-            <div class="option-icon">❤️</div>
+            <div class="option-icon"><i data-lucide="heart"></i></div>
             <div class="option-title">Relationship</div>
             <div class="option-desc">Family, friends, dating</div>
           </div>
@@ -774,29 +776,29 @@
       <!-- Step 3: Gender Selection (NEW) -->
       <div class="wizard-step" id="step3" style="display:none">
         <div class="step-header">
-          <div class="step-icon">👤</div>
+          <div class="step-icon"><i data-lucide="user"></i></div>
           <h1>Choose your polite particle</h1>
           <p>This determines how you'll speak politely in Thai. You can change this anytime in settings.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'gender', 'male')">
-            <div class="option-icon">👨</div>
+            <div class="option-icon"><i data-lucide="user"></i></div>
             <div class="option-title">Male</div>
             <div class="option-desc">I'll use ครับ (kráp) - "krab"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'female')">
-            <div class="option-icon">👩</div>
+            <div class="option-icon"><i data-lucide="user"></i></div>
             <div class="option-title">Female</div>
             <div class="option-desc">I'll use ค่ะ (khâ) - "ka"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'other')">
-            <div class="option-icon">✨</div>
+            <div class="option-icon"><i data-lucide="sparkles"></i></div>
             <div class="option-title">Prefer not to say</div>
             <div class="option-desc">Show me both forms</div>
           </div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
-          💡 Thai uses different polite endings based on your gender. This is essential for natural conversation!
+          <i data-lucide="lightbulb"></i> Thai uses different polite endings based on your gender. This is essential for natural conversation!
         </p>
       </div>
 
@@ -818,33 +820,33 @@
           <div class="range-value" id="timeLabel">15 minutes per day</div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
-          💡 Consistency beats intensity! Even 10 minutes daily builds strong habits.
+          <i data-lucide="lightbulb"></i> Consistency beats intensity! Even 10 minutes daily builds strong habits.
         </p>
       </div>
 
       <!-- Step 5: Focus Areas -->
       <div class="wizard-step" id="step5" style="display:none">
         <div class="step-header">
-          <div class="step-icon">🎯</div>
+          <div class="step-icon"><i data-lucide="target"></i></div>
           <h1>What do you want to focus on?</h1>
           <p>Select all that apply — you can always change this later.</p>
         </div>
         <div class="tags-container" id="focusTags">
-          <span class="tag selected" onclick="toggleTag(this)">🍜 Food & Dining</span>
-          <span class="tag selected" onclick="toggleTag(this)">🚕 Transportation</span>
-          <span class="tag" onclick="toggleTag(this)">🛒 Shopping</span>
-          <span class="tag" onclick="toggleTag(this)">📞 Phone Conversations</span>
-          <span class="tag" onclick="toggleTag(this)">🏛️ Temples & Culture</span>
-          <span class="tag" onclick="toggleTag(this)">📱 Social Media Thai</span>
-          <span class="tag" onclick="toggleTag(this)">🙏 Polite Forms</span>
-          <span class="tag" onclick="toggleTag(this)">🌈 Slang & Casual</span>
+          <span class="tag selected" onclick="toggleTag(this)"><i data-lucide="soup"></i> Food & Dining</span>
+          <span class="tag selected" onclick="toggleTag(this)"><i data-lucide="car"></i> Transportation</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="shopping-cart"></i> Shopping</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="phone"></i> Phone Conversations</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="landmark"></i> Temples & Culture</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="smartphone"></i> Social Media Thai</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="hand-heart"></i> Polite Forms</span>
+          <span class="tag" onclick="toggleTag(this)"><i data-lucide="rainbow"></i> Slang & Casual</span>
         </div>
       </div>
 
       <!-- Step 6: Name -->
       <div class="wizard-step" id="step6" style="display:none">
         <div class="step-header">
-          <div class="step-icon">👤</div>
+          <div class="step-icon"><i data-lucide="user"></i></div>
           <h1>What should we call you?</h1>
           <p>Personalize your learning experience.</p>
         </div>
@@ -852,35 +854,35 @@
           <input type="text" class="text-input" id="userName" placeholder="Enter your name (or nickname)" maxlength="20">
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
-          Don't worry, you can skip this if you prefer! 😊
+          Don't worry, you can skip this if you prefer! <i data-lucide="smile"></i>
         </p>
       </div>
 
       <!-- Step 7: Motivation -->
       <div class="wizard-step" id="step7" style="display:none">
         <div class="step-header">
-          <div class="step-icon">🔥</div>
+          <div class="step-icon"><i data-lucide="flame"></i></div>
           <h1>What's your motivation?</h1>
           <p>We'll remind you of this when things get challenging!</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'motivation', 'connect')">
-            <div class="option-icon">🤝</div>
+            <div class="option-icon"><i data-lucide="handshake"></i></div>
             <div class="option-title">Connect with Locals</div>
             <div class="option-desc">Build genuine relationships</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'independence')">
-            <div class="option-icon">🙌</div>
+            <div class="option-icon"><i data-lucide="party-popper"></i></div>
             <div class="option-title">Be Independent</div>
             <div class="option-desc">Navigate life without help</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'respect')">
-            <div class="option-icon">🏰</div>
+            <div class="option-icon"><i data-lucide="castle"></i></div>
             <div class="option-title">Show Respect</div>
             <div class="option-desc">Honor the local culture</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'fun')">
-            <div class="option-icon">🎉</div>
+            <div class="option-icon"><i data-lucide="party-popper"></i></div>
             <div class="option-title">Have More Fun</div>
             <div class="option-desc">Unlock new experiences</div>
           </div>
@@ -890,24 +892,24 @@
       <!-- Step 8: Learning Track -->
       <div class="wizard-step" id="step8" style="display:none">
         <div class="step-header">
-          <div class="step-icon">🗣️</div>
+          <div class="step-icon"><i data-lucide="mic"></i></div>
           <h1>How do you want to learn?</h1>
           <p>Pick a mode. You can switch anytime from the app's settings.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_only')">
-            <div class="option-icon">🎧</div>
+            <div class="option-icon"><i data-lucide="headphones"></i></div>
             <div class="option-title">Speak Only</div>
             <div class="option-desc">Audio-first — no Thai script, just sound &amp; tone curves</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_and_read')">
-            <div class="option-icon">📖</div>
+            <div class="option-icon"><i data-lucide="book-open"></i></div>
             <div class="option-title">Speak + Read</div>
             <div class="option-desc">Full course with Thai script &amp; spelling</div>
           </div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
-          💡 Speak Only is perfect if you just want to communicate fast on the street.
+          <i data-lucide="lightbulb"></i> Speak Only is perfect if you just want to communicate fast on the street.
         </p>
       </div>
 
@@ -936,13 +938,13 @@
 
     <!-- Results -->
     <div class="results-container" id="resultsContainer">
-      <div class="results-avatar" id="resultsAvatar">🎉</div>
+      <div class="results-avatar" id="resultsAvatar"><i data-lucide="party-popper"></i></div>
       <h2>Your Learning Path is Ready!</h2>
       <p>Here's what we've prepared for you, <span id="resultsName">friend</span>:</p>
       
       <div class="learning-path">
         <div class="path-header">
-          <div class="path-icon">🎯</div>
+          <div class="path-icon"><i data-lucide="target"></i></div>
           <div class="path-info">
             <h3 id="pathTitle">Thai Explorer Path</h3>
             <p id="pathSubtitle">Perfect for beginners living in Thailand</p>
@@ -965,13 +967,13 @@
       </div>
 
       <ul class="results-checklist" style="list-style:none">
-        <li><span class="check">✓</span> Personalized vocabulary based on your goals</li>
-        <li><span class="check">✓</span> Bite-sized lessons matching your schedule</li>
-        <li><span class="check">✓</span> Smart reminders to build your streak</li>
-        <li><span class="check">✓</span> Progress tracking and achievements</li>
+        <li><span class="check"><i data-lucide="check"></i></span> Personalized vocabulary based on your goals</li>
+        <li><span class="check"><i data-lucide="check"></i></span> Bite-sized lessons matching your schedule</li>
+        <li><span class="check"><i data-lucide="check"></i></span> Smart reminders to build your streak</li>
+        <li><span class="check"><i data-lucide="check"></i></span> Progress tracking and achievements</li>
       </ul>
 
-      <a href="learn.html" class="btn btn-primary" style="font-size:1.125rem;padding:1rem 3rem">Start My First Lesson 🚀</a>
+      <a href="learn.html" class="btn btn-primary" style="font-size:1.125rem;padding:1rem 3rem">Start My First Lesson <i data-lucide="rocket"></i></a>
     </div>
 
     <!-- Navigation -->
@@ -1118,5 +1120,6 @@
     // Initialize
     updateProgress();
   </script>
+<script>if(window.lucide)lucide.createIcons();</script>
 </body>
 </html>

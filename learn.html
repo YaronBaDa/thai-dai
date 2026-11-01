@@ -357,7 +357,7 @@
     }
 
     .lesson-circle.completed::after {
-      content: '✓';
+      content: '<i data-lucide="check"></i>';
       position: absolute;
       bottom: -4px;
       right: -4px;
@@ -1180,6 +1180,8 @@
 .so-syl { color:var(--accent-terracotta); font-family:var(--font-phonetic); }
 </style>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>svg.lucide{width:1em;height:1em;vertical-align:-0.125em;}.so-audio-btn svg.lucide{width:28px;height:28px;}</style>
 </head>
 <body>
   <div class="app-container">
@@ -1189,12 +1191,12 @@
         <span></span><span></span><span></span>
       </button>
       <a href="index.html" class="mobile-logo">
-        <span class="mobile-logo-icon">🐘</span>
+        <span class="mobile-logo-icon"><i data-lucide="landmark"></i></span>
         Thai Dai
       </a>
       <div class="mobile-stats">
-        <span>🔥 12</span>
-        <span>💎 245</span>
+        <span><i data-lucide="flame"></i> 12</span>
+        <span><i data-lucide="gem"></i> 245</span>
       </div>
     </div>
 
@@ -1220,31 +1222,31 @@
         <ul class="nav-menu">
           <li class="nav-item">
             <a href="#" class="nav-link active">
-              <span class="nav-icon">🎯</span>
+              <span class="nav-icon"><i data-lucide="target"></i></span>
               Learn
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-icon">🏆</span>
+              <span class="nav-icon"><i data-lucide="trophy"></i></span>
               Leaderboard
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-icon">📚</span>
+              <span class="nav-icon"><i data-lucide="book-open"></i></span>
               Practice
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-icon">👤</span>
+              <span class="nav-icon"><i data-lucide="user"></i></span>
               Profile
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <span class="nav-icon">⚙️</span>
+              <span class="nav-icon"><i data-lucide="settings"></i></span>
               Settings
             </a>
           </li>
@@ -1254,13 +1256,13 @@
       <div id="authStatus" style="margin-bottom:0.75rem;font-size:0.75rem;"></div>
       <div class="stat-row" style="margin-bottom:0.5rem;">
         <button id="reviewBtn" onclick="startReviewSession()" style="display:none;width:100%;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:0.5rem;font-weight:800;font-size:0.875rem;cursor:pointer;align-items:center;justify-content:center;gap:0.5rem;">
-          🔁 Review <span id="reviewCount" style="background:#fff;color:var(--accent);border-radius:999px;padding:0.125rem 0.5rem;font-size:0.75rem;">0</span>
+          <i data-lucide="rotate-ccw"></i> Review <span id="reviewCount" style="background:#fff;color:var(--accent);border-radius:999px;padding:0.125rem 0.5rem;font-size:0.75rem;">0</span>
         </button>
       </div>
         <div class="stat-row">
-          <div class="stat-item fire">🔥 12</div>
-          <div class="stat-item gem">💎 245</div>
-          <div class="stat-item heart">💜 5</div>
+          <div class="stat-item fire"><i data-lucide="flame"></i> 12</div>
+          <div class="stat-item gem"><i data-lucide="gem"></i> 245</div>
+          <div class="stat-item heart"><i data-lucide="heart"></i> 5</div>
         </div>
       </div>
     </aside>
@@ -1287,7 +1289,7 @@
         <!-- Unit 1: Basics -->
         <div class="unit-section">
           <div class="unit-header">
-            <div class="unit-icon">👋</div>
+            <div class="unit-icon"><i data-lucide="hand"></i></div>
             <div class="unit-info">
               <h3>Unit 1: Basics</h3>
               <p>Greetings and Introductions • Complete!</p>
@@ -1295,17 +1297,17 @@
           </div>
           <div class="lessons-path">
             <div class="lesson-node" onclick="startLesson(1)">
-              <div class="lesson-circle completed">👋</div>
+              <div class="lesson-circle completed"><i data-lucide="hand"></i></div>
               <div class="lesson-label">Hello</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(2)">
-              <div class="lesson-circle completed">🙏</div>
+              <div class="lesson-circle completed"><i data-lucide="hand-heart"></i></div>
               <div class="lesson-label">Thanks</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(3)">
-              <div class="lesson-circle completed">👤</div>
+              <div class="lesson-circle completed"><i data-lucide="user"></i></div>
               <div class="lesson-label">Name</div>
             </div>
           </div>
@@ -1314,7 +1316,7 @@
         <!-- Unit 2: Numbers -->
         <div class="unit-section">
           <div class="unit-header blue">
-            <div class="unit-icon">🔢</div>
+            <div class="unit-icon"><i data-lucide="hash"></i></div>
             <div class="unit-info">
               <h3>Unit 2: Numbers</h3>
               <p>Counting and Prices • Complete!</p>
@@ -1322,12 +1324,12 @@
           </div>
           <div class="lessons-path">
             <div class="lesson-node" onclick="startLesson(4)">
-              <div class="lesson-circle completed">1⃣</div>
+              <div class="lesson-circle completed"><i data-lucide="hash"></i></div>
               <div class="lesson-label">1-10</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(5)">
-              <div class="lesson-circle completed">💰</div>
+              <div class="lesson-circle completed"><i data-lucide="coins"></i></div>
               <div class="lesson-label">Money</div>
             </div>
           </div>
@@ -1336,7 +1338,7 @@
         <!-- Unit 3: Food & Dining (Current) -->
         <div class="unit-section">
           <div class="unit-header">
-            <div class="unit-icon">🍜</div>
+            <div class="unit-icon"><i data-lucide="soup"></i></div>
             <div class="unit-info">
               <h3>Unit 3: Food & Dining</h3>
               <p>Ordering at Restaurants • In Progress</p>
@@ -1344,22 +1346,22 @@
           </div>
           <div class="lessons-path">
             <div class="lesson-node" onclick="startLesson(6)">
-              <div class="lesson-circle completed">🍜</div>
+              <div class="lesson-circle completed"><i data-lucide="soup"></i></div>
               <div class="lesson-label">Noodles</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(7)">
-              <div class="lesson-circle completed">🥤</div>
+              <div class="lesson-circle completed"><i data-lucide="cup-soda"></i></div>
               <div class="lesson-label">Drinks</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(8)">
-              <div class="lesson-circle current">🌶️</div>
+              <div class="lesson-circle current"><i data-lucide="flame"></i></div>
               <div class="lesson-label">Spicy?</div>
             </div>
             <div class="lesson-connector"></div>
             <div class="lesson-node" onclick="startLesson(9)">
-              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-circle locked"><i data-lucide="lock"></i></div>
               <div class="lesson-label">Order</div>
             </div>
           </div>
@@ -1368,7 +1370,7 @@
         <!-- Unit 4: Getting Around (Now Unlocked with Content) -->
         <div class="unit-section">
           <div class="unit-header purple">
-            <div class="unit-icon">🚕</div>
+            <div class="unit-icon"><i data-lucide="car"></i></div>
             <div class="unit-info">
               <h3>Unit 4: Getting Around</h3>
               <p>Transportation and Directions • 4 Lessons</p>
@@ -1376,22 +1378,22 @@
           </div>
           <div class="lessons-path">
             <div class="lesson-node" onclick="startLesson(10)">
-              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-circle locked"><i data-lucide="lock"></i></div>
               <div class="lesson-label">Hail Taxi</div>
             </div>
             <div class="lesson-connector locked"></div>
             <div class="lesson-node" onclick="startLesson(11)">
-              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-circle locked"><i data-lucide="lock"></i></div>
               <div class="lesson-label">Directions</div>
             </div>
             <div class="lesson-connector locked"></div>
             <div class="lesson-node" onclick="startLesson(12)">
-              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-circle locked"><i data-lucide="lock"></i></div>
               <div class="lesson-label">Negotiate</div>
             </div>
             <div class="lesson-connector locked"></div>
             <div class="lesson-node" onclick="startLesson(13)">
-              <div class="lesson-circle locked">🔒</div>
+              <div class="lesson-circle locked"><i data-lucide="lock"></i></div>
               <div class="lesson-label">Pay & Go</div>
             </div>
           </div>
@@ -1403,38 +1405,38 @@
   <!-- Mobile Bottom Nav -->
   <nav class="mobile-bottom-nav">
     <a href="#" class="active">
-      <span class="nav-icon">🎯</span>
+      <span class="nav-icon"><i data-lucide="target"></i></span>
       <span>Learn</span>
     </a>
     <a href="#">
-      <span class="nav-icon">🏆</span>
+      <span class="nav-icon"><i data-lucide="trophy"></i></span>
       <span>Leaderboard</span>
     </a>
     <a href="#">
-      <span class="nav-icon">📚</span>
+      <span class="nav-icon"><i data-lucide="book-open"></i></span>
       <span>Practice</span>
     </a>
     <a href="#">
-      <span class="nav-icon">👤</span>
+      <span class="nav-icon"><i data-lucide="user"></i></span>
       <span>Profile</span>
     </a>
   </nav>
 
   <!-- Floating Start Button -->
-  <button class="start-floating" onclick="startCurrentLesson()">🚀 Start Lesson</button>
+  <button class="start-floating" onclick="startCurrentLesson()"><i data-lucide="rocket"></i> Start Lesson</button>
 
   <!-- Lesson Modal -->
   <div class="lesson-modal" id="lessonModal">
     <div class="lesson-container">
       <!-- Header -->
       <div class="lesson-header">
-        <button class="close-btn" onclick="closeLesson()">✕</button>
+        <button class="close-btn" onclick="closeLesson()"><i data-lucide="x"></i></button>
         <div class="lesson-progress">
           <div class="lesson-progress-bar">
             <div class="lesson-progress-fill" id="progressFill" style="width: 0%"></div>
           </div>
         </div>
-        <div class="lesson-hearts">💜 5</div>
+        <div class="lesson-hearts"><i data-lucide="heart"></i> 5</div>
       </div>
 
       <!-- Exercise Area -->
@@ -1442,33 +1444,33 @@
         <div class="exercise-prompt">
           <h2 id="questionText">What does "เผ็ด" mean?</h2>
           <p>Select the correct answer</p>
-          <button class="audio-btn" onclick="playAudio()">🔊</button>
+          <button class="audio-btn" onclick="playAudio()"><i data-lucide="volume-2"></i></button>
         </div>
 
         <div class="answer-options" id="answerOptions">
           <div class="answer-option" onclick="selectAnswer(this)">
-            <div class="option-image">🌶️</div>
+            <div class="option-image"><i data-lucide="flame"></i></div>
             <div class="option-text">
               <div class="thai">เผ็ด</div>
               <div class="romanized">(pet)</div>
             </div>
           </div>
           <div class="answer-option" onclick="selectAnswer(this)">
-            <div class="option-image">🍯</div>
+            <div class="option-image"><i data-lucide="droplet"></i></div>
             <div class="option-text">
               <div class="thai">หวาน</div>
               <div class="romanized">(wan)</div>
             </div>
           </div>
           <div class="answer-option" onclick="selectAnswer(this)">
-            <div class="option-image">🥪</div>
+            <div class="option-image"><i data-lucide="sandwich"></i></div>
             <div class="option-text">
               <div class="thai">เปรี้ยว</div>
               <div class="romanized">(priaw)</div>
             </div>
           </div>
           <div class="answer-option" onclick="selectAnswer(this)">
-            <div class="option-image">🧂</div>
+            <div class="option-image"><i data-lucide="sparkles"></i></div>
             <div class="option-text">
               <div class="thai">เค็ม</div>
               <div class="romanized">(kem)</div>
@@ -1497,28 +1499,28 @@
           "value": "hello",
           "thai": "สวัสดี",
           "romanized": "(sà-wàt-dii)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "Low + low + mid tones"
         },
         {
           "value": "goodbye",
           "thai": "ลาก่อน",
           "romanized": "(laa-gàwn)",
-          "icon": "🚶",
+          "icon": "walk",
           "note": "Mid + falling tones"
         },
         {
           "value": "thank you",
           "thai": "ขอบคุณ",
           "romanized": "(khòp-khun)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + mid tones"
         },
         {
           "value": "sorry",
           "thai": "ขอโทษ",
           "romanized": "(khǎaw-thôot)",
-          "icon": "😔",
+          "icon": "frown",
           "note": "Rising + falling tones"
         }
       ]
@@ -1532,28 +1534,28 @@
           "value": "sawasdee krab",
           "thai": "สวัสดีครับ",
           "romanized": "(sà-wàt-dii kráp)",
-          "icon": "🙋‍♂️",
+          "icon": "user",
           "note": "Male polite particle: kráp"
         },
         {
           "value": "sawasdee ka",
           "thai": "สวัสดีค่ะ",
           "romanized": "(sà-wàt-dii khâ)",
-          "icon": "🙋‍♀️",
+          "icon": "user",
           "note": "Female polite particle: khâ (falling tone)"
         },
         {
           "value": "sawasdee",
           "thai": "สวัสดี",
           "romanized": "(sà-wàt-dii)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "Casual, no particle"
         },
         {
           "value": "sawasdee na",
           "thai": "สวัสดีนะ",
           "romanized": "(sà-wàt-dii ná)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Casual friendly: ná"
         }
       ]
@@ -1567,28 +1569,28 @@
           "value": "sawasdee ka",
           "thai": "สวัสดีค่ะ",
           "romanized": "(sà-wàt-dii khâ)",
-          "icon": "🙋‍♀️",
+          "icon": "user",
           "note": "Female polite particle: khâ (falling tone)"
         },
         {
           "value": "sawasdee krab",
           "thai": "สวัสดีครับ",
           "romanized": "(sà-wàt-dii kráp)",
-          "icon": "🙋‍♂️",
+          "icon": "user",
           "note": "Male polite particle: kráp"
         },
         {
           "value": "sawasdee",
           "thai": "สวัสดี",
           "romanized": "(sà-wàt-dii)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "Casual, no particle"
         },
         {
           "value": "sawasdee jao",
           "thai": "สวัสดีเจ้า",
           "romanized": "(sà-wàt-dii jâo)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Northern Thai style"
         }
       ]
@@ -1602,28 +1604,28 @@
           "value": "you",
           "thai": "คุณ",
           "romanized": "(khun)",
-          "icon": "👤",
+          "icon": "user",
           "note": "Mid tone - polite \"you\""
         },
         {
           "value": "I",
           "thai": "ผม",
           "romanized": "(phǒm)",
-          "icon": "🧑",
+          "icon": "user",
           "note": "Rising tone - male \"I\""
         },
         {
           "value": "he",
           "thai": "เขา",
           "romanized": "(khǎo)",
-          "icon": "👨",
+          "icon": "user",
           "note": "Rising tone"
         },
         {
           "value": "friend",
           "thai": "เพื่อน",
           "romanized": "(phêuan)",
-          "icon": "🤝",
+          "icon": "handshake",
           "note": "Falling tone"
         }
       ]
@@ -1637,28 +1639,28 @@
           "value": "goodbye",
           "thai": "ลาก่อน",
           "romanized": "(laa-gàwn)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "Mid + falling tones"
         },
         {
           "value": "see you",
           "thai": "แล้วเจอกัน",
           "romanized": "(láew joo-gan)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "High + mid + mid tones"
         },
         {
           "value": "take care",
           "thai": "ดูแลตัวเอง",
           "romanized": "(doo-lae dtuua-eng)",
-          "icon": "💕",
+          "icon": "heart",
           "note": "Mid + mid + mid + mid tones"
         },
         {
           "value": "goodnight",
           "thai": "ราตรีสวัสดิ์",
           "romanized": "(raa-dtrii sà-wàt)",
-          "icon": "🌙",
+          "icon": "moon",
           "note": "Mid + mid + low + low tones"
         }
       ]
@@ -1674,28 +1676,28 @@
           "value": "khob khun",
           "thai": "ขอบคุณ",
           "romanized": "(khòp-khun)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + mid tones"
         },
         {
           "value": "hello",
           "thai": "สวัสดี",
           "romanized": "(sà-wàt-dii)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "Low + low + mid tones"
         },
         {
           "value": "sorry",
           "thai": "ขอโทษ",
           "romanized": "(khǎaw-thôot)",
-          "icon": "😔",
+          "icon": "frown",
           "note": "Rising + falling tones"
         },
         {
           "value": "goodbye",
           "thai": "ลาก่อน",
           "romanized": "(laa-gàwn)",
-          "icon": "🚶",
+          "icon": "walk",
           "note": "Mid + falling tones"
         }
       ]
@@ -1709,28 +1711,28 @@
           "value": "thank you very much female",
           "thai": "ขอบคุณมากค่ะ",
           "romanized": "(khòp-khun mâak khâ)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + mid + fall + fall - female"
         },
         {
           "value": "thank you very much male",
           "thai": "ขอบคุณมากครับ",
           "romanized": "(khòp-khun mâak kráp)",
-          "icon": "🙇‍♂️",
+          "icon": "user",
           "note": "Low + mid + fall + high - male"
         },
         {
           "value": "thank you",
           "thai": "ขอบคุณ",
           "romanized": "(khòp-khun)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + mid tones"
         },
         {
           "value": "youre welcome",
           "thai": "ยินดี",
           "romanized": "(yin-dii)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Mid + mid tones"
         }
       ]
@@ -1744,28 +1746,28 @@
           "value": "youre welcome",
           "thai": "ยินดี",
           "romanized": "(yin-dii)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Mid + mid tones"
         },
         {
           "value": "yes",
           "thai": "ใช่",
           "romanized": "(châi)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Falling tone"
         },
         {
           "value": "no",
           "thai": "ไม่",
           "romanized": "(mâi)",
-          "icon": "❌",
+          "icon": "x",
           "note": "Falling tone"
         },
         {
           "value": "ok",
           "thai": "โอเค",
           "romanized": "(oo-khay)",
-          "icon": "👍",
+          "icon": "thumbs-up",
           "note": "Mid + mid tones"
         }
       ]
@@ -1779,28 +1781,28 @@
           "value": "sorry",
           "thai": "ขอโทษ",
           "romanized": "(khǎaw-thôot)",
-          "icon": "😔",
+          "icon": "frown",
           "note": "Rising + falling tones"
         },
         {
           "value": "excuse me",
           "thai": "ขอโทษนะ",
           "romanized": "(khǎaw-thôot ná)",
-          "icon": "🙋",
+          "icon": "circle",
           "note": "Rising + fall + high"
         },
         {
           "value": "thank you",
           "thai": "ขอบคุณ",
           "romanized": "(khòp-khun)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + mid tones"
         },
         {
           "value": "please",
           "thai": "กรุณา",
           "romanized": "(gà-rú-naa)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Low + high + mid tones"
         }
       ]
@@ -1814,28 +1816,28 @@
           "value": "its okay",
           "thai": "ไม่เป็นไร",
           "romanized": "(mâi pen rai)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Falling + mid + mid tones"
         },
         {
           "value": "no problem",
           "thai": "ไม่มีปัญหา",
           "romanized": "(mâi mii pan-hǎa)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Falling + mid + mid + rising tones"
         },
         {
           "value": "yes",
           "thai": "ใช่",
           "romanized": "(châi)",
-          "icon": "👍",
+          "icon": "thumbs-up",
           "note": "Falling tone"
         },
         {
           "value": "impossible",
           "thai": "เป็นไปไม่ได้",
           "romanized": "(pen pai mâi dâi)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Mid + mid + falling + falling tones"
         }
       ]
@@ -1851,28 +1853,28 @@
           "value": "pom cheu",
           "thai": "ผมชื่อ...",
           "romanized": "(phǒm chêu...)",
-          "icon": "🙋‍♂️",
+          "icon": "user",
           "note": "Male: phǒm chêu (rising + falling tones)"
         },
         {
           "value": "chan cheu",
           "thai": "ฉันชื่อ...",
           "romanized": "(chǎn chêu...)",
-          "icon": "🙋‍♀️",
+          "icon": "user",
           "note": "Female: chǎn chêu (rising + falling tones)"
         },
         {
           "value": "khun cheu",
           "thai": "คุณชื่อ...",
           "romanized": "(khun chêu...)",
-          "icon": "👤",
+          "icon": "user",
           "note": "Your name is..."
         },
         {
           "value": "phom ma jaak",
           "thai": "ผมมาจาก...",
           "romanized": "(phǒm maa jàak...)",
-          "icon": "🌍",
+          "icon": "globe",
           "note": "I'm from..."
         }
       ]
@@ -1886,28 +1888,28 @@
           "value": "chan cheu",
           "thai": "ฉันชื่อ...",
           "romanized": "(chǎn chêu...)",
-          "icon": "🙋‍♀️",
+          "icon": "user",
           "note": "Female: chǎn chêu (rising + falling tones)"
         },
         {
           "value": "pom cheu",
           "thai": "ผมชื่อ...",
           "romanized": "(phǒm chêu...)",
-          "icon": "🙋‍♂️",
+          "icon": "user",
           "note": "Male: phǒm chêu (rising + falling tones)"
         },
         {
           "value": "di chan cheu",
           "thai": "ดิฉันชื่อ...",
           "romanized": "(di-chǎn chêu...)",
-          "icon": "👩",
+          "icon": "user",
           "note": "Very formal female"
         },
         {
           "value": "rao cheu",
           "thai": "เราชื่อ...",
           "romanized": "(rao chêu...)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Casual \"I\""
         }
       ]
@@ -1921,28 +1923,28 @@
           "value": "khun cheu arai",
           "thai": "คุณชื่ออะไร",
           "romanized": "(khun chêu à-rai)",
-          "icon": "❓",
+          "icon": "circle-help",
           "note": "Polite question"
         },
         {
           "value": "khun pai nai",
           "thai": "คุณไปไหน",
           "romanized": "(khun pai nǎi)",
-          "icon": "🚶",
+          "icon": "walk",
           "note": "Where are you going?"
         },
         {
           "value": "khun maa jaak nai",
           "thai": "คุณมาจากไหน",
           "romanized": "(khun maa jàak nǎi)",
-          "icon": "🏠",
+          "icon": "house",
           "note": "Where are you from?"
         },
         {
           "value": "khun sabai dee mai",
           "thai": "คุณสบายดีไหม",
           "romanized": "(khun sà-baai dii mǎi)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "How are you?"
         }
       ]
@@ -1956,28 +1958,28 @@
           "value": "nice to meet you",
           "thai": "ดีใจที่ได้รู้จัก",
           "romanized": "(dii jai thîi dâi rúu-jàk)",
-          "icon": "🤝",
+          "icon": "handshake",
           "note": "Mid + mid + falling + falling + high + low tones"
         },
         {
           "value": "see you later",
           "thai": "แล้วเจอกัน",
           "romanized": "(láew joo gan)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "High + mid + mid tones"
         },
         {
           "value": "take care",
           "thai": "ดูแลตัวเอง",
           "romanized": "(doo lae dtuua eng)",
-          "icon": "💕",
+          "icon": "heart",
           "note": "Mid + mid + mid + mid tones"
         },
         {
           "value": "good luck",
           "thai": "โชคดี",
           "romanized": "(chóok dii)",
-          "icon": "🍀",
+          "icon": "clover",
           "note": "High + mid tones"
         }
       ]
@@ -1991,28 +1993,28 @@
           "value": "how are you",
           "thai": "สบายดีไหม",
           "romanized": "(sà-baai dii mǎi)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Low + mid + mid + rising tones"
         },
         {
           "value": "where are you",
           "thai": "อยู่ไหน",
           "romanized": "(yùu nǎi)",
-          "icon": "📍",
+          "icon": "map-pin",
           "note": "Falling + rising tones"
         },
         {
           "value": "who are you",
           "thai": "เป็นใคร",
           "romanized": "(pen khrai)",
-          "icon": "🤔",
+          "icon": "circle-help",
           "note": "Mid + mid tones"
         },
         {
           "value": "are you okay",
           "thai": "ไม่เป็นไรใช่ไหม",
           "romanized": "(mâi pen rai châi mǎi)",
-          "icon": "😊",
+          "icon": "smile",
           "note": "Falling + mid + mid + falling + rising tones"
         }
       ]
@@ -2028,28 +2030,28 @@
           "value": "one",
           "thai": "หนึ่ง",
           "romanized": "(nèung)",
-          "icon": "🎯",
+          "icon": "target",
           "note": "Low tone"
         },
         {
           "value": "two",
           "thai": "สอง",
           "romanized": "(sǎawng)",
-          "icon": "📌",
+          "icon": "pin",
           "note": "Rising tone"
         },
         {
           "value": "three",
           "thai": "สาม",
           "romanized": "(sǎam)",
-          "icon": "🔷",
+          "icon": "diamond",
           "note": "Rising tone"
         },
         {
           "value": "five",
           "thai": "ห้า",
           "romanized": "(hâa)",
-          "icon": "🟢",
+          "icon": "circle",
           "note": "Falling tone"
         }
       ]
@@ -2063,28 +2065,28 @@
           "value": "four",
           "thai": "สี่",
           "romanized": "(sìi)",
-          "icon": "⭐",
+          "icon": "star",
           "note": "Low tone"
         },
         {
           "value": "five",
           "thai": "ห้า",
           "romanized": "(hâa)",
-          "icon": "💡",
+          "icon": "lightbulb",
           "note": "Falling tone"
         },
         {
           "value": "seven",
           "thai": "เจ็ด",
           "romanized": "(jèt)",
-          "icon": "🔔",
+          "icon": "bell",
           "note": "Low tone"
         },
         {
           "value": "ten",
           "thai": "สิบ",
           "romanized": "(sìp)",
-          "icon": "🧵",
+          "icon": "waypoints",
           "note": "Low tone"
         }
       ]
@@ -2098,28 +2100,28 @@
           "value": "five",
           "thai": "ห้า",
           "romanized": "(hâa)",
-          "icon": "🎵",
+          "icon": "music",
           "note": "Falling tone"
         },
         {
           "value": "six",
           "thai": "หก",
           "romanized": "(hòk)",
-          "icon": "🌟",
+          "icon": "sparkle",
           "note": "Low tone"
         },
         {
           "value": "four",
           "thai": "สี่",
           "romanized": "(sìi)",
-          "icon": "🎲",
+          "icon": "dices",
           "note": "Low tone"
         },
         {
           "value": "nine",
           "thai": "เก้า",
           "romanized": "(kâo)",
-          "icon": "📎",
+          "icon": "paperclip",
           "note": "Falling tone"
         }
       ]
@@ -2133,28 +2135,28 @@
           "value": "sip",
           "thai": "สิบ",
           "romanized": "(sìp)",
-          "icon": "🎭",
+          "icon": "drama",
           "note": "Low tone"
         },
         {
           "value": "roi",
           "thai": "ร้อย",
           "romanized": "(rói)",
-          "icon": "🎺",
+          "icon": "music",
           "note": "High tone (100)"
         },
         {
           "value": "nueng",
           "thai": "หนึ่ง",
           "romanized": "(nèung)",
-          "icon": "🧩",
+          "icon": "puzzle",
           "note": "Low tone"
         },
         {
           "value": "kao",
           "thai": "เก้า",
           "romanized": "(kâo)",
-          "icon": "🍀",
+          "icon": "clover",
           "note": "Falling tone"
         }
       ]
@@ -2168,28 +2170,28 @@
           "value": "twenty",
           "thai": "ยี่สิบ",
           "romanized": "(yîi sìp)",
-          "icon": "🎀",
+          "icon": "gift",
           "note": "Falling + low tones"
         },
         {
           "value": "twelve",
           "thai": "สิบสอง",
           "romanized": "(sìp sǎawng)",
-          "icon": "🔮",
+          "icon": "wand",
           "note": "Low + rising tones"
         },
         {
           "value": "two",
           "thai": "สอง",
           "romanized": "(sǎawng)",
-          "icon": "🎨",
+          "icon": "palette",
           "note": "Rising tone"
         },
         {
           "value": "twenty one",
           "thai": "ยี่สิบเอ็ด",
           "romanized": "(yîi sìp èt)",
-          "icon": "🏆",
+          "icon": "trophy",
           "note": "Falling + low + low tones"
         }
       ]
@@ -2205,28 +2207,28 @@
           "value": "how much",
           "thai": "เท่าไหร่",
           "romanized": "(thâu rài)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Falling + low tones"
         },
         {
           "value": "how many baht",
           "thai": "กี่บาท",
           "romanized": "(kìi bàat)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Low + low tones"
         },
         {
           "value": "how many",
           "thai": "กี่",
           "romanized": "(kìi)",
-          "icon": "❓",
+          "icon": "circle-help",
           "note": "Low tone"
         },
         {
           "value": "too much",
           "thai": "มากไป",
           "romanized": "(mâak pai)",
-          "icon": "🫨",
+          "icon": "activity",
           "note": "Falling + mid tones"
         }
       ]
@@ -2240,28 +2242,28 @@
           "value": "expensive",
           "thai": "แพง",
           "romanized": "(phaaeng)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid tone"
         },
         {
           "value": "cheap",
           "thai": "ถูก",
           "romanized": "(thùuk)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Low tone"
         },
         {
           "value": "good",
           "thai": "ดี",
           "romanized": "(dii)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Mid tone"
         },
         {
           "value": "bad",
           "thai": "ไม่ดี",
           "romanized": "(mâi dii)",
-          "icon": "❌",
+          "icon": "x",
           "note": "Falling + mid tones"
         }
       ]
@@ -2275,28 +2277,28 @@
           "value": "can discount",
           "thai": "ลดได้ไหม",
           "romanized": "(lót dâi mǎi)",
-          "icon": "🎯",
+          "icon": "target",
           "note": "High + falling + rising tones"
         },
         {
           "value": "expensive",
           "thai": "แพง",
           "romanized": "(phaaeng)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid tone"
         },
         {
           "value": "fixed price",
           "thai": "ราคาเดียว",
           "romanized": "(raa-khaa diao)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Mid + mid + mid tones"
         },
         {
           "value": "too much",
           "thai": "มากไป",
           "romanized": "(mâak pai)",
-          "icon": "🫨",
+          "icon": "activity",
           "note": "Falling + mid tones"
         }
       ]
@@ -2310,28 +2312,28 @@
           "value": "cheap",
           "thai": "ถูก",
           "romanized": "(thùuk)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Low tone"
         },
         {
           "value": "expensive",
           "thai": "แพง",
           "romanized": "(phaaeng)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid tone"
         },
         {
           "value": "correct",
           "thai": "ถูกต้อง",
           "romanized": "(thùuk dtông)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Low + falling tones"
         },
         {
           "value": "free",
           "thai": "ฟรี",
           "romanized": "(free)",
-          "icon": "🆓",
+          "icon": "circle",
           "note": "Mid tone (loanword)"
         }
       ]
@@ -2345,28 +2347,28 @@
           "value": "want buy this female",
           "thai": "ฉันเอาอันนี้ค่ะ",
           "romanized": "(chǎn ao an-níi khâ)",
-          "icon": "🛍️",
+          "icon": "shopping-bag",
           "note": "Rise + mid + mid + fall + fall"
         },
         {
           "value": "want buy this male",
           "thai": "ผมเอาอันนี้ครับ",
           "romanized": "(phǒm ao an-níi kráp)",
-          "icon": "🛍️",
+          "icon": "shopping-bag",
           "note": "Rise + mid + mid + fall + high"
         },
         {
           "value": "dont want",
           "thai": "ไม่เอา",
           "romanized": "(mâi ao)",
-          "icon": "🙅",
+          "icon": "ban",
           "note": "Falling + mid tones"
         },
         {
           "value": "just looking",
           "thai": "ดูก่อน",
           "romanized": "(doo gàwn)",
-          "icon": "👀",
+          "icon": "eye",
           "note": "Mid + falling tones"
         }
       ]
@@ -2382,28 +2384,28 @@
           "value": "spicy",
           "thai": "เผ็ด",
           "romanized": "(pèt)",
-          "icon": "🌶️",
+          "icon": "flame",
           "note": "Low tone"
         },
         {
           "value": "sweet",
           "thai": "หวาน",
           "romanized": "(wǎn)",
-          "icon": "🍯",
+          "icon": "droplet",
           "note": "Rising tone"
         },
         {
           "value": "sour",
           "thai": "เปรี้ยว",
           "romanized": "(prîaw)",
-          "icon": "🥪",
+          "icon": "sandwich",
           "note": "Falling tone"
         },
         {
           "value": "salty",
           "thai": "เค็ม",
           "romanized": "(khem)",
-          "icon": "🧂",
+          "icon": "sparkles",
           "note": "Mid tone"
         }
       ]
@@ -2417,28 +2419,28 @@
           "value": "sweet",
           "thai": "หวาน",
           "romanized": "(wǎn)",
-          "icon": "🍯",
+          "icon": "droplet",
           "note": "Rising tone"
         },
         {
           "value": "spicy",
           "thai": "เผ็ด",
           "romanized": "(pèt)",
-          "icon": "🌶️",
+          "icon": "flame",
           "note": "Low tone"
         },
         {
           "value": "bitter",
           "thai": "ขม",
           "romanized": "(khǒm)",
-          "icon": "☕",
+          "icon": "coffee",
           "note": "Rising tone"
         },
         {
           "value": "bland",
           "thai": "จืด",
           "romanized": "(jùut)",
-          "icon": "🥣",
+          "icon": "soup",
           "note": "Low tone"
         }
       ]
@@ -2452,28 +2454,28 @@
           "value": "sour",
           "thai": "เปรี้ยว",
           "romanized": "(prîaw)",
-          "icon": "🍋",
+          "icon": "lemon",
           "note": "Falling tone"
         },
         {
           "value": "sweet",
           "thai": "หวาน",
           "romanized": "(wǎn)",
-          "icon": "🍯",
+          "icon": "droplet",
           "note": "Rising tone"
         },
         {
           "value": "salty",
           "thai": "เค็ม",
           "romanized": "(khem)",
-          "icon": "🧂",
+          "icon": "sparkles",
           "note": "Mid tone"
         },
         {
           "value": "spicy",
           "thai": "เผ็ด",
           "romanized": "(pèt)",
-          "icon": "🌶️",
+          "icon": "flame",
           "note": "Low tone"
         }
       ]
@@ -2487,28 +2489,28 @@
           "value": "bland",
           "thai": "จืด",
           "romanized": "(jùut)",
-          "icon": "🥣",
+          "icon": "soup",
           "note": "Low tone"
         },
         {
           "value": "salty",
           "thai": "เค็ม",
           "romanized": "(khem)",
-          "icon": "🧂",
+          "icon": "sparkles",
           "note": "Mid tone"
         },
         {
           "value": "delicious",
           "thai": "อร่อย",
           "romanized": "(à-ròi)",
-          "icon": "😋",
+          "icon": "utensils",
           "note": "Low tone"
         },
         {
           "value": "smelly",
           "thai": "เหม็น",
           "romanized": "(měn)",
-          "icon": "👃",
+          "icon": "activity",
           "note": "Rising tone"
         }
       ]
@@ -2522,28 +2524,28 @@
           "value": "not spicy",
           "thai": "ไม่เผ็ด",
           "romanized": "(mâi pèt)",
-          "icon": "🌶️❌",
+          "icon": "circle",
           "note": "Falling + low tones"
         },
         {
           "value": "very spicy",
           "thai": "เผ็ดมาก",
           "romanized": "(pèt mâak)",
-          "icon": "🔥",
+          "icon": "flame",
           "note": "Low + falling tones"
         },
         {
           "value": "a little spicy",
           "thai": "เผ็ดนิดหน่อย",
           "romanized": "(pèt nít nòi)",
-          "icon": "🌶️",
+          "icon": "flame",
           "note": "Low + high + low tones"
         },
         {
           "value": "too sweet",
           "thai": "หวานมาก",
           "romanized": "(wǎn mâak)",
-          "icon": "🍯",
+          "icon": "droplet",
           "note": "Rising + falling tones"
         }
       ]
@@ -2559,28 +2561,28 @@
           "value": "ao",
           "thai": "เอา",
           "romanized": "(ao)",
-          "icon": "🙋",
+          "icon": "circle",
           "note": "Mid tone"
         },
         {
           "value": "mai",
           "thai": "ไม่",
           "romanized": "(mâi)",
-          "icon": "❌",
+          "icon": "x",
           "note": "Falling tone"
         },
         {
           "value": "dai",
           "thai": "ได้",
           "romanized": "(dâi)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Falling tone"
         },
         {
           "value": "chob",
           "thai": "ชอบ",
           "romanized": "(chòp)",
-          "icon": "❤️",
+          "icon": "heart",
           "note": "Low tone"
         }
       ]
@@ -2594,28 +2596,28 @@
           "value": "would like male",
           "thai": "ขอ...ครับ",
           "romanized": "(khǎaw... kráp)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Rising + high - polite male"
         },
         {
           "value": "would like female",
           "thai": "ขอ...ค่ะ",
           "romanized": "(khǎaw... khâ)",
-          "icon": "🙏",
+          "icon": "hand-heart",
           "note": "Rising + falling - polite female"
         },
         {
           "value": "want casual",
           "thai": "เอา",
           "romanized": "(ao)",
-          "icon": "🙋",
+          "icon": "circle",
           "note": "Mid tone - casual"
         },
         {
           "value": "give me",
           "thai": "ให้หน่อย",
           "romanized": "(hâi nòi)",
-          "icon": "🤲",
+          "icon": "hand",
           "note": "Falling + low tones"
         }
       ]
@@ -2629,28 +2631,28 @@
           "value": "dont want",
           "thai": "ไม่เอา",
           "romanized": "(mâi ao)",
-          "icon": "🙅",
+          "icon": "ban",
           "note": "Falling + mid tones"
         },
         {
           "value": "want",
           "thai": "เอา",
           "romanized": "(ao)",
-          "icon": "🙋",
+          "icon": "circle",
           "note": "Mid tone"
         },
         {
           "value": "cannot",
           "thai": "ไม่ได้",
           "romanized": "(mâi dâi)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Falling + falling tones"
         },
         {
           "value": "dont like",
           "thai": "ไม่ชอบ",
           "romanized": "(mâi chòp)",
-          "icon": "👎",
+          "icon": "thumbs-down",
           "note": "Falling + low tones"
         }
       ]
@@ -2664,28 +2666,28 @@
           "value": "like",
           "thai": "ชอบ",
           "romanized": "(chòp)",
-          "icon": "❤️",
+          "icon": "heart",
           "note": "Low tone"
         },
         {
           "value": "love",
           "thai": "รัก",
           "romanized": "(rák)",
-          "icon": "💖",
+          "icon": "heart",
           "note": "High tone"
         },
         {
           "value": "want",
           "thai": "เอา",
           "romanized": "(ao)",
-          "icon": "🙋",
+          "icon": "circle",
           "note": "Mid tone"
         },
         {
           "value": "hate",
           "thai": "เกลียด",
           "romanized": "(glìat)",
-          "icon": "😠",
+          "icon": "angry",
           "note": "Low tone"
         }
       ]
@@ -2699,28 +2701,28 @@
           "value": "delicious",
           "thai": "อร่อย",
           "romanized": "(à-ròi)",
-          "icon": "😋",
+          "icon": "utensils",
           "note": "Low tone"
         },
         {
           "value": "yummy",
           "thai": "น่ากิน",
           "romanized": "(nâa gin)",
-          "icon": "🤤",
+          "icon": "utensils",
           "note": "Falling + mid tones"
         },
         {
           "value": "full",
           "thai": "อิ่ม",
           "romanized": "(ìm)",
-          "icon": "🤰",
+          "icon": "baby",
           "note": "Low tone"
         },
         {
           "value": "hungry",
           "thai": "หิว",
           "romanized": "(hǐu)",
-          "icon": "🍽️",
+          "icon": "utensils",
           "note": "Rising tone"
         }
       ]
@@ -2736,28 +2738,28 @@
           "value": "rice",
           "thai": "ข้าว",
           "romanized": "(khâo)",
-          "icon": "🍚",
+          "icon": "soup",
           "note": "Falling tone"
         },
         {
           "value": "noodles",
           "thai": "ก๋วยเตี๋ยว",
           "romanized": "(gǎo dtǐaw)",
-          "icon": "🍜",
+          "icon": "soup",
           "note": "Rising + rising tones"
         },
         {
           "value": "water",
           "thai": "น้ำ",
           "romanized": "(nám)",
-          "icon": "💧",
+          "icon": "droplet",
           "note": "High tone"
         },
         {
           "value": "ice",
           "thai": "น้ำแข็ง",
           "romanized": "(nám khǎeng)",
-          "icon": "🧊",
+          "icon": "snowflake",
           "note": "High + low tones"
         }
       ]
@@ -2771,28 +2773,28 @@
           "value": "rice",
           "thai": "ข้าว",
           "romanized": "(khâo)",
-          "icon": "🍚",
+          "icon": "soup",
           "note": "Falling tone"
         },
         {
           "value": "soup",
           "thai": "น้ำซุป",
           "romanized": "(nám sûp)",
-          "icon": "🥣",
+          "icon": "soup",
           "note": "High + high tones"
         },
         {
           "value": "noodles",
           "thai": "ก๋วยเตี๋ยว",
           "romanized": "(gǎo dtǐaw)",
-          "icon": "🍜",
+          "icon": "soup",
           "note": "Rising + rising tones"
         },
         {
           "value": "bread",
           "thai": "ขนมปัง",
           "romanized": "(khà-nǒm pang)",
-          "icon": "🍞",
+          "icon": "croissant",
           "note": "Low + low + mid tones"
         }
       ]
@@ -2806,28 +2808,28 @@
           "value": "noodles",
           "thai": "ก๋วยเตี๋ยว",
           "romanized": "(gǎo dtǐaw)",
-          "icon": "🍜",
+          "icon": "soup",
           "note": "Rising + rising tones"
         },
         {
           "value": "rice",
           "thai": "ข้าว",
           "romanized": "(khâo)",
-          "icon": "🍚",
+          "icon": "soup",
           "note": "Falling tone"
         },
         {
           "value": "curry",
           "thai": "แกง",
           "romanized": "(gaeng)",
-          "icon": "🍛",
+          "icon": "soup",
           "note": "Mid tone"
         },
         {
           "value": "stir fry",
           "thai": "ผัด",
           "romanized": "(phàt)",
-          "icon": "🥘",
+          "icon": "cooking-pot",
           "note": "Low tone"
         }
       ]
@@ -2841,28 +2843,28 @@
           "value": "pad thai",
           "thai": "ผัดไทย",
           "romanized": "(phàt thai)",
-          "icon": "🍜",
+          "icon": "soup",
           "note": "Low + mid tones"
         },
         {
           "value": "green curry",
           "thai": "แกงเขียวหวาน",
           "romanized": "(gaeng khǐaw wǎan)",
-          "icon": "🍛",
+          "icon": "soup",
           "note": "Mid + rising + rising tones"
         },
         {
           "value": "mango rice",
           "thai": "ข้าวเหนียวมะม่วง",
           "romanized": "(khâaw nǐaw má-mûang)",
-          "icon": "🥭",
+          "icon": "apple",
           "note": "Falling + rising + high + falling tones"
         },
         {
           "value": "tom yum",
           "thai": "ต้มยำ",
           "romanized": "(dtôm yam)",
-          "icon": "🥘",
+          "icon": "cooking-pot",
           "note": "Falling + mid tones"
         }
       ]
@@ -2876,28 +2878,28 @@
           "value": "vegetarian female",
           "thai": "ฉันกินเจค่ะ",
           "romanized": "(chǎn gin jay khâ)",
-          "icon": "🥗",
+          "icon": "salad",
           "note": "Rise + mid + mid + falling"
         },
         {
           "value": "vegetarian male",
           "thai": "ผมกินเจครับ",
           "romanized": "(phǒm gin jay kráp)",
-          "icon": "🥗",
+          "icon": "salad",
           "note": "Rise + mid + mid + high"
         },
         {
           "value": "i eat meat",
           "thai": "ฉันกินเนื้อ",
           "romanized": "(chǎn gin nûea)",
-          "icon": "🥩",
+          "icon": "beef",
           "note": "Rise + mid + high tones"
         },
         {
           "value": "i eat everything",
           "thai": "ฉันกินได้ทุกอย่าง",
           "romanized": "(chǎn gin dâi thúk yàang)",
-          "icon": "🍽️",
+          "icon": "utensils",
           "note": "Rise + mid + falling + high + falling"
         }
       ]
@@ -2913,28 +2915,28 @@
           "value": "very spicy",
           "thai": "เผ็ดมาก",
           "romanized": "(pèt mâak)",
-          "icon": "🔥",
+          "icon": "flame",
           "note": "Low + falling tones"
         },
         {
           "value": "not spicy",
           "thai": "ไม่เผ็ด",
           "romanized": "(mâi pèt)",
-          "icon": "🌶️❌",
+          "icon": "circle",
           "note": "Falling + low tones"
         },
         {
           "value": "a little",
           "thai": "นิดหน่อย",
           "romanized": "(nít nòi)",
-          "icon": "👆",
+          "icon": "pointer",
           "note": "High + low tones"
         },
         {
           "value": "delicious",
           "thai": "อร่อย",
           "romanized": "(à-ròi)",
-          "icon": "😋",
+          "icon": "utensils",
           "note": "Low tone"
         }
       ]
@@ -2948,28 +2950,28 @@
           "value": "very spicy",
           "thai": "เผ็ดมาก",
           "romanized": "(pèt mâak)",
-          "icon": "🔥",
+          "icon": "flame",
           "note": "Low + falling tones"
         },
         {
           "value": "not spicy",
           "thai": "ไม่เผ็ด",
           "romanized": "(mâi pèt)",
-          "icon": "🌶️❌",
+          "icon": "circle",
           "note": "Falling + low tones"
         },
         {
           "value": "too salty",
           "thai": "เค็มมาก",
           "romanized": "(khem mâak)",
-          "icon": "🧂",
+          "icon": "sparkles",
           "note": "Mid + falling tones"
         },
         {
           "value": "too sweet",
           "thai": "หวานมาก",
           "romanized": "(wǎn mâak)",
-          "icon": "🍯",
+          "icon": "droplet",
           "note": "Rising + falling tones"
         }
       ]
@@ -2983,28 +2985,28 @@
           "value": "a little",
           "thai": "นิดหน่อย",
           "romanized": "(nít nòi)",
-          "icon": "🤏",
+          "icon": "pointer",
           "note": "High + low tones"
         },
         {
           "value": "a lot",
           "thai": "มาก",
           "romanized": "(mâak)",
-          "icon": "⬆️",
+          "icon": "arrow-up",
           "note": "Falling tone"
         },
         {
           "value": "none",
           "thai": "ไม่มี",
           "romanized": "(mâi mii)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Falling + mid tones"
         },
         {
           "value": "enough",
           "thai": "พอ",
           "romanized": "(phɔɔ)",
-          "icon": "✋",
+          "icon": "hand",
           "note": "Mid tone"
         }
       ]
@@ -3018,28 +3020,28 @@
           "value": "check please male",
           "thai": "เช็คบิลครับ",
           "romanized": "(chék bin kráp)",
-          "icon": "🧾",
+          "icon": "receipt",
           "note": "Low + mid + high"
         },
         {
           "value": "check please female",
           "thai": "เช็คบิลค่ะ",
           "romanized": "(chék bin khâ)",
-          "icon": "🧾",
+          "icon": "receipt",
           "note": "Low + mid + falling"
         },
         {
           "value": "how much",
           "thai": "เท่าไหร่",
           "romanized": "(thâu rài)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Falling + low tones"
         },
         {
           "value": "expensive",
           "thai": "แพง",
           "romanized": "(phaaeng)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid tone"
         }
       ]
@@ -3053,28 +3055,28 @@
           "value": "im full female",
           "thai": "ฉันอิ่มแล้วค่ะ",
           "romanized": "(chǎn ìm láew khâ)",
-          "icon": "🤰",
+          "icon": "baby",
           "note": "Rise + low + high + falling"
         },
         {
           "value": "im full male",
           "thai": "ผมอิ่มแล้วครับ",
           "romanized": "(phǒm ìm láew kráp)",
-          "icon": "🤰",
+          "icon": "baby",
           "note": "Rise + low + high + high"
         },
         {
           "value": "im hungry",
           "thai": "ฉันหิว",
           "romanized": "(chǎn hǐu)",
-          "icon": "🍽️",
+          "icon": "utensils",
           "note": "Rise + rising tones"
         },
         {
           "value": "still want more",
           "thai": "เอาอีก",
           "romanized": "(ao ìik)",
-          "icon": "🍴",
+          "icon": "utensils",
           "note": "Mid + low tones"
         }
       ]
@@ -3090,28 +3092,28 @@
           "value": "meter",
           "thai": "เปิดมิเตอร์",
           "romanized": "(pòoet mi-dtoo)",
-          "icon": "🚕",
+          "icon": "car",
           "note": "Low + mid + mid tones"
         },
         {
           "value": "expensive",
           "thai": "แพง",
           "romanized": "(phaaeng)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid tone"
         },
         {
           "value": "cheap",
           "thai": "ถูก",
           "romanized": "(thùuk)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Low tone"
         },
         {
           "value": "fast",
           "thai": "เร็ว",
           "romanized": "(reo)",
-          "icon": "⚡",
+          "icon": "zap",
           "note": "Mid tone"
         }
       ]
@@ -3125,28 +3127,28 @@
           "value": "go to",
           "thai": "ไปที่...",
           "romanized": "(pai thîi...)",
-          "icon": "📍",
+          "icon": "map-pin",
           "note": "Mid + falling tones"
         },
         {
           "value": "from where",
           "thai": "มาจาก",
           "romanized": "(maa jàak)",
-          "icon": "🛣️",
+          "icon": "route",
           "note": "Mid + low tones"
         },
         {
           "value": "stop here",
           "thai": "จอดตรงนี้",
           "romanized": "(jàwt dtrong níi)",
-          "icon": "🛑",
+          "icon": "circle-stop",
           "note": "Low + mid + high tones"
         },
         {
           "value": "turn around",
           "thai": "กลับรถ",
           "romanized": "(klàp rót)",
-          "icon": "🚗",
+          "icon": "car",
           "note": "Low + high tones"
         }
       ]
@@ -3160,28 +3162,28 @@
           "value": "how many baht",
           "thai": "กี่บาท",
           "romanized": "(kìi bàat)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Low + low tones"
         },
         {
           "value": "how far",
           "thai": "ไกลไหม",
           "romanized": "(glai mǎi)",
-          "icon": "🛣️",
+          "icon": "route",
           "note": "Mid + rising tones"
         },
         {
           "value": "how long",
           "thai": "นานไหม",
           "romanized": "(naan mǎi)",
-          "icon": "⏰",
+          "icon": "circle",
           "note": "Mid + rising tones"
         },
         {
           "value": "how many km",
           "thai": "กี่กิโล",
           "romanized": "(kìi gì-loo)",
-          "icon": "🏁",
+          "icon": "flag",
           "note": "Low + low + mid tones"
         }
       ]
@@ -3195,28 +3197,28 @@
           "value": "is it far",
           "thai": "ไกลไหม",
           "romanized": "(glai mǎi)",
-          "icon": "🛣️",
+          "icon": "route",
           "note": "Mid + rising tones"
         },
         {
           "value": "is it near",
           "thai": "ใกล้ไหม",
           "romanized": "(glâi mǎi)",
-          "icon": "📍",
+          "icon": "map-pin",
           "note": "Falling + rising tones"
         },
         {
           "value": "is it long",
           "thai": "นานไหม",
           "romanized": "(naan mǎi)",
-          "icon": "⏰",
+          "icon": "circle",
           "note": "Mid + rising tones"
         },
         {
           "value": "is it traffic",
           "thai": "รถติดไหม",
           "romanized": "(rót dtìt mǎi)",
-          "icon": "🚦",
+          "icon": "traffic-cone",
           "note": "High + low + rising tones"
         }
       ]
@@ -3230,28 +3232,28 @@
           "value": "hurry male",
           "thai": "เร็วหน่อยครับ",
           "romanized": "(reo nòi kráp)",
-          "icon": "🏃",
+          "icon": "run",
           "note": "Mid + low + high"
         },
         {
           "value": "hurry female",
           "thai": "เร็วหน่อยค่ะ",
           "romanized": "(reo nòi khâ)",
-          "icon": "🏃",
+          "icon": "run",
           "note": "Mid + low + falling"
         },
         {
           "value": "slow down",
           "thai": "ช้าลง",
           "romanized": "(châa long)",
-          "icon": "🐢",
+          "icon": "turtle",
           "note": "Falling + mid tones"
         },
         {
           "value": "stop",
           "thai": "หยุด",
           "romanized": "(yùut)",
-          "icon": "🛑",
+          "icon": "circle-stop",
           "note": "Low tone"
         }
       ]
@@ -3267,28 +3269,28 @@
           "value": "left",
           "thai": "เลี้ยวซ้าย",
           "romanized": "(líaw sáai)",
-          "icon": "⬅️",
+          "icon": "arrow-left",
           "note": "High + high tones"
         },
         {
           "value": "right",
           "thai": "เลี้ยวขวา",
           "romanized": "(líaw khwǎa)",
-          "icon": "➡️",
+          "icon": "arrow-right",
           "note": "High + rising tones"
         },
         {
           "value": "straight",
           "thai": "ตรงไป",
           "romanized": "(dtrong pai)",
-          "icon": "⬆️",
+          "icon": "arrow-up",
           "note": "Mid + mid tones"
         },
         {
           "value": "uturn",
           "thai": "กลับรถ",
           "romanized": "(klàp rót)",
-          "icon": "🔄",
+          "icon": "refresh-cw",
           "note": "Low + high tones"
         }
       ]
@@ -3302,28 +3304,28 @@
           "value": "stop here",
           "thai": "จอดตรงนี้",
           "romanized": "(jàwt dtrong níi)",
-          "icon": "🛑",
+          "icon": "circle-stop",
           "note": "Low + mid + high tones"
         },
         {
           "value": "go ahead",
           "thai": "ไปเลย",
           "romanized": "(pai loei)",
-          "icon": "➡️",
+          "icon": "arrow-right",
           "note": "Mid + mid tones"
         },
         {
           "value": "slow down",
           "thai": "ช้าลง",
           "romanized": "(châa long)",
-          "icon": "🚕",
+          "icon": "car",
           "note": "Falling + mid tones"
         },
         {
           "value": "speed up",
           "thai": "เร็วขึ้น",
           "romanized": "(reo khêun)",
-          "icon": "🏎️",
+          "icon": "car",
           "note": "Mid + falling tones"
         }
       ]
@@ -3337,28 +3339,28 @@
           "value": "turn right",
           "thai": "เลี้ยวขวา",
           "romanized": "(líaw khwǎa)",
-          "icon": "➡️",
+          "icon": "arrow-right",
           "note": "High + rising tones"
         },
         {
           "value": "turn left",
           "thai": "เลี้ยวซ้าย",
           "romanized": "(líaw sáai)",
-          "icon": "⬅️",
+          "icon": "arrow-left",
           "note": "High + high tones"
         },
         {
           "value": "at corner",
           "thai": "ตรงมุม",
           "romanized": "(dtrong mum)",
-          "icon": "🚦",
+          "icon": "traffic-cone",
           "note": "Mid + mid tones"
         },
         {
           "value": "next to",
           "thai": "ข้าง",
           "romanized": "(khâang)",
-          "icon": "📳",
+          "icon": "vibrate",
           "note": "Falling tone"
         }
       ]
@@ -3372,28 +3374,28 @@
           "value": "straight",
           "thai": "ตรงไป",
           "romanized": "(dtrong pai)",
-          "icon": "⬆️",
+          "icon": "arrow-up",
           "note": "Mid + mid tones"
         },
         {
           "value": "turn",
           "thai": "เลี้ยว",
           "romanized": "(líaw)",
-          "icon": "↪️",
+          "icon": "corner-up-right",
           "note": "High tone"
         },
         {
           "value": "stop",
           "thai": "หยุด",
           "romanized": "(yùut)",
-          "icon": "🛑",
+          "icon": "circle-stop",
           "note": "Low tone"
         },
         {
           "value": "arrived",
           "thai": "ถึงแล้ว",
           "romanized": "(thǐung láew)",
-          "icon": "📍",
+          "icon": "map-pin",
           "note": "Rising + high tones"
         }
       ]
@@ -3407,28 +3409,28 @@
           "value": "uturn",
           "thai": "กลับรถ",
           "romanized": "(klàp rót)",
-          "icon": "🔄",
+          "icon": "refresh-cw",
           "note": "Low + high tones"
         },
         {
           "value": "go back",
           "thai": "กลับไป",
           "romanized": "(klàp pai)",
-          "icon": "🔙",
+          "icon": "undo-2",
           "note": "Low + mid tones"
         },
         {
           "value": "continue",
           "thai": "ตรงไป",
           "romanized": "(dtrong pai)",
-          "icon": "⬆️",
+          "icon": "arrow-up",
           "note": "Mid + mid tones"
         },
         {
           "value": "turn around",
           "thai": "หมุนกลับ",
           "romanized": "(mǔn klàp)",
-          "icon": "🔄",
+          "icon": "refresh-cw",
           "note": "Rising + low tones"
         }
       ]
@@ -3444,28 +3446,28 @@
           "value": "expensive",
           "thai": "แพงไป",
           "romanized": "(phaaeng pai)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Mid + mid tones"
         },
         {
           "value": "cheap",
           "thai": "ถูก",
           "romanized": "(thùuk)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Low tone"
         },
         {
           "value": "can discount",
           "thai": "ลดได้ไหม",
           "romanized": "(lót dâi mǎi)",
-          "icon": "🎯",
+          "icon": "target",
           "note": "High + falling + rising tones"
         },
         {
           "value": "fixed price",
           "thai": "ราคาต่อรอง",
           "romanized": "(raa-khaa dtòr rong)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Mid + mid + low + mid tones"
         }
       ]
@@ -3479,28 +3481,28 @@
           "value": "can cheaper",
           "thai": "ถูกกว่านี้ได้ไหม",
           "romanized": "(thùuk gwàa níi dâi mǎi)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Low + low + high + falling + rising tones"
         },
         {
           "value": "too expensive",
           "thai": "แพงไป",
           "romanized": "(phaaeng pai)",
-          "icon": "😱",
+          "icon": "circle-alert",
           "note": "Mid + mid tones"
         },
         {
           "value": "I dont want",
           "thai": "ไม่เอา",
           "romanized": "(mâi ao)",
-          "icon": "🙅",
+          "icon": "ban",
           "note": "Falling + mid tones"
         },
         {
           "value": "okay deal",
           "thai": "ได้เลย",
           "romanized": "(dâi loei)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Falling + mid tones"
         }
       ]
@@ -3514,28 +3516,28 @@
           "value": "what price",
           "thai": "ราคาเท่าไหร่",
           "romanized": "(raa-khaa thâu rài)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Mid + mid + falling + low tones"
         },
         {
           "value": "discount",
           "thai": "ส่วนลด",
           "romanized": "(sùan lót)",
-          "icon": "🏷️",
+          "icon": "tag",
           "note": "Low + high tones"
         },
         {
           "value": "normal price",
           "thai": "ราคาปกติ",
           "romanized": "(raa-khaa bpòk-gà-dtì)",
-          "icon": "📋",
+          "icon": "clipboard-list",
           "note": "Mid + mid + low + low + low tones"
         },
         {
           "value": "special price",
           "thai": "ราคาพิเศษ",
           "romanized": "(raa-khaa phí-sèet)",
-          "icon": "⭐",
+          "icon": "star",
           "note": "Mid + mid + high + low tones"
         }
       ]
@@ -3549,28 +3551,28 @@
           "value": "deal male",
           "thai": "ได้ครับ",
           "romanized": "(dâi kráp)",
-          "icon": "🤝",
+          "icon": "handshake",
           "note": "Falling + high tones"
         },
         {
           "value": "deal female",
           "thai": "ได้ค่ะ",
           "romanized": "(dâi khâ)",
-          "icon": "🤝",
+          "icon": "handshake",
           "note": "Falling + falling tones"
         },
         {
           "value": "no deal",
           "thai": "ไม่ได้",
           "romanized": "(mâi dâi)",
-          "icon": "🚫",
+          "icon": "ban",
           "note": "Falling + falling tones"
         },
         {
           "value": "maybe",
           "thai": "อาจจะ",
           "romanized": "(àat-jà)",
-          "icon": "🤔",
+          "icon": "circle-help",
           "note": "Low + low tones"
         }
       ]
@@ -3584,28 +3586,28 @@
           "value": "find another female",
           "thai": "ฉันหาคันอื่นค่ะ",
           "romanized": "(chǎn hǎa khan èun khâ)",
-          "icon": "🚕",
+          "icon": "car",
           "note": "Rise + high + mid + fall + falling"
         },
         {
           "value": "find another male",
           "thai": "ผมหาคันอื่นครับ",
           "romanized": "(phǒm hǎa khan èun kráp)",
-          "icon": "🚕",
+          "icon": "car",
           "note": "Rise + high + mid + fall + high"
         },
         {
           "value": "ill wait",
           "thai": "ฉันรอค่ะ",
           "romanized": "(chǎn rɔɔ khâ)",
-          "icon": "⏳",
+          "icon": "circle",
           "note": "Rise + mid + falling tones"
         },
         {
           "value": "too far",
           "thai": "ไกลเกิน",
           "romanized": "(glai gəən)",
-          "icon": "🛣️",
+          "icon": "route",
           "note": "Mid + mid tones"
         }
       ]
@@ -3621,28 +3623,28 @@
           "value": "here male",
           "thai": "นี่ครับ",
           "romanized": "(nîi kráp)",
-          "icon": "💳",
+          "icon": "credit-card",
           "note": "Falling + high tones"
         },
         {
           "value": "here female",
           "thai": "นี่ค่ะ",
           "romanized": "(nîi khâ)",
-          "icon": "💳",
+          "icon": "credit-card",
           "note": "Falling + falling tones"
         },
         {
           "value": "keep change",
           "thai": "ไม่ต้องทอน",
           "romanized": "(mâi dtông thɔɔn)",
-          "icon": "👍",
+          "icon": "thumbs-up",
           "note": "Falling + falling + mid tones"
         },
         {
           "value": "receipt",
           "thai": "ใบเสร็จ",
           "romanized": "(bai sèt)",
-          "icon": "🧾",
+          "icon": "receipt",
           "note": "Mid + low tones"
         }
       ]
@@ -3656,28 +3658,28 @@
           "value": "check bill",
           "thai": "เช็คบิล",
           "romanized": "(chék bin)",
-          "icon": "🧹",
+          "icon": "broom",
           "note": "Low + mid tones"
         },
         {
           "value": "cash",
           "thai": "เงินสด",
           "romanized": "(ngǐn sòt)",
-          "icon": "💵",
+          "icon": "banknote",
           "note": "Rising + low tones"
         },
         {
           "value": "credit card",
           "thai": "บัตรเครดิต",
           "romanized": "(bàt khray-dît)",
-          "icon": "💳",
+          "icon": "credit-card",
           "note": "Mid + mid tones"
         },
         {
           "value": "tip",
           "thai": "ทิป",
           "romanized": "(thíp)",
-          "icon": "💸",
+          "icon": "wallet",
           "note": "Low tone"
         }
       ]
@@ -3691,28 +3693,28 @@
           "value": "keep change",
           "thai": "ไม่ต้องทอน",
           "romanized": "(mâi dtông thɔɔn)",
-          "icon": "👍",
+          "icon": "thumbs-up",
           "note": "Falling + falling + mid tones"
         },
         {
           "value": "give change",
           "thai": "ทอนให้หน่อย",
           "romanized": "(thɔɔn hâi nòi)",
-          "icon": "💰",
+          "icon": "coins",
           "note": "Mid + falling + low tones"
         },
         {
           "value": "exact amount",
           "thai": "พอดี",
           "romanized": "(phɔɔ-dii)",
-          "icon": "✅",
+          "icon": "check",
           "note": "Mid + mid tones"
         },
         {
           "value": "no money",
           "thai": "ไม่มีเงิน",
           "romanized": "(mâi mii ngoen)",
-          "icon": "😅",
+          "icon": "smile",
           "note": "Falling + mid + mid tones"
         }
       ]
@@ -3726,28 +3728,28 @@
           "value": "thanks goodbye female",
           "thai": "ขอบคุณค่ะ แล้วเจอกัน",
           "romanized": "(khòp-khun khâ láew joo-gan)",
-          "icon": "🙋‍♀️",
+          "icon": "user",
           "note": "Low + mid + falling + high + mid + mid"
         },
         {
           "value": "thanks goodbye male",
           "thai": "ขอบคุณครับ แล้วเจอกัน",
           "romanized": "(khòp-khun kráp láew joo-gan)",
-          "icon": "🙋‍♂️",
+          "icon": "user",
           "note": "Low + mid + high + high + mid + mid"
         },
         {
           "value": "see you",
           "thai": "แล้วเจอกัน",
           "romanized": "(láew joo-gan)",
-          "icon": "👋",
+          "icon": "hand",
           "note": "High + mid + mid tones"
         },
         {
           "value": "good luck",
           "thai": "โชคดี",
           "romanized": "(chóok dii)",
-          "icon": "🍀",
+          "icon": "clover",
           "note": "High + mid tones"
         }
       ]
@@ -3761,28 +3763,28 @@
           "value": "good luck",
           "thai": "โชคดี",
           "romanized": "(chóok dii)",
-          "icon": "🍀",
+          "icon": "clover",
           "note": "High + mid tones"
         },
         {
           "value": "be careful",
           "thai": "ระวัง",
           "romanized": "(rá-wang)",
-          "icon": "⚠️",
+          "icon": "triangle-alert",
           "note": "Mid + mid tones"
         },
         {
           "value": "drive safe",
           "thai": "ขับรถระวัง",
           "romanized": "(khàp rót rá-wang)",
-          "icon": "🚗",
+          "icon": "car",
           "note": "Low + mid + mid + mid tones"
         },
         {
           "value": "have fun",
           "thai": "สนุกนะ",
           "romanized": "(sà-nùk ná)",
-          "icon": "🎉",
+          "icon": "party-popper",
           "note": "Low + high tones"
         }
       ]
@@ -3907,7 +3909,7 @@
     
     function updateHeartsDisplay() {
       const el = document.querySelector('.lesson-hearts');
-      if (el) el.innerHTML = '💜 ' + lessonHearts;
+      if (el) el.innerHTML = '<i data-lucide="heart"></i> ' + lessonHearts;
     }
     
     function startLesson(id) {
@@ -3999,7 +4001,7 @@
         const noteText = opt.note || '';
         return `
         <div class="answer-option ${hasThaiInQuestion ? 'mode-thai-to-eng' : 'mode-eng-to-thai'}" data-value="${opt.value}" onclick="selectAnswer(this)">
-          <div class="option-image">${opt.icon}</div>
+          <div class="option-image"><i data-lucide="${opt.icon}"></i></div>
           <div class="option-text">
             <div class="thai">${mainText}</div>
             ${!hasThaiInQuestion ? `<div class="romanized">${subText}</div>` : ''}
@@ -4013,6 +4015,7 @@
       document.getElementById('checkBtn').disabled = true;
       document.getElementById('checkBtn').onclick = checkAnswer;
       selectedAnswer = null;
+      if (window.lucide) lucide.createIcons();
     }
 
     function selectAnswer(element) {
@@ -4058,7 +4061,7 @@
           document.getElementById('checkBtn').onclick = () => {
             closeLesson();
             localStorage.removeItem('thaiDaiProgress');
-            alert('💜 Out of hearts! Try the lesson again.');
+            alert('Out of hearts! Try the lesson again.');
           };
         }
       }
@@ -4077,7 +4080,7 @@
         lessonCompleted = true;
         markLessonCompleted(currentLessonId);
         closeLesson();
-        alert(`🎉 Lesson Complete! You got ${correctAnswers}/${exercises.length} correct! +50 XP earned!`);
+        alert(`Lesson Complete! You got ${correctAnswers}/${exercises.length} correct! +50 XP earned!`);
       }
     }
 
@@ -4216,7 +4219,7 @@
       audioState.retryCount = 0;
       
       const btn = document.querySelector('.audio-btn');
-      if (btn) { btn.style.transform = 'scale(0.92)'; btn.innerHTML = '🔊'; }
+      if (btn) { btn.style.transform = 'scale(0.92)'; btn.innerHTML = '<i data-lucide="volume-2"></i>'; }
       
       function doSpeak() {
         const utterance = new SpeechSynthesisUtterance(thaiText);
@@ -4231,13 +4234,13 @@
         
         utterance.onend = () => {
           audioState.speaking = false;
-          if (btn) { btn.style.transform = ''; btn.innerHTML = '🔊'; }
+          if (btn) { btn.style.transform = ''; btn.innerHTML = '<i data-lucide="volume-2"></i>'; }
         };
         
         utterance.onerror = (e) => {
           console.error('Speech error:', e.error);
           audioState.speaking = false;
-          if (btn) { btn.style.transform = ''; btn.innerHTML = '🔊'; }
+          if (btn) { btn.style.transform = ''; btn.innerHTML = '<i data-lucide="volume-2"></i>'; }
           // Retry on certain errors
           if (audioState.retryCount < audioState.maxRetries && (e.error === 'canceled' || e.error === 'interrupted')) {
             audioState.retryCount++;
@@ -4264,7 +4267,7 @@
     function showCelebration() {
       const celebration = document.createElement('div');
       celebration.className = 'celebration';
-      celebration.textContent = '🎉';
+      celebration.textContent = '<i data-lucide="party-popper"></i>';
       document.body.appendChild(celebration);
       setTimeout(() => celebration.remove(), 1500);
     }
@@ -4935,7 +4938,7 @@ const SO_TONE = {
   falling:  { name: 'Falling', color: '#D36248', glyph: 'ˆ' },
   high:     { name: 'High',    color: '#D88941', glyph: 'ˊ' },
   rising:   { name: 'Rising',  color: '#9A6B4F', glyph: 'ˇ' },
-  particle: { name: 'Polite',  color: '#4E6E5D', glyph: '✦' }
+  particle: { name: 'Polite',  color: '#4E6E5D', glyph: '<i data-lucide="sparkles"></i>' }
 };
 
 // phonetic-chip -> Thai for speech synthesis (particle handled separately)
@@ -5070,10 +5073,10 @@ function soBuildLessons() {
 }
 
 function soUnitIcon(unitName) {
-  if (/food|drink/i.test(unitName)) return '🍜';
-  if (/taxi|grab|navigat/i.test(unitName)) return '🚕';
-  if (/survival|politeness/i.test(unitName)) return '🙏';
-  return '🎯';
+  if (/food|drink/i.test(unitName)) return '<i data-lucide="soup"></i>';
+  if (/taxi|grab|navigat/i.test(unitName)) return '<i data-lucide="car"></i>';
+  if (/survival|politeness/i.test(unitName)) return '<i data-lucide="hand-heart"></i>';
+  return '<i data-lucide="target"></i>';
 }
 
 function soRenderPath() {
@@ -5091,7 +5094,7 @@ function soRenderPath() {
       const isDone = done.indexOf(ls.id) >= 0;
       const unlocked = i === 0 || done.indexOf(soLessons[i - 1].id) >= 0;
       const state = isDone ? 'completed' : (unlocked ? 'current' : 'locked');
-      const emoji = unlocked ? '🎧' : '🔒';
+      const emoji = unlocked ? '<i data-lucide="headphones"></i>' : '<i data-lucide="lock"></i>';
       html += '<div class="lesson-node so-lesson-node" onclick="soStartLesson(' + i + ')">' +
         '<div class="lesson-circle ' + state + '">' + emoji + '</div>' +
         '<div class="lesson-label">' + ls.title + '</div></div>';
@@ -5099,6 +5102,7 @@ function soRenderPath() {
     });
     html += '</div></div>';
   });
+  if (window.lucide) lucide.createIcons();
   return html;
 }
 
@@ -5108,6 +5112,7 @@ function soRenderCard() {
   document.getElementById('progressFill').style.width = ((soIndex + 1) / soCards.length * 100) + '%';
   const area = document.querySelector('.exercise-area');
   if (area) area.innerHTML = soCardHTML(card);
+  if (window.lucide) lucide.createIcons();
 }
 
 function soCardHTML(card) {
@@ -5121,28 +5126,28 @@ function soCardHTML(card) {
 function soHTMLRepeat(item) {
   soCur = { tts: soTTS(item) };
   return '<div class="so-card">' +
-    '<div class="so-phase">🎧 Listen &amp; Repeat</div>' +
+    '<div class="so-phase"><i data-lucide="headphones"></i> Listen &amp; Repeat</div>' +
     '<div class="so-phonetic">' + soRenderPhonetic(item.phonetic) + '</div>' +
     '<div class="so-english">' + item.english + '</div>' +
     '<div class="so-audio">' +
-      '<button class="so-audio-btn" onclick="soPlayCurrent()">🔊</button>' +
+      '<button class="so-audio-btn" onclick="soPlayCurrent()"><i data-lucide="volume-2"></i></button>' +
       '<div class="so-speed">' +
         '<button class="' + (soRate === 1 ? 'active' : '') + '" onclick="soSetRate(1)">1×</button>' +
         '<button class="' + (soRate === 0.75 ? 'active' : '') + '" onclick="soSetRate(0.75)">0.75×</button>' +
       '</div>' +
     '</div>' +
     soToneChips(item.phonetic) +
-    '<button class="so-cta" onclick="soAdvance()">✓ Continue</button>' +
+    '<button class="so-cta" onclick="soAdvance()"><i data-lucide="check"></i> Continue</button>' +
   '</div>';
 }
 
 function soHTMLBuild(item) {
   soCur = { item: item, tts: soTTS(item), chips: shuffleArray(item.chips.slice()), built: [] };
   return '<div class="so-card">' +
-    '<div class="so-phase">🧩 Build the Phrase</div>' +
+    '<div class="so-phase"><i data-lucide="puzzle"></i> Build the Phrase</div>' +
     '<div class="so-prompt">Say: <strong style="color:var(--accent-terracotta)">"' + item.english + '"</strong></div>' +
     '<div class="so-english" style="margin-bottom:0.6rem;">Tap the chips in order — each tap plays its sound</div>' +
-    '<button class="so-audio-btn" onclick="soPlayCurrent()" style="margin-bottom:0.75rem;">🔊</button>' +
+    '<button class="so-audio-btn" onclick="soPlayCurrent()" style="margin-bottom:0.75rem;"><i data-lucide="volume-2"></i></button>' +
     '<div class="so-build-row" id="soBuildRow"></div>' +
     '<div class="so-chips" id="soChips"></div>' +
     '<button class="so-cta" id="soCheckCta" onclick="soCheckBuild()" disabled>Check</button>' +
@@ -5156,9 +5161,9 @@ function soHTMLTone(pair) {
                 { ph: pair.pair[1], en: pair.english[1], idx: 1 }];
   if (Math.random() < 0.5) opts.reverse();
   return '<div class="so-card">' +
-    '<div class="so-phase">👂 Tone Check</div>' +
+    '<div class="so-phase"><i data-lucide="ear"></i> Tone Check</div>' +
     '<div class="so-prompt">Which word did you hear?</div>' +
-    '<button class="so-audio-btn" onclick="soPlayTone()" style="margin:0.9rem auto;">🔊</button>' +
+    '<button class="so-audio-btn" onclick="soPlayTone()" style="margin:0.9rem auto;"><i data-lucide="volume-2"></i></button>' +
     '<div class="so-options">' + opts.map(function (o) {
       const tone = soToneOf(o.ph);
       const T = SO_TONE[tone] || SO_TONE.mid;
@@ -5172,9 +5177,9 @@ function soHTMLTone(pair) {
 function soHTMLScenario(sc) {
   soCur = { scenario: sc, answered: false };
   return '<div class="so-card">' +
-    '<div class="so-phase">🏪 Street Scenario</div>' +
+    '<div class="so-phase"><i data-lucide="store"></i> Street Scenario</div>' +
     '<div class="so-context">' + sc.context + '</div>' +
-    '<button class="so-audio-btn" onclick="soPlayScenario()" style="margin:0.75rem auto;">🔊</button>' +
+    '<button class="so-audio-btn" onclick="soPlayScenario()" style="margin:0.75rem auto;"><i data-lucide="volume-2"></i></button>' +
     '<div class="so-scenario-phonetic">"' + soRenderPhonetic(sc.phonetic) + '"</div>' +
     '<div class="so-scenario-eng">' + sc.english + '</div>' +
     '<div class="so-options">' + sc.options.map(function (o, i) {
@@ -5206,6 +5211,7 @@ function soRenderBuild() {
     : '<span style="color:var(--text-secondary);font-size:0.85rem">Tap chips below to build the phrase</span>';
   const cta = document.getElementById('soCheckCta');
   if (cta) cta.disabled = soCur.built.length !== soCur.item.chips.length;
+  if (window.lucide) lucide.createIcons();
 }
 
 function soTapChip(i) {
@@ -5270,7 +5276,7 @@ function soCompleteLesson() {
   localStorage.setItem('thaiDaiSODone', JSON.stringify(done));
   closeLesson();
   document.querySelector('.lesson-footer').style.display = '';
-  alert(soAnswerable > 0 ? '🎉 Lesson complete! ' + soCorrect + '/' + soAnswerable + ' correct.' : '🎉 Lesson complete! Nice shadowing!');
+  alert(soAnswerable > 0 ? 'Lesson complete! ' + soCorrect + '/' + soAnswerable + ' correct.' : '<i data-lucide="party-popper"></i> Lesson complete! Nice shadowing!');
   const path = document.querySelector('.learning-path');
   if (path) path.innerHTML = soRenderPath();
 }
@@ -5280,7 +5286,7 @@ function soStartLesson(i) {
   if (!ls) return;
   if (i > 0) {
     const done = JSON.parse(localStorage.getItem('thaiDaiSODone') || '[]');
-    if (done.indexOf(soLessons[i - 1].id) < 0) { alert('🔒 Finish the previous lesson first!'); return; }
+    if (done.indexOf(soLessons[i - 1].id) < 0) { alert('<i data-lucide="lock"></i> Finish the previous lesson first!'); return; }
   }
   soCurrentLessonIdx = i;
   soCards = shuffleArray(ls.cards.slice());
@@ -5299,7 +5305,7 @@ function soInjectModeSwitch() {
   const isSO = soTrack() === 'speak_only';
   const pill = document.createElement('button');
   pill.className = 'so-mode-pill';
-  pill.textContent = isSO ? '🎧 Speak Only → 📖 Read' : '📖 Speak + Read → 🎧 Speak Only';
+  pill.textContent = isSO ? '<i data-lucide="headphones"></i> Speak Only → <i data-lucide="book-open"></i> Read' : '<i data-lucide="book-open"></i> Speak + Read → <i data-lucide="headphones"></i> Speak Only';
   pill.onclick = function () {
     const u = soUser();
     u.learning_track = isSO ? 'speak_and_read' : 'speak_only';
@@ -5314,7 +5320,7 @@ function soInit() {
   if (soTrack() !== 'speak_only') return;
   document.body.classList.add('so-mode');
   const t = document.querySelector('.page-title');
-  if (t) t.innerHTML = '<h1>🎧 Speak Only</h1><p>Audio-first Thai — sound & tone curves, no script</p>';
+  if (t) t.innerHTML = '<h1><i data-lucide="headphones"></i> Speak Only</h1><p>Audio-first Thai — sound & tone curves, no script</p>';
   const rb = document.getElementById('reviewBtn');
   if (rb) rb.style.display = 'none';
   soLessons = soBuildLessons();
