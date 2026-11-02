@@ -5,33 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#58CC02">
+  <meta name="theme-color" content="#1C332A">
   <title>Welcome to Thai Dai - Let's Get Started</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #58CC02;
-      --primary-dark: #4CAF00;
-      --primary-light: #89E219;
-      --secondary: #1CB0F6;
-      --secondary-dark: #1899D6;
-      --accent: #FF9600;
-      --accent-light: #FFC800;
-      --pink: #FF4B4B;
-      --purple: #CE82FF;
-      --background: #F7F4ED;
-      --surface: #FFFFFF;
-      --text: #3C3C3C;
-      --text-light: #777777;
-      --border: #E5E5E5;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-      --shadow: 0 4px 16px rgba(0,0,0,0.12);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+        :root {
+      /* Siam Clay & Botanicals */
+      --bg-app: #F5EFEB;
+      --bg-card: #FAF7F2;
+      --bg-card-subtle: #EFE8DF;
+      --text-primary: #1C332A;
+      --text-secondary: #6F665C;
+      --text-tertiary: #9B9185;
+      --accent-terracotta: #D36248;
+      --accent-amber: #D88941;
+      --accent-sage: #4E6E5D;
+      --accent-cta-bg: #1C332A;
+      --accent-cta-text: #FAF7F2;
+      --border-subtle: rgba(111,102,92,0.14);
+      --border-focus: #D36248;
+      --shadow-card: 0 12px 32px -8px rgba(50,42,33,0.08), 0 4px 12px -2px rgba(50,42,33,0.04);
+      --shadow-button: 0 4px 14px rgba(28,51,42,0.15);
+      --radius-card: 28px;
+      --radius-chip: 16px;
+      --radius-button: 20px;
+
+      /* Legacy aliases mapped to the new palette */
+      --primary: #4E6E5D;
+      --primary-dark: #3A5749;
+      --primary-light: #6B8A79;
+      --secondary: #D36248;
+      --secondary-dark: #B7503A;
+      --accent: #D88941;
+      --accent-light: #E8A96B;
+      --pink: #D36248;
+      --purple: #8B5CF6;
+      --background: #F5EFEB;
+      --surface: #FAF7F2;
+      --text: #1C332A;
+      --text-light: #6F665C;
+      --border: #E7DFD5;
+      --shadow-sm: 0 2px 8px rgba(50,42,33,0.06);
+      --shadow: 0 8px 24px -6px rgba(50,42,33,0.10);
+      --shadow-lg: 0 16px 40px -12px rgba(50,42,33,0.14);
       --radius-sm: 8px;
       --radius: 12px;
       --radius-lg: 16px;
       --radius-xl: 24px;
       --radius-full: 9999px;
+
+      --font-thai: 'IBM Plex Sans Thai', 'Anuphan', 'Noto Sans Thai', sans-serif;
+      --font-serif: 'Fraunces', 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', 'IBM Plex Sans Thai', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     * {
@@ -41,7 +66,7 @@
     }
 
     body {
-      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font-sans);
       background: var(--background);
       color: var(--text);
       line-height: 1.6;
@@ -163,7 +188,7 @@
 
     /* Progress Bar */
     .progress-container {
-      padding: 1.5rem 0;
+      padding: 0.75rem 0;
       flex-shrink: 0;
     }
 
@@ -180,18 +205,39 @@
       background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
       border-radius: var(--radius-full);
       transition: width 0.4s ease;
-      box-shadow: 0 2px 8px rgba(88,204,2,0.3);
+      box-shadow: 0 2px 8px rgba(28,51,42,0.15);
+    }
+
+    .progress-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.6rem;
     }
 
     .step-indicator {
-      text-align: center;
-      margin-top: 1rem;
       font-weight: 700;
-      color: var(--text-light);
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
     }
+
+    .step-dots {
+      display: flex;
+      gap: 0.35rem;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.done { background: var(--accent-sage); }
+
+    .step-dot.current { background: var(--accent-terracotta); transform: scale(1.35); }
 
     /* Wizard Content */
     .wizard-content {
@@ -217,59 +263,66 @@
 
     .step-header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .step-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
     }
 
     .step-header h1 {
-      font-family: 'Quicksand', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 0.75rem;
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
       color: var(--text);
     }
 
     .step-header p {
-      font-size: 1.125rem;
+      font-size: 1rem;
       color: var(--text-light);
+      max-width: 30rem;
+      margin: 0 auto;
     }
 
     /* Option Cards */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
     }
 
     .option-card {
       background: var(--surface);
-      border: 3px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      padding: 0.9rem 1.1rem;
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
-      text-align: center;
+      text-align: left;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-areas: "icon title" "icon desc";
+      column-gap: 0.9rem;
+      row-gap: 0.15rem;
+      align-items: center;
     }
 
     .option-card:hover {
       border-color: var(--primary-light);
-      transform: translateY(-2px);
       box-shadow: var(--shadow);
     }
 
     .option-card.selected {
       border-color: var(--primary);
-      background: rgba(88,204,2,0.05);
+      background: rgba(78,110,93,0.08);
     }
 
     .option-card.selected::after {
-      content: '<i data-lucide="check"></i>';
+      content: '✓';
       position: absolute;
       top: 8px;
       right: 8px;
@@ -286,33 +339,38 @@
     }
 
     .option-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
+      grid-area: icon;
+      font-size: 1.9rem;
+      margin-bottom: 0;
+      line-height: 1;
     }
 
     .option-title {
-      font-weight: 800;
+      grid-area: title;
+      font-weight: 700;
       font-size: 1rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0;
       color: var(--text);
     }
 
     .option-desc {
+      grid-area: desc;
       font-size: 0.875rem;
       color: var(--text-light);
+      line-height: 1.3;
     }
 
     /* Text Input */
     .text-input-container {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .text-input {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 0.9rem 1.25rem;
       font-size: 1rem;
-      font-family: 'Nunito', sans-serif;
-      border: 3px solid var(--border);
+      font-family: var(--font-sans);
+      border: 2px solid var(--border);
       border-radius: var(--radius-lg);
       background: var(--surface);
       color: var(--text);
@@ -322,7 +380,7 @@
     .text-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(88,204,2,0.1);
+      box-shadow: 0 0 0 4px rgba(211,98,72,0.15);
     }
 
     .text-input::placeholder {
@@ -333,8 +391,8 @@
     .tags-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
     }
 
     .tag {
@@ -360,11 +418,11 @@
 
     /* Range Slider */
     .range-container {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
       background: var(--surface);
       border-radius: var(--radius-lg);
-      border: 2px solid var(--border);
+      border: 1px solid var(--border-subtle);
     }
 
     .range-labels {
@@ -393,7 +451,7 @@
       background: var(--primary);
       border-radius: 50%;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(88,204,2,0.4);
+      box-shadow: 0 4px 12px rgba(28,51,42,0.25);
       transition: transform 0.2s;
     }
 
@@ -424,7 +482,7 @@
       gap: 0.5rem;
       padding: 1rem 2rem;
       border-radius: var(--radius-full);
-      font-family: 'Nunito', sans-serif;
+      font-family: var(--font-sans);
       font-weight: 800;
       font-size: 1rem;
       text-decoration: none;
@@ -436,26 +494,26 @@
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 0 var(--primary-dark), 0 6px 12px rgba(88,204,2,0.3);
+      background: var(--accent-cta-bg);
+      color: var(--accent-cta-text);
+      box-shadow: var(--shadow-button);
     }
 
     .btn-primary:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 6px 0 var(--primary-dark), 0 8px 16px rgba(88,204,2,0.35);
+      box-shadow: 0 6px 18px rgba(28,51,42,0.22);
     }
 
     .btn-primary:active {
       transform: translateY(2px);
-      box-shadow: 0 2px 0 var(--primary-dark), 0 3px 8px rgba(88,204,2,0.3);
+      box-shadow: 0 2px 8px rgba(28,51,42,0.2);
     }
 
     .btn-primary:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none;
-      box-shadow: 0 2px 0 var(--primary-dark);
+      box-shadow: none;
     }
 
     .btn-ghost {
@@ -493,7 +551,7 @@
       font-size: 2.5rem;
       margin-bottom: 2rem;
       animation: bounce 1.4s infinite ease-in-out;
-      box-shadow: 0 8px 24px rgba(88,204,2,0.3);
+      box-shadow: 0 8px 24px rgba(28,51,42,0.18);
     }
 
     @keyframes bounce {
@@ -560,7 +618,7 @@
       justify-content: center;
       font-size: 4rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 12px 32px rgba(88,204,2,0.3);
+      box-shadow: 0 12px 32px rgba(28,51,42,0.18);
       animation: celebration 1s ease;
     }
 
@@ -571,7 +629,7 @@
     }
 
     .results-container h2 {
-      font-family: 'Quicksand', sans-serif;
+      font-family: var(--font-serif);
       font-size: 2rem;
       font-weight: 800;
       margin-bottom: 0.5rem;
@@ -587,7 +645,7 @@
       border-radius: var(--radius-xl);
       padding: 2rem;
       width: 100%;
-      border: 3px solid var(--primary-light);
+      border: 1px solid var(--border-subtle);
       margin-bottom: 2rem;
     }
 
@@ -695,17 +753,18 @@
       }
     }
   </style>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>svg.lucide{width:1em;height:1em;vertical-align:-0.125em;}</style>
 </head>
 <body>
   <div class="wizard-container">
     <!-- Progress Bar -->
     <div class="progress-container">
       <div class="progress-bar">
-        <div class="progress-fill" id="progressFill" style="width: 16%"></div>
+        <div class="progress-fill" id="progressFill" style="width: 12.5%"></div>
       </div>
-      <div class="step-indicator" id="stepIndicator">Step 1 of 6</div>
+      <div class="progress-meta">
+        <span class="step-indicator" id="stepIndicator">Step 1 of 8</span>
+        <span class="step-dots" id="stepDots"></span>
+      </div>
     </div>
 
     <!-- Wizard Steps -->
@@ -714,28 +773,28 @@
       <!-- Step 1: Welcome -->
       <div class="wizard-step" id="step1">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="party-popper"></i></div>
+          <div class="step-icon">🎉</div>
           <h1>Welcome to Thai Dai!</h1>
           <p>Let's personalize your Thai learning journey. Just a few quick questions to get you started.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'experience', 'beginner')">
-            <div class="option-icon"><i data-lucide="sprout"></i></div>
+            <div class="option-icon">🌱</div>
             <div class="option-title">Complete Beginner</div>
             <div class="option-desc">I know almost nothing</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'some')">
-            <div class="option-icon"><i data-lucide="tree-deciduous"></i></div>
+            <div class="option-icon">🌳</div>
             <div class="option-title">Some Basics</div>
             <div class="option-desc">I know a few words/phrases</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'intermediate')">
-            <div class="option-icon"><i data-lucide="tree-palm"></i></div>
+            <div class="option-icon">🌴</div>
             <div class="option-title">Intermediate</div>
             <div class="option-desc">I can have simple conversations</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'experience', 'advanced')">
-            <div class="option-icon"><i data-lucide="cactus"></i></div>
+            <div class="option-icon">🌵</div>
             <div class="option-title">Advanced</div>
             <div class="option-desc">I want to master fluency</div>
           </div>
@@ -745,28 +804,28 @@
       <!-- Step 2: Goals -->
       <div class="wizard-step" id="step2" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="target"></i></div>
+          <div class="step-icon">🎯</div>
           <h1>What brings you to Thailand?</h1>
           <p>This helps us focus on vocabulary that matters to you.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'goal', 'living')">
-            <div class="option-icon"><i data-lucide="house"></i></div>
+            <div class="option-icon">🏠</div>
             <div class="option-title">Living Here</div>
             <div class="option-desc">Daily life, shopping, services</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'work')">
-            <div class="option-icon"><i data-lucide="briefcase"></i></div>
+            <div class="option-icon">💼</div>
             <div class="option-title">Working</div>
             <div class="option-desc">Business and professional Thai</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'travel')">
-            <div class="option-icon"><i data-lucide="plane"></i></div>
+            <div class="option-icon">✈️</div>
             <div class="option-title">Traveling</div>
             <div class="option-desc">Getting around, food, hotels</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'goal', 'relationship')">
-            <div class="option-icon"><i data-lucide="heart"></i></div>
+            <div class="option-icon">❤️</div>
             <div class="option-title">Relationship</div>
             <div class="option-desc">Family, friends, dating</div>
           </div>
@@ -776,29 +835,29 @@
       <!-- Step 3: Gender Selection (NEW) -->
       <div class="wizard-step" id="step3" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="user"></i></div>
+          <div class="step-icon">👤</div>
           <h1>Choose your polite particle</h1>
           <p>This determines how you'll speak politely in Thai. You can change this anytime in settings.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'gender', 'male')">
-            <div class="option-icon"><i data-lucide="user"></i></div>
+            <div class="option-icon">👨</div>
             <div class="option-title">Male</div>
             <div class="option-desc">I'll use ครับ (kráp) - "krab"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'female')">
-            <div class="option-icon"><i data-lucide="user"></i></div>
+            <div class="option-icon">👩</div>
             <div class="option-title">Female</div>
             <div class="option-desc">I'll use ค่ะ (khâ) - "ka"</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'gender', 'other')">
-            <div class="option-icon"><i data-lucide="sparkles"></i></div>
+            <div class="option-icon">✨</div>
             <div class="option-title">Prefer not to say</div>
             <div class="option-desc">Show me both forms</div>
           </div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
-          <i data-lucide="lightbulb"></i> Thai uses different polite endings based on your gender. This is essential for natural conversation!
+          💡 Thai uses different polite endings based on your gender. This is essential for natural conversation!
         </p>
       </div>
 
@@ -820,33 +879,33 @@
           <div class="range-value" id="timeLabel">15 minutes per day</div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
-          <i data-lucide="lightbulb"></i> Consistency beats intensity! Even 10 minutes daily builds strong habits.
+          💡 Consistency beats intensity! Even 10 minutes daily builds strong habits.
         </p>
       </div>
 
       <!-- Step 5: Focus Areas -->
       <div class="wizard-step" id="step5" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="target"></i></div>
+          <div class="step-icon">🎯</div>
           <h1>What do you want to focus on?</h1>
           <p>Select all that apply — you can always change this later.</p>
         </div>
         <div class="tags-container" id="focusTags">
-          <span class="tag selected" onclick="toggleTag(this)"><i data-lucide="soup"></i> Food & Dining</span>
-          <span class="tag selected" onclick="toggleTag(this)"><i data-lucide="car"></i> Transportation</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="shopping-cart"></i> Shopping</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="phone"></i> Phone Conversations</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="landmark"></i> Temples & Culture</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="smartphone"></i> Social Media Thai</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="hand-heart"></i> Polite Forms</span>
-          <span class="tag" onclick="toggleTag(this)"><i data-lucide="rainbow"></i> Slang & Casual</span>
+          <span class="tag selected" onclick="toggleTag(this)">🍜 Food & Dining</span>
+          <span class="tag selected" onclick="toggleTag(this)">🚕 Transportation</span>
+          <span class="tag" onclick="toggleTag(this)">🛒 Shopping</span>
+          <span class="tag" onclick="toggleTag(this)">📞 Phone Conversations</span>
+          <span class="tag" onclick="toggleTag(this)">🏛️ Temples & Culture</span>
+          <span class="tag" onclick="toggleTag(this)">📱 Social Media Thai</span>
+          <span class="tag" onclick="toggleTag(this)">🙏 Polite Forms</span>
+          <span class="tag" onclick="toggleTag(this)">🌈 Slang & Casual</span>
         </div>
       </div>
 
       <!-- Step 6: Name -->
       <div class="wizard-step" id="step6" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="user"></i></div>
+          <div class="step-icon">👤</div>
           <h1>What should we call you?</h1>
           <p>Personalize your learning experience.</p>
         </div>
@@ -854,35 +913,35 @@
           <input type="text" class="text-input" id="userName" placeholder="Enter your name (or nickname)" maxlength="20">
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">
-          Don't worry, you can skip this if you prefer! <i data-lucide="smile"></i>
+          Don't worry, you can skip this if you prefer! 😊
         </p>
       </div>
 
       <!-- Step 7: Motivation -->
       <div class="wizard-step" id="step7" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="flame"></i></div>
+          <div class="step-icon">🔥</div>
           <h1>What's your motivation?</h1>
           <p>We'll remind you of this when things get challenging!</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'motivation', 'connect')">
-            <div class="option-icon"><i data-lucide="handshake"></i></div>
+            <div class="option-icon">🤝</div>
             <div class="option-title">Connect with Locals</div>
             <div class="option-desc">Build genuine relationships</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'independence')">
-            <div class="option-icon"><i data-lucide="party-popper"></i></div>
+            <div class="option-icon">🙌</div>
             <div class="option-title">Be Independent</div>
             <div class="option-desc">Navigate life without help</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'respect')">
-            <div class="option-icon"><i data-lucide="castle"></i></div>
+            <div class="option-icon">🏰</div>
             <div class="option-title">Show Respect</div>
             <div class="option-desc">Honor the local culture</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'motivation', 'fun')">
-            <div class="option-icon"><i data-lucide="party-popper"></i></div>
+            <div class="option-icon">🎉</div>
             <div class="option-title">Have More Fun</div>
             <div class="option-desc">Unlock new experiences</div>
           </div>
@@ -892,24 +951,24 @@
       <!-- Step 8: Learning Track -->
       <div class="wizard-step" id="step8" style="display:none">
         <div class="step-header">
-          <div class="step-icon"><i data-lucide="mic"></i></div>
+          <div class="step-icon">🗣️</div>
           <h1>How do you want to learn?</h1>
           <p>Pick a mode. You can switch anytime from the app's settings.</p>
         </div>
         <div class="options-grid">
           <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_only')">
-            <div class="option-icon"><i data-lucide="headphones"></i></div>
+            <div class="option-icon">🎧</div>
             <div class="option-title">Speak Only</div>
             <div class="option-desc">Audio-first — no Thai script, just sound &amp; tone curves</div>
           </div>
           <div class="option-card" onclick="selectOption(this, 'learning_track', 'speak_and_read')">
-            <div class="option-icon"><i data-lucide="book-open"></i></div>
+            <div class="option-icon">📖</div>
             <div class="option-title">Speak + Read</div>
             <div class="option-desc">Full course with Thai script &amp; spelling</div>
           </div>
         </div>
         <p style="text-align: center; color: var(--text-light); font-size: 0.875rem; margin-top: 1.5rem;">
-          <i data-lucide="lightbulb"></i> Speak Only is perfect if you just want to communicate fast on the street.
+          💡 Speak Only is perfect if you just want to communicate fast on the street.
         </p>
       </div>
 
@@ -938,13 +997,13 @@
 
     <!-- Results -->
     <div class="results-container" id="resultsContainer">
-      <div class="results-avatar" id="resultsAvatar"><i data-lucide="party-popper"></i></div>
+      <div class="results-avatar" id="resultsAvatar">🎉</div>
       <h2>Your Learning Path is Ready!</h2>
       <p>Here's what we've prepared for you, <span id="resultsName">friend</span>:</p>
       
       <div class="learning-path">
         <div class="path-header">
-          <div class="path-icon"><i data-lucide="target"></i></div>
+          <div class="path-icon">🎯</div>
           <div class="path-info">
             <h3 id="pathTitle">Thai Explorer Path</h3>
             <p id="pathSubtitle">Perfect for beginners living in Thailand</p>
@@ -967,13 +1026,13 @@
       </div>
 
       <ul class="results-checklist" style="list-style:none">
-        <li><span class="check"><i data-lucide="check"></i></span> Personalized vocabulary based on your goals</li>
-        <li><span class="check"><i data-lucide="check"></i></span> Bite-sized lessons matching your schedule</li>
-        <li><span class="check"><i data-lucide="check"></i></span> Smart reminders to build your streak</li>
-        <li><span class="check"><i data-lucide="check"></i></span> Progress tracking and achievements</li>
+        <li><span class="check">✓</span> Personalized vocabulary based on your goals</li>
+        <li><span class="check">✓</span> Bite-sized lessons matching your schedule</li>
+        <li><span class="check">✓</span> Smart reminders to build your streak</li>
+        <li><span class="check">✓</span> Progress tracking and achievements</li>
       </ul>
 
-      <a href="learn.html" class="btn btn-primary" style="font-size:1.125rem;padding:1rem 3rem">Start My First Lesson <i data-lucide="rocket"></i></a>
+      <a href="learn.html" class="btn btn-primary" style="font-size:1.125rem;padding:1rem 3rem">Start My First Lesson 🚀</a>
     </div>
 
     <!-- Navigation -->
@@ -992,10 +1051,26 @@
     const totalSteps = 8;
     const selections = {};
 
+    function buildDots() {
+      const wrap = document.getElementById('stepDots');
+      wrap.innerHTML = '';
+      for (let i = 1; i <= totalSteps; i++) {
+        const d = document.createElement('span');
+        d.className = 'step-dot';
+        d.id = 'dot' + i;
+        wrap.appendChild(d);
+      }
+    }
+
     function updateProgress() {
       const pct = (currentStep / totalSteps) * 100;
       document.getElementById('progressFill').style.width = pct + '%';
       document.getElementById('stepIndicator').textContent = `Step ${currentStep} of ${totalSteps}`;
+      for (let i = 1; i <= totalSteps; i++) {
+        const d = document.getElementById('dot' + i);
+        if (!d) continue;
+        d.className = 'step-dot' + (i < currentStep ? ' done' : (i === currentStep ? ' current' : ''));
+      }
     }
 
     function selectOption(card, field, value) {
@@ -1118,8 +1193,8 @@
     }
 
     // Initialize
+    buildDots();
     updateProgress();
   </script>
-<script>if(window.lucide)lucide.createIcons();</script>
 </body>
 </html>
