@@ -1,0 +1,321 @@
+/* ============================================================
+   Thai Dai — Step-based lesson engine (active language acquisition)
+   Step types: presentation, tone_discrimination,
+               scrambled_syllable, contextual_match
+   Score rule: presentation steps are NEVER scored.
+   ============================================================ */
+
+// ---- sample lesson data (new multi-step schema) ----
+// Mirrors lesson-1.json; runtime uses this synchronous copy (audio via TTS).
+window.STEP_LESSONS = {
+  1: {
+    unitId: "unit-1",
+    unitTitle: "Street Survival & Politeness",
+    lessonId: "lesson-1-golden-words",
+    lessonTitle: "The Golden Words",
+    steps: [
+      {
+        stepId: "step-1-intro",
+        type: "presentation",
+        thai: "ขอบคุณครับ",
+        romanized: "khòp-khun kráp",
+        translation: "Thank you (polite male)",
+        tts: "ขอบคุณครับ",
+        syllables: [
+          { text: "khòp", thai: "ขอบ", tone: "low",  contour: "ˋ" },
+          { text: "khun", thai: "คุณ", tone: "mid",  contour: "ˉ" },
+          { text: "kráp", thai: "ครับ", tone: "high", contour: "ˊ" }
+        ],
+        note: "Particles 'kráp' (male) and 'khâ' (female) soften phrases and show respect."
+      },
+      {
+        stepId: "step-2-ear-training",
+        type: "tone_discrimination",
+        prompt: "Listen to the syllable. What tone is it?",
+        tts: "ครับ",
+        syllable: "kráp",
+        correctTone: "high",
+        options: [
+          { id: "mid",     label: "Mid",     contour: "ˉ" },
+          { id: "low",     label: "Low",     contour: "ˋ" },
+          { id: "high",    label: "High",    contour: "ˊ" },
+          { id: "falling", label: "Falling", contour: "ˆ" },
+          { id: "rising",  label: "Rising",  contour: "ˇ" }
+        ]
+      },
+      {
+        stepId: "step-3-reconstruct",
+        type: "scrambled_syllable",
+        prompt: "Assemble: 'Thank you' (polite male)",
+        targetTranslation: "Thank you",
+        correctSequence: ["khòp", "khun", "kráp"],
+        bank: [
+          { id: "s1", text: "kráp", thai: "ครับ", tone: "high",    contour: "ˊ" },
+          { id: "s2", text: "khòp", thai: "ขอบ", tone: "low",     contour: "ˋ" },
+          { id: "s3", text: "khun", thai: "คุณ", tone: "mid",     contour: "ˉ" },
+          { id: "s4", text: "kâ",   thai: "คะ",  tone: "falling", contour: "ˆ" }
+        ]
+      },
+      {
+        stepId: "step-4-context",
+        type: "contextual_match",
+        scenario: "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
+        correctIndex: 0,
+        options: [
+          { text: "ขอบคุณครับ", romanized: "khòp-khun kráp", explanation: "Polite thank you for male speakers." },
+          { text: "สวัสดีครับ", romanized: "sà-wàt-dii kráp", explanation: "Means 'hello', not 'thank you'." },
+          { text: "ขอโทษครับ", romanized: "khɔ̌ɔ-thôot kráp", explanation: "Means 'sorry / excuse me'." }
+        ]
+      }
+    ]
+  }
+};
+
+// ---- tone table ----
+const STEP_TONES = {
+  mid:     { label: "Mid",     contour: "ˉ" },
+  low:     { label: "Low",     contour: "ˋ" },
+  high:    { label: "High",    contour: "ˊ" },
+  falling: { label: "Falling", contour: "ˆ" },
+  rising:  { label: "Rising",  contour: "ˇ" }
+};
+
+// ---- session state ----
+const stepSession = {
+  lessonId: null,
+  steps: [],
+  index: 0,
+  correct: 0,
+  totalScored: 0,
+  answered: false,
+  userSequence: [],
+  bankItems: [],
+  correctSeq: []
+};
+
+function stepIsScored(type) {
+  return type === "tone_discrimination" || type === "scrambled_syllable" || type === "contextual_match";
+}
+
+function stepShuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+// ---- audio (TTS fallback; swap for audioUrl playback when files exist) ----
+function stepSpeak(text, rate) {
+  if (!text || !("speechSynthesis" in window)) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "th-TH";
+  u.rate = rate || 0.9;
+  u.pitch = 1;
+  u.volume = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const th = voices.find(function (v) { return (v.lang || "").toLowerCase().indexOf("th") === 0; });
+  if (th) u.voice = th;
+  window.speechSynthesis.speak(u);
+}
+
+// ---- controller ----
+function stepStartLesson(id) {
+  const lesson = window.STEP_LESSONS[id];
+  if (!lesson) return;
+  stepSession.lessonId = id;
+  stepSession.steps = lesson.steps;
+  stepSession.index = 0;
+  stepSession.correct = 0;
+  stepSession.totalScored = lesson.steps.filter(function (s) { return stepIsScored(s.type); }).length;
+  stepSession.answered = false;
+  stepSession.userSequence = [];
+  const hearts = document.querySelector(".lesson-hearts");
+  if (hearts) hearts.style.display = "none";
+  document.getElementById("lessonModal").classList.add("active");
+  document.body.classList.add("modal-open");
+  stepRender();
+}
+
+function stepRender() {
+  const step = stepSession.steps[stepSession.index];
+  const area = document.querySelector(".exercise-area");
+  const footer = document.querySelector(".lesson-footer");
+  stepSession.answered = false;
+  stepSession.userSequence = [];
+  document.getElementById("progressFill").style.width = Math.round((stepSession.index / stepSession.steps.length) * 100) + "%";
+  if (step.type === "presentation") area.innerHTML = stepHTMLPresentation(step);
+  else if (step.type === "tone_discrimination") area.innerHTML = stepHTMLTone(step);
+  else if (step.type === "scrambled_syllable") area.innerHTML = stepHTMLScrambled(step);
+  else if (step.type === "contextual_match") area.innerHTML = stepHTMLContextual(step);
+
+  if (step.type === "presentation") {
+    footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepAdvance()">Continue →</button>';
+  } else if (step.type === "scrambled_syllable") {
+    footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepCheckScrambled()" disabled>Check</button>';
+  } else {
+    footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepAdvance()" disabled>Continue →</button>';
+  }
+  if (window.lucide) lucide.createIcons();
+}
+
+function stepSetNext(label, handler) {
+  const btn = document.getElementById("stepNextBtn");
+  if (!btn) return;
+  btn.textContent = label;
+  btn.disabled = false;
+  btn.onclick = handler;
+}
+
+function stepAdvance() {
+  stepSession.index++;
+  if (stepSession.index >= stepSession.steps.length) stepComplete();
+  else stepRender();
+}
+
+function stepComplete() {
+  closeLesson();
+  const scored = stepSession.totalScored;
+  markLessonCompleted(stepSession.lessonId);
+  alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct.");
+}
+
+// ---- renderers ----
+function stepHTMLPresentation(step) {
+  const syls = (step.syllables || []).map(function (s) {
+    return '<button class="syl-chip" onclick="stepSpeak(\'' + (s.thai || s.text) + '\')">' +
+      '<span>' + s.text + '</span><span class="syl-tone">' + s.contour + '</span></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">Listen &amp; Repeat</div>' +
+    '<div class="step-thai">' + step.thai + '</div>' +
+    '<div class="step-romanized">' + step.romanized + '</div>' +
+    '<div class="step-translation">' + step.translation + '</div>' +
+    '<button class="step-audio" onclick="stepSpeak(\'' + (step.tts || step.thai) + '\')"><i data-lucide="volume-2"></i></button>' +
+    '<div class="step-syllables">' + syls + '</div>' +
+    (step.note ? '<div class="step-note">' + step.note + '</div>' : '') +
+    '</div>';
+}
+
+function stepHTMLTone(step) {
+  const opts = (step.options || []).map(function (o) {
+    return '<button class="tone-option" data-tone="' + o.id + '" onclick="stepToneAnswer(this, \'' + o.id + '\')">' +
+      '<span class="tone-label">' + o.label + '</span>' +
+      '<span class="tone-contour">' + o.contour + '</span></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">Ear Training</div>' +
+    '<p class="step-prompt">' + step.prompt + '</p>' +
+    '<button class="step-audio" onclick="stepSpeak(\'' + (step.tts || "") + '\')"><i data-lucide="volume-2"></i></button>' +
+    '<div class="tone-options">' + opts + '</div>' +
+    '</div>';
+}
+
+function stepHTMLScrambled(step) {
+  stepSession.bankItems = stepShuffle(step.bank.slice());
+  stepSession.correctSeq = step.correctSequence;
+  stepSession.userSequence = [];
+  return '<div class="step-card">' +
+    '<div class="step-phase">Build the Phrase</div>' +
+    '<p class="step-prompt">' + step.prompt + '</p>' +
+    '<div class="syl-slot" id="sylSlot"></div>' +
+    '<div class="syl-bank" id="sylBank">' + stepHTMLBank() + '</div>' +
+    '</div>';
+}
+
+function stepChipHTML(b) {
+  return '<button class="syl-chip" data-id="' + b.id + '" onclick="stepChipTap(\'' + b.id + '\')">' +
+    '<span>' + b.text + '</span><span class="syl-tone">' + b.contour + '</span></button>';
+}
+
+function stepHTMLBank() {
+  return stepSession.bankItems.filter(function (b) { return stepSession.userSequence.indexOf(b.id) < 0; })
+    .map(stepChipHTML).join("");
+}
+
+function stepChipTap(id) {
+  if (stepSession.answered) return;
+  const idx = stepSession.userSequence.indexOf(id);
+  if (idx >= 0) stepSession.userSequence.splice(idx, 1);
+  else stepSession.userSequence.push(id);
+  const slot = document.getElementById("sylSlot");
+  const bank = document.getElementById("sylBank");
+  if (slot) {
+    const byId = {};
+    stepSession.bankItems.forEach(function (b) { byId[b.id] = b; });
+    slot.innerHTML = stepSession.userSequence.map(function (id) { return stepChipHTML(byId[id]); }).join("");
+  }
+  if (bank) bank.innerHTML = stepHTMLBank();
+  const btn = document.getElementById("stepNextBtn");
+  if (btn) btn.disabled = stepSession.userSequence.length !== stepSession.correctSeq.length;
+}
+
+function stepCheckScrambled() {
+  if (stepSession.answered) return;
+  stepSession.answered = true;
+  const correct = stepSession.correctSeq.join("-") === stepSession.userSequence.join("-");
+  const slot = document.getElementById("sylSlot");
+  if (correct) {
+    stepSession.correct++;
+    if (slot) slot.classList.add("correct");
+    stepSetNext("Continue →", stepAdvance);
+  } else {
+    if (slot) slot.classList.add("wrong");
+    stepSetNext("Got it →", stepAdvance);
+  }
+}
+
+function stepHTMLContextual(step) {
+  const opts = step.options.map(function (o, i) {
+    return '<button class="context-option" data-idx="' + i + '" onclick="stepContextAnswer(this, ' + i + ')">' +
+      '<div class="ctx-thai">' + o.text + '</div>' +
+      '<div class="ctx-roman">' + o.romanized + '</div>' +
+      '<div class="ctx-exp">' + o.explanation + '</div></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">In Context</div>' +
+    '<p class="step-scenario">' + step.scenario + '</p>' +
+    '<div class="context-options">' + opts + '</div>' +
+    '</div>';
+}
+
+// ---- answer handlers ----
+function stepToneAnswer(el, tone) {
+  if (stepSession.answered) return;
+  stepSession.answered = true;
+  const step = stepSession.steps[stepSession.index];
+  const correct = step.correctTone === tone;
+  document.querySelectorAll(".tone-option").forEach(function (o) {
+    o.classList.remove("correct", "wrong");
+    if (o.getAttribute("data-tone") === step.correctTone) o.classList.add("correct");
+  });
+  if (correct) {
+    stepSession.correct++;
+    el.classList.add("correct");
+    stepSetNext("Continue →", stepAdvance);
+  } else {
+    el.classList.add("wrong");
+    stepSetNext("Got it →", stepAdvance);
+  }
+}
+
+function stepContextAnswer(el, idx) {
+  if (stepSession.answered) return;
+  stepSession.answered = true;
+  const step = stepSession.steps[stepSession.index];
+  const correct = idx === step.correctIndex;
+  document.querySelectorAll(".context-option").forEach(function (o, i) {
+    o.classList.remove("correct", "wrong");
+    if (i === step.correctIndex) o.classList.add("correct");
+  });
+  if (correct) {
+    stepSession.correct++;
+    el.classList.add("correct");
+    stepSetNext("Continue →", stepAdvance);
+  } else {
+    el.classList.add("wrong");
+    stepSetNext("Got it →", stepAdvance);
+  }
+}

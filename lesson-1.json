@@ -1,0 +1,61 @@
+{
+  "unitId": "unit-1",
+  "unitTitle": "Street Survival & Politeness",
+  "lessonId": "lesson-1-golden-words",
+  "lessonTitle": "The Golden Words",
+  "steps": [
+    {
+      "stepId": "step-1-intro",
+      "type": "presentation",
+      "thai": "ขอบคุณครับ",
+      "romanized": "khòp-khun kráp",
+      "translation": "Thank you (polite male)",
+      "audioUrl": "/audio/khop-khun-krap.mp3",
+      "syllables": [
+        { "text": "khòp", "thai": "ขอบ", "tone": "low", "contour": "ˋ", "audioUrl": "/audio/khop_low.mp3" },
+        { "text": "khun", "thai": "คุณ", "tone": "mid", "contour": "ˉ", "audioUrl": "/audio/khun_mid.mp3" },
+        { "text": "kráp", "thai": "ครับ", "tone": "high", "contour": "ˊ", "audioUrl": "/audio/krap_high.mp3" }
+      ],
+      "note": "Particles 'kráp' (male) and 'khâ' (female) soften phrases and show respect."
+    },
+    {
+      "stepId": "step-2-ear-training",
+      "type": "tone_discrimination",
+      "prompt": "Listen to the syllable. What tone is it?",
+      "audioUrl": "/audio/krap_high.mp3",
+      "syllable": "kráp",
+      "correctTone": "high",
+      "options": [
+        { "id": "mid", "label": "Mid", "contour": "ˉ" },
+        { "id": "low", "label": "Low", "contour": "ˋ" },
+        { "id": "high", "label": "High", "contour": "ˊ" },
+        { "id": "falling", "label": "Falling", "contour": "ˆ" },
+        { "id": "rising", "label": "Rising", "contour": "ˇ" }
+      ]
+    },
+    {
+      "stepId": "step-3-reconstruct",
+      "type": "scrambled_syllable",
+      "prompt": "Assemble: 'Thank you' (polite male)",
+      "targetTranslation": "Thank you",
+      "correctSequence": ["khòp", "khun", "kráp"],
+      "bank": [
+        { "id": "s1", "text": "kráp", "thai": "ครับ", "tone": "high", "contour": "ˊ" },
+        { "id": "s2", "text": "khòp", "thai": "ขอบ", "tone": "low", "contour": "ˋ" },
+        { "id": "s3", "text": "khun", "thai": "คุณ", "tone": "mid", "contour": "ˉ" },
+        { "id": "s4", "text": "kâ", "thai": "คะ", "tone": "falling", "contour": "ˆ" }
+      ]
+    },
+    {
+      "stepId": "step-4-context",
+      "type": "contextual_match",
+      "scenario": "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
+      "correctIndex": 0,
+      "options": [
+        { "text": "ขอบคุณครับ", "romanized": "khòp-khun kráp", "explanation": "Polite thank you for male speakers." },
+        { "text": "สวัสดีครับ", "romanized": "sà-wàt-dii kráp", "explanation": "Means 'hello', not 'thank you'." },
+        { "text": "ขอโทษครับ", "romanized": "khɔ̌ɔ-thôot kráp", "explanation": "Means 'sorry / excuse me'." }
+      ]
+    }
+  ]
+}
