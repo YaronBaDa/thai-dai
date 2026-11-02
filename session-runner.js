@@ -132,11 +132,24 @@ function stepStartLesson(id) {
   stepSession.totalScored = lesson.steps.filter(function (s) { return stepIsScored(s.type); }).length;
   stepSession.answered = false;
   stepSession.userSequence = [];
+  try {
+    const saved = JSON.parse(sessionStorage.getItem("thaiDaiStepSession") || "null");
+    if (saved && saved.lessonId === id && saved.index > 0 && saved.index < lesson.steps.length) {
+      stepSession.index = saved.index;
+    }
+  } catch (e) {}
   const hearts = document.querySelector(".lesson-hearts");
   if (hearts) hearts.style.display = "none";
   document.getElementById("lessonModal").classList.add("active");
   document.body.classList.add("modal-open");
   stepRender();
+}
+
+function stepPersistSave() {
+  try { sessionStorage.setItem("thaiDaiStepSession", JSON.stringify({ lessonId: stepSession.lessonId, index: stepSession.index })); } catch (e) {}
+}
+function stepPersistClear() {
+  try { sessionStorage.removeItem("thaiDaiStepSession"); } catch (e) {}
 }
 
 function stepRender() {
@@ -159,6 +172,7 @@ function stepRender() {
     footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepAdvance()" disabled>Continue →</button>';
   }
   if (window.lucide) lucide.createIcons();
+  stepPersistSave();
 }
 
 function stepSetNext(label, handler) {
@@ -179,6 +193,16 @@ function stepComplete() {
   closeLesson();
   const scored = stepSession.totalScored;
   markLessonCompleted(stepSession.lessonId);
+  stepPersistClear();
+  try {
+    if (typeof soLessons !== "undefined" && soLessons && soLessons.length) {
+      const done = JSON.parse(localStorage.getItem("thaiDaiSODone") || "[]");
+      if (done.indexOf(soLessons[0].id) < 0) done.push(soLessons[0].id);
+      localStorage.setItem("thaiDaiSODone", JSON.stringify(done));
+      const path = document.querySelector(".learning-path");
+      if (path && document.body.classList.contains("so-mode")) path.innerHTML = soRenderPath();
+    }
+  } catch (e) {}
   alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct.");
 }
 

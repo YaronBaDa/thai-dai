@@ -73,6 +73,7 @@
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
     }
 
@@ -84,6 +85,7 @@
     .app-container {
       display: flex;
       min-height: 100vh;
+      min-height: 100dvh;
     }
 
     /* Sidebar */
@@ -97,6 +99,7 @@
       top: 0;
       left: 0;
       height: 100vh;
+      height: 100dvh;
       width: 240px;
       flex-shrink: 0;
       z-index: 100;
@@ -1076,6 +1079,7 @@
     @media (max-height: 500px) and (orientation: landscape) {
       .lesson-container {
         height: 100vh;
+        height: 100dvh;
       }
 
       .exercise-area {
@@ -1200,7 +1204,7 @@
 .step-audio{width:64px;height:64px;border-radius:50%;background:var(--accent-terracotta);color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;margin:0.9rem auto;box-shadow:0 0 0 6px rgba(211,98,72,0.15);transition:transform 0.15s;}
 .step-audio:active{transform:scale(0.93);}
 .step-syllables{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:0.75rem;}
-.syl-chip{display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 0.9rem;border-radius:999px;background:var(--bg-card-subtle);border:1px solid var(--border-subtle);cursor:pointer;font-family:var(--font-phonetic);font-size:0.95rem;font-weight:600;color:var(--text-primary);transition:all 0.15s;}
+.syl-chip{display:inline-flex;align-items:center;gap:0.4rem;padding:0.6rem 0.95rem;min-height:48px;border-radius:999px;background:var(--bg-card-subtle);border:1px solid var(--border-subtle);cursor:pointer;font-family:var(--font-phonetic);font-size:0.95rem;font-weight:600;color:var(--text-primary);transition:all 0.15s;}
 .syl-chip:hover{border-color:var(--accent-terracotta);}
 .syl-chip.placed{background:var(--bg-card);border-color:var(--accent-sage);}
 .syl-tone{font-size:0.85rem;color:var(--accent-terracotta);font-weight:700;}
@@ -5326,6 +5330,7 @@ function soCompleteLesson() {
 }
 
 function soStartLesson(i) {
+  if (i === 0 && window.STEP_LESSONS && window.STEP_LESSONS[1]) { stepStartLesson(1); return; }
   const ls = soLessons[i];
   if (!ls) return;
   if (i > 0) {
