@@ -193,19 +193,17 @@
     }
 
     .progress-bar {
-      height: 16px;
-      background: var(--border);
+      height: 8px;
+      background: var(--bg-card-subtle);
       border-radius: var(--radius-full);
       overflow: hidden;
-      border: 2px solid var(--border);
     }
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      background: var(--accent-sage);
       border-radius: var(--radius-full);
       transition: width 0.4s ease;
-      box-shadow: 0 2px 8px rgba(28,51,42,0.15);
     }
 
     .progress-meta {
@@ -269,6 +267,7 @@
     .step-icon {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
+      line-height: 1;
     }
 
     .step-header h1 {
@@ -296,8 +295,8 @@
 
     .option-card {
       background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
       padding: 0.9rem 1.1rem;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -324,18 +323,19 @@
     .option-card.selected::after {
       content: '✓';
       position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 24px;
-      height: 24px;
-      background: var(--primary);
-      color: white;
+      top: 0.6rem;
+      right: 0.6rem;
+      width: 20px;
+      height: 20px;
+      background: var(--accent-sage);
+      color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 0.875rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+      line-height: 1;
     }
 
     .option-icon {
@@ -370,8 +370,8 @@
       padding: 0.9rem 1.25rem;
       font-size: 1rem;
       font-family: var(--font-sans);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       background: var(--surface);
       color: var(--text);
       transition: all 0.2s ease;
@@ -398,7 +398,7 @@
     .tag {
       padding: 0.75rem 1.25rem;
       background: var(--surface);
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius-full);
       cursor: pointer;
       font-weight: 700;
@@ -421,8 +421,8 @@
       margin-bottom: 1.5rem;
       padding: 1.25rem;
       background: var(--surface);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      border: 1px solid var(--border);
     }
 
     .range-labels {
@@ -480,17 +480,15 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      padding: 1rem 2rem;
-      border-radius: var(--radius-full);
+      padding: 0.9rem 2rem;
+      border-radius: 20px;
       font-family: var(--font-sans);
-      font-weight: 800;
+      font-weight: 600;
       font-size: 1rem;
       text-decoration: none;
       cursor: pointer;
       border: none;
       transition: all 0.15s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .btn-primary {
@@ -523,7 +521,7 @@
 
     .btn-ghost:hover {
       color: var(--text);
-      background: rgba(0,0,0,0.05);
+      background: rgba(28,51,42,0.05);
     }
 
     /* Loading State */
@@ -544,7 +542,7 @@
       width: 80px;
       height: 80px;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      border-radius: var(--radius-lg);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -642,7 +640,7 @@
 
     .learning-path {
       background: var(--surface);
-      border-radius: var(--radius-xl);
+      border-radius: 20px;
       padding: 2rem;
       width: 100%;
       border: 1px solid var(--border-subtle);
@@ -662,7 +660,7 @@
       width: 64px;
       height: 64px;
       background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
-      border-radius: var(--radius);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -690,7 +688,7 @@
       text-align: center;
       padding: 1rem;
       background: var(--background);
-      border-radius: var(--radius);
+      border-radius: 14px;
     }
 
     .path-stat-number {
@@ -1037,8 +1035,8 @@
 
     <!-- Navigation -->
     <div class="wizard-nav" id="wizardNav">
-      <button class="btn btn-ghost" id="backBtn" onclick="prevStep()" style="visibility:hidden">← Back</button>
-      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" disabled>Continue →</button>
+      <button class="btn btn-ghost" id="backBtn" onclick="prevStep()" style="visibility:hidden">Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" disabled>Continue</button>
     </div>
   </div>
 
