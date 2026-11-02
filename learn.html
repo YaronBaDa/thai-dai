@@ -123,7 +123,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 3px 0 var(--primary-dark);
+      box-shadow: var(--shadow-sm);
     }
 
     .logo-icon svg {
@@ -270,7 +270,7 @@
       margin-bottom: 1.5rem;
       padding: 1rem 1.5rem;
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      border-radius: var(--radius-xl);
+      border-radius: 20px;
       color: white;
     }
 
@@ -336,7 +336,7 @@
     .lesson-circle {
       width: 72px;
       height: 72px;
-      border-radius: 18px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -376,7 +376,7 @@
 
     .lesson-circle.locked {
       background: #E2DBD2;
-      box-shadow: 0 4px 0 #C4BBB0;
+      box-shadow: var(--shadow-sm);
     }
 
     @keyframes pulse {
@@ -421,7 +421,7 @@
       font-weight: 800;
       font-size: 1.125rem;
       text-decoration: none;
-      box-shadow: 0 6px 0 var(--primary-dark), 0 12px 24px rgba(28,51,42,0.4);
+      box-shadow: 0 4px 14px rgba(28,51,42,0.18);
       cursor: pointer;
       border: none;
       font-family: var(--font-english);
@@ -433,7 +433,7 @@
 
     .start-floating:hover {
       transform: translateX(-50%) translateY(-2px);
-      box-shadow: 0 8px 0 var(--primary-dark), 0 16px 32px rgba(28,51,42,0.5);
+      box-shadow: 0 6px 18px rgba(28,51,42,0.22);
     }
 
     /* Lesson Modal */
@@ -471,7 +471,7 @@
       .lesson-container {
         height: 90vh;
         max-height: 900px;
-        border-radius: var(--radius-xl);
+        border-radius: 20px;
       }
     }
 
@@ -578,19 +578,19 @@
       font-size: clamp(1.25rem, 4vw, 1.75rem);
       cursor: pointer;
       margin: 1rem auto;
-      box-shadow: 0 4px 0 var(--secondary-dark), 0 8px 16px rgba(211,98,72,0.3);
+      box-shadow: 0 4px 14px rgba(211,98,72,0.2);
       transition: all 0.15s;
       flex-shrink: 0;
     }
 
     .audio-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 0 var(--secondary-dark), 0 12px 24px rgba(211,98,72,0.4);
+      box-shadow: 0 6px 18px rgba(211,98,72,0.25);
     }
 
     .audio-btn:active {
       transform: translateY(2px);
-      box-shadow: 0 2px 0 var(--secondary-dark);
+      box-shadow: none;
     }
 
     /* Answer Options */
@@ -611,8 +611,8 @@
 
     .answer-option {
       background: var(--surface);
-      border: 3px solid var(--border);
-      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
       padding: clamp(0.875rem, 3vw, 1.25rem);
       cursor: pointer;
       transition: all 0.2s;
@@ -4267,8 +4267,9 @@
     function showCelebration() {
       const celebration = document.createElement('div');
       celebration.className = 'celebration';
-      celebration.textContent = '<i data-lucide="party-popper"></i>';
+      celebration.innerHTML = '<i data-lucide="party-popper"></i>';
       document.body.appendChild(celebration);
+      if (window.lucide) lucide.createIcons();
       setTimeout(() => celebration.remove(), 1500);
     }
 
@@ -4278,6 +4279,7 @@
       updateLessonUI();
       updateAuthUI();
       updateReviewUI();
+      if (window.lucide) lucide.createIcons();
       
       // Check if user has onboarded
       if (!localStorage.getItem('thaiDaiOnboarded')) {
@@ -5305,7 +5307,7 @@ function soInjectModeSwitch() {
   const isSO = soTrack() === 'speak_only';
   const pill = document.createElement('button');
   pill.className = 'so-mode-pill';
-  pill.textContent = isSO ? '<i data-lucide="headphones"></i> Speak Only → <i data-lucide="book-open"></i> Read' : '<i data-lucide="book-open"></i> Speak + Read → <i data-lucide="headphones"></i> Speak Only';
+  pill.innerHTML = isSO ? '<i data-lucide="headphones"></i> Speak Only → <i data-lucide="book-open"></i> Read' : '<i data-lucide="book-open"></i> Speak + Read → <i data-lucide="headphones"></i> Speak Only';
   pill.onclick = function () {
     const u = soUser();
     u.learning_track = isSO ? 'speak_and_read' : 'speak_only';
@@ -5313,6 +5315,7 @@ function soInjectModeSwitch() {
     location.reload();
   };
   bar.appendChild(pill);
+  if (window.lucide) lucide.createIcons();
 }
 
 function soInit() {
