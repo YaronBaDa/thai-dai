@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1C332A">
   <title>Welcome to Thai Dai - Let's Get Started</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&display=swap" rel="stylesheet">
   <style>
         :root {
       /* Siam Clay & Botanicals */
@@ -17,13 +17,13 @@
       --text-primary: #1C332A;
       --text-secondary: #6F665C;
       --text-tertiary: #9B9185;
-      --accent-terracotta: #D36248;
+      --accent-emerald: #1F8A5B;
       --accent-amber: #D88941;
       --accent-sage: #4E6E5D;
       --accent-cta-bg: #1C332A;
       --accent-cta-text: #FAF7F2;
       --border-subtle: rgba(111,102,92,0.14);
-      --border-focus: #D36248;
+      --border-focus: #1F8A5B;
       --shadow-card: 0 12px 32px -8px rgba(50,42,33,0.08), 0 4px 12px -2px rgba(50,42,33,0.04);
       --shadow-button: 0 4px 14px rgba(28,51,42,0.15);
       --radius-card: 28px;
@@ -34,11 +34,11 @@
       --primary: #4E6E5D;
       --primary-dark: #3A5749;
       --primary-light: #6B8A79;
-      --secondary: #D36248;
-      --secondary-dark: #B7503A;
+      --secondary: #1F8A5B;
+      --secondary-dark: #17693F;
       --accent: #D88941;
       --accent-light: #E8A96B;
-      --pink: #D36248;
+      --pink: #1F8A5B;
       --purple: #8B5CF6;
       --background: #F5EFEB;
       --surface: #FAF7F2;
@@ -54,9 +54,9 @@
       --radius-xl: 24px;
       --radius-full: 9999px;
 
-      --font-thai: 'IBM Plex Sans Thai', 'Anuphan', 'Noto Sans Thai', sans-serif;
+      --font-thai: 'IBM Plex Sans Thai Looped', 'Anuphan', 'Noto Sans Thai', sans-serif;
       --font-serif: 'Fraunces', 'Playfair Display', Georgia, serif;
-      --font-sans: 'Inter', 'IBM Plex Sans Thai', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'IBM Plex Sans Thai Looped', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     * {
@@ -235,7 +235,7 @@
 
     .step-dot.done { background: var(--accent-sage); }
 
-    .step-dot.current { background: var(--accent-terracotta); transform: scale(1.35); }
+    .step-dot.current { background: var(--accent-emerald); transform: scale(1.35); }
 
     /* Wizard Content */
     .wizard-content {
@@ -380,7 +380,7 @@
     .text-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(211,98,72,0.15);
+      box-shadow: 0 0 0 4px rgba(31,138,91,0.18);
     }
 
     .text-input::placeholder {
@@ -659,7 +659,7 @@
     .path-icon {
       width: 64px;
       height: 64px;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+      background: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-sage) 100%);
       border-radius: 14px;
       display: flex;
       align-items: center;
