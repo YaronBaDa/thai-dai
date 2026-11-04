@@ -46,7 +46,7 @@ Scoring: `correct / scored`, where only question steps count.
 
 | Track | Engine |
 |---|---|
-| Speak & Read | Lesson 1 ("The Golden Words") → step engine (curated, Thai script + contextual match). Lessons 2–13 still old multiple-choice. |
+| Speak & Read | All 13 lessons on the step engine — lesson 1 curated (Thai + contextual match), lessons 2–13 auto-converted to **presentation → tone → scrambled**. |
 | Speak Only | All 6 curriculum lessons auto-converted to **presentation → tone → scrambled** (32 active steps). Tone Lab + Street Scenarios keep their existing active cards. |
 
 ## Open items / decisions
@@ -54,7 +54,7 @@ Scoring: `correct / scored`, where only question steps count.
 1. **Accent color unification** — onboarding still uses emerald green; `index` + `learn` use terracotta. Pick one: terracotta (canonical) / emerald / royal purple.
 2. **Audio** — all speech is browser TTS (`speechSynthesis`, `th-TH`). `lesson-1.json` carries `audioUrl` placeholders; real recordings + `onerror` handlers are pending.
 3. **Lucide CDN** — icons load from `unpkg@latest`; consider self-hosting for reliability.
-4. **Read-mode lessons 2–13** — still the old recognition engine; only lesson 1 migrated.
+4. ~~Read-mode lessons 2–13 — still the old recognition engine~~ ✅ migrated to the step engine.
 5. **Vision** — screenshot analysis is disabled (no vision provider configured). Run `hermes setup` / add `GOOGLE_API_KEY` or `OPENROUTER_API_KEY` to enable.
 6. **Speak-only contextual_match** — auto-conversion produces presentation/tone/scrambled but no contextual step (no scenario data in curriculum).
 
