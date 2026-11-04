@@ -125,6 +125,7 @@ function stepSpeak(text, rate) {
 function stepStartLesson(id) {
   const lesson = window.STEP_LESSONS[id];
   if (!lesson) return;
+  stepSession.soIndex = undefined;
   stepSession.lessonId = id;
   stepSession.steps = lesson.steps;
   stepSession.index = 0;
@@ -192,30 +193,35 @@ function stepAdvance() {
 function stepComplete() {
   closeLesson();
   const scored = stepSession.totalScored;
-  markLessonCompleted(stepSession.lessonId);
   stepPersistClear();
-  try {
-    if (typeof soLessons !== "undefined" && soLessons && soLessons.length) {
-      const done = JSON.parse(localStorage.getItem("thaiDaiSODone") || "[]");
-      if (done.indexOf(soLessons[0].id) < 0) done.push(soLessons[0].id);
-      localStorage.setItem("thaiDaiSODone", JSON.stringify(done));
-      const path = document.querySelector(".learning-path");
-      if (path && document.body.classList.contains("so-mode")) path.innerHTML = soRenderPath();
-    }
-  } catch (e) {}
+  if (typeof stepSession.soIndex !== "undefined" && stepSession.soIndex !== null) {
+    try {
+      if (typeof soLessons !== "undefined" && soLessons && soLessons[stepSession.soIndex]) {
+        const done = JSON.parse(localStorage.getItem("thaiDaiSODone") || "[]");
+        if (done.indexOf(soLessons[stepSession.soIndex].id) < 0) done.push(soLessons[stepSession.soIndex].id);
+        localStorage.setItem("thaiDaiSODone", JSON.stringify(done));
+        const path = document.querySelector(".learning-path");
+        if (path && document.body.classList.contains("so-mode")) path.innerHTML = soRenderPath();
+      }
+    } catch (e) {}
+  } else {
+    markLessonCompleted(stepSession.lessonId);
+  }
   alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct.");
 }
 
 // ---- renderers ----
 function stepHTMLPresentation(step) {
   const syls = (step.syllables || []).map(function (s) {
-    return '<button class="syl-chip" onclick="stepSpeak(\'' + (s.thai || s.text) + '\')">' +
+    return '<button class="syl-chip" onclick="stepSpeak(\'' + (s.thai || step.tts || s.text) + '\')">' +
       '<span>' + s.text + '</span><span class="syl-tone">' + s.contour + '</span></button>';
   }).join("");
+  var main = step.thai
+    ? '<div class="step-thai">' + step.thai + '</div><div class="step-romanized">' + step.romanized + '</div>'
+    : '<div class="step-thai" style="font-family:var(--font-phonetic)">' + step.romanized + '</div>';
   return '<div class="step-card">' +
     '<div class="step-phase">Listen &amp; Repeat</div>' +
-    '<div class="step-thai">' + step.thai + '</div>' +
-    '<div class="step-romanized">' + step.romanized + '</div>' +
+    main +
     '<div class="step-translation">' + step.translation + '</div>' +
     '<button class="step-audio" onclick="stepSpeak(\'' + (step.tts || step.thai) + '\')"><i data-lucide="volume-2"></i></button>' +
     '<div class="step-syllables">' + syls + '</div>' +
@@ -342,4 +348,78 @@ function stepContextAnswer(el, idx) {
     el.classList.add("wrong");
     stepSetNext("Got it →", stepAdvance);
   }
+}
+
+
+// ===== Speak-Only curriculum -> active step lessons =====
+(function () {
+  try {
+    if (typeof SO_CURRICULUM === "undefined") return;
+    var GLYPH = { low: "ˋ", mid: "ˉ", high: "ˊ", falling: "ˆ", rising: "ˇ" };
+    var TONE_OPTS = [
+      { id: "mid", label: "Mid", contour: "ˉ" },
+      { id: "low", label: "Low", contour: "ˋ" },
+      { id: "high", label: "High", contour: "ˊ" },
+      { id: "falling", label: "Falling", contour: "ˆ" },
+      { id: "rising", label: "Rising", contour: "ˇ" }
+    ];
+    function toneOf(syl) {
+      if (/[àèìòù]/.test(syl)) return "low";
+      if (/[âêîôû]/.test(syl)) return "falling";
+      if (/[áéíóú]/.test(syl)) return "high";
+      if (/[ǎěǐǒǔ]/.test(syl)) return "rising";
+      return "mid";
+    }
+    function splitSyls(ph) {
+      return String(ph).replace(/\{\{particle\}\}/g, "kráp")
+        .split(/[\s\u2013\u2014-]+/)
+        .map(function (s) { return s.replace(/[?!.,()]/g, ""); })
+        .filter(Boolean);
+    }
+    window.SO_STEP_LESSONS = {};
+    var idx = 0;
+    (SO_CURRICULUM.units || []).forEach(function (unit) {
+      (unit.lessons || []).forEach(function (lesson) {
+        var steps = [];
+        (lesson.items || []).forEach(function (item) {
+          var ph = String(item.phonetic || "").replace(/\{\{particle\}\}/g, "kráp");
+          var tts = item.tts || "";
+          if (item.type === "phrase_builder") {
+            steps.push({ stepId: "p_" + item.id, type: "presentation", romanized: ph, translation: item.english, tts: tts, syllables: [] });
+          } else {
+            var sTone = splitSyls(ph).map(function (x) { var t = toneOf(x); return { text: x, tone: t, contour: GLYPH[t] }; });
+            steps.push({ stepId: "p_" + item.id, type: "presentation", romanized: ph, translation: item.english, tts: tts, syllables: sTone });
+            if (sTone.length) {
+              var pick = sTone[0];
+              steps.push({ stepId: "t_" + item.id, type: "tone_discrimination", prompt: 'Listen. What tone is "' + pick.text + '"?', tts: tts, syllable: pick.text, correctTone: pick.tone, options: TONE_OPTS });
+            }
+            if (!/[\/,]/.test(ph) && sTone.length >= 2) {
+              steps.push({ stepId: "s_" + item.id, type: "scrambled_syllable", prompt: 'Assemble: "' + item.english + '"', targetTranslation: item.english, correctSequence: sTone.map(function (x) { return x.text; }), bank: sTone.map(function (x, i) { return { id: "s" + i, text: x.text, tone: x.tone, contour: x.contour }; }) });
+            }
+          }
+        });
+        if (steps.length) window.SO_STEP_LESSONS[idx] = { unitId: unit.id, unitTitle: unit.title, lessonId: lesson.id, lessonTitle: lesson.title, steps: steps };
+        idx++;
+      });
+    });
+  } catch (e) { if (window.console) console.error("SO step build failed", e); }
+})();
+
+function stepStartSO(i) {
+  var lesson = window.SO_STEP_LESSONS && window.SO_STEP_LESSONS[i];
+  if (!lesson) return false;
+  stepSession.soIndex = i;
+  stepSession.lessonId = null;
+  stepSession.steps = lesson.steps;
+  stepSession.index = 0;
+  stepSession.correct = 0;
+  stepSession.totalScored = lesson.steps.filter(function (s) { return stepIsScored(s.type); }).length;
+  stepSession.answered = false;
+  stepSession.userSequence = [];
+  var hearts = document.querySelector(".lesson-hearts");
+  if (hearts) hearts.style.display = "none";
+  document.getElementById("lessonModal").classList.add("active");
+  document.body.classList.add("modal-open");
+  stepRender();
+  return true;
 }

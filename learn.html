@@ -5324,7 +5324,7 @@ function soCompleteLesson() {
 }
 
 function soStartLesson(i) {
-  if (i === 0 && window.STEP_LESSONS && window.STEP_LESSONS[1]) { stepStartLesson(1); return; }
+  if (stepStartSO(i)) return;
   const ls = soLessons[i];
   if (!ls) return;
   if (i > 0) {
