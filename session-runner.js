@@ -423,3 +423,66 @@ function stepStartSO(i) {
   stepRender();
   return true;
 }
+
+
+window.THAI_LIT = {
+  "pom cheu": "My name is... (male)","sawasdee": "Hello / Goodbye", "sawasdee krab": "Hello (male)", "sawasdee ka": "Hello (female)", "khun": "You (polite)", "phom cheu": "My name is... (male)", "chan cheu": "My name is... (female)", "khun cheu arai": "What is your name?", "khob khun": "Thank you", "khob khun mak ka": "Thank you very much (female)", "yin dee": "You're welcome / Glad to", "dee jai thi dai roojak": "Nice to meet you", "sabai dee mai": "How are you?", "laa gawn": "Goodbye", "khaw thot": "Sorry / Excuse me", "mai pen rai": "It's okay / Never mind", "neung": "One", "see": "Four", "haa": "Five", "sip": "Ten", "yee sip": "Twenty", "thao rai": "How much?", "gee baht": "How many baht?", "phaeng": "Expensive", "thuk": "Cheap / Correct", "lot dai mai": "Can you discount?", "thuk gwa nee dai mai": "Can it be cheaper than this?", "ra kha tao rai": "What is the price?", "chan ao arai nee ka": "I'll take this one (female)", "pet": "Spicy", "wan": "Sweet", "priaw": "Sour", "jeut": "Bland / Not salty", "mai pet": "Not spicy", "pet mak": "Very spicy", "nid noi": "A little bit", "ao": "Want / Take", "mai ao": "Don't want", "chob": "Like", "aroi": "Delicious", "nam": "Water", "khao": "Rice / Meal", "kuay tiao": "Noodles", "pad thai": "Pad Thai", "chan gin jay ka": "I'm vegetarian (female)", "check bin krab": "Check please (male)", "check bin": "Bill / Check", "chan im laew ka": "I'm full (female)", "kor krab": "I would like [X] (male)", "meter": "Turn on the meter", "pai thi": "Go to [place]", "glai mai": "Is it far?", "reo noi krab": "A bit faster please (male)", "liaw sai": "Turn left", "liaw khwa": "Turn right", "dtrong pai": "Go straight", "jawt dtrong nee": "Stop here", "klap rot": "U-turn", "phaeng pai": "Too expensive", "dai krab": "Yes / Okay (male)", "chan ha khun khwa ka": "I'll find another one (female)", "na khrap": "Here / This one (male)", "mai dtong thon": "Keep the change", "khob khun ka laew joo gan": "Thanks, see you (female)", "chok dee": "Good luck", "bpai": "Go", "maa": "Come", "nai": "Where", "arai": "What", "meuan gan": "Same / Me too", "gin khao": "Eat rice / Have a meal", "hong nam": "Bathroom", "rot fai": "Train", "rot mee": "Bus", "sanam bin": "Airport", "ta naam": "Pier / Ferry dock", "rot dtap": "Traffic jam", "pang": "Bread", "kaffe": "Coffee", "nam khaeng": "Ice", "nam pla": "Fish sauce", "nam man": "Cooking oil / Gasoline", "nam sot": "Drinking water", "nam phon la mai": "Fruit juice", "cha yen": "Iced tea", "cha ron": "Hot tea", "bia": "Beer", "lao": "Liquor / Spirits", "rot tam ruat": "Police car", "hong yaak": "Hospital", "ran ahan": "Restaurant", "dtalaat": "Market", "tlot": "All the way / Through", "hong nam yuu thi nai": "Where is the bathroom?", "kit thung": "Miss (someone)", "rak": "Love", "jing jing": "Really / Truly", "mai chai": "No (it isn't)", "chai": "Yes (it is)", "dai": "Can / Get / Okay", "mai dai": "Cannot / Not okay"};
+
+// ===== Read-mode lessons 2-13 -> active step lessons =====
+(function () {
+  try {
+    if (typeof lessonData === "undefined") return;
+    var GLYPH = { low: "ˋ", mid: "ˉ", high: "ˊ", falling: "ˆ", rising: "ˇ" };
+    var TONE_OPTS = [
+      { id: "mid", label: "Mid", contour: "ˉ" },
+      { id: "low", label: "Low", contour: "ˋ" },
+      { id: "high", label: "High", contour: "ˊ" },
+      { id: "falling", label: "Falling", contour: "ˆ" },
+      { id: "rising", label: "Rising", contour: "ˇ" }
+    ];
+    function toneOf(syl) {
+      if (/[àèìòù]/.test(syl)) return "low";
+      if (/[âêîôû]/.test(syl)) return "falling";
+      if (/[áéíóú]/.test(syl)) return "high";
+      if (/[ǎěǐǒǔ]/.test(syl)) return "rising";
+      return "mid";
+    }
+    function strip(s) { return String(s || "").replace(/[()]/g, "").replace(/\s+/g, " ").trim(); }
+    function syls(s) { return strip(s).split(/[\s\u2013\u2014-]+/).filter(Boolean); }
+    function cleanEng(s) {
+      s = String(s || "").trim();
+      s = s.replace(/\s+(male|female)$/i, function (m, g) { return " (" + g.toLowerCase() + ")"; });
+      s = s.replace(/\byoure\b/gi, "You're").replace(/\bim\b/gi, "I'm").replace(/\bdont\b/gi, "Don't").replace(/\bits\b/gi, "It's").replace(/\buturn\b/gi, "U-turn");
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    Object.keys(lessonData).forEach(function (id) {
+      if (window.STEP_LESSONS[id]) return; // skip already-curated lesson 1
+      var exercises = lessonData[id] || [];
+      var steps = [];
+      exercises.forEach(function (ex, ei) {
+        var opts = ex.options || [];
+        var correctOpt = opts.find(function (o) { return o.value === ex.correct; }) || opts[0];
+        if (!correctOpt) return;
+        var thai = correctOpt.thai || "";
+        var rom = strip(correctOpt.romanized || "");
+        var eng = (window.THAI_LIT && window.THAI_LIT[correctOpt.value]) || cleanEng(correctOpt.value || "");
+        var sTone = syls(rom).map(function (x) { var t = toneOf(x); return { text: x, tone: t, contour: GLYPH[t] }; });
+        // presentation
+        steps.push({ stepId: "p_" + id + "_" + ei, type: "presentation", thai: thai, romanized: rom, translation: eng, tts: thai, syllables: sTone });
+        // tone discrimination
+        if (sTone.length) {
+          var pick = sTone[0];
+          steps.push({ stepId: "t_" + id + "_" + ei, type: "tone_discrimination", prompt: 'Listen. What tone is "' + pick.text + '"?', tts: thai, syllable: pick.text, correctTone: pick.tone, options: TONE_OPTS });
+        }
+        // scrambled syllable (active recall)
+        if (!/[\/,]/.test(rom) && sTone.length >= 2) {
+          steps.push({ stepId: "s_" + id + "_" + ei, type: "scrambled_syllable", prompt: 'Assemble: "' + eng + '"', targetTranslation: eng, correctSequence: sTone.map(function (x) { return x.text; }), bank: sTone.map(function (x, i) { return { id: "s" + i, text: x.text, tone: x.tone, contour: x.contour }; }) });
+        }
+      });
+      if (steps.length) {
+        window.STEP_LESSONS[id] = { unitId: "read_" + id, unitTitle: "Read & Write", lessonId: "lesson-" + id, lessonTitle: "Lesson " + id, steps: steps };
+      }
+    });
+  } catch (e) { if (window.console) console.error("read step build failed", e); }
+})();
