@@ -269,6 +269,7 @@
     .unit-header {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.9rem;
       width: fit-content;
       max-width: 100%;
@@ -303,7 +304,7 @@
 
     .unit-info {
       min-width: 0;
-      flex: 1;
+      flex: 0 1 auto;
     }
 
     .unit-info p {
@@ -800,10 +801,6 @@
       color: var(--primary);
     }
 
-    .mobile-logo-icon {
-      font-size: 1.5rem;
-    }
-
     .mobile-stats {
       display: flex;
       gap: 0.75rem;
@@ -916,7 +913,7 @@
       .top-bar {
         flex-direction: column;
         gap: 1rem;
-        align-items: flex-start;
+        align-items: center;
       }
 
       .daily-goal {
@@ -967,7 +964,7 @@
       .top-bar {
         flex-direction: column;
         gap: 1rem;
-        align-items: flex-start;
+        align-items: center;
       }
 
       .daily-goal {
@@ -1235,10 +1232,7 @@
       <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </button>
-      <a href="index.html" class="mobile-logo">
-        <span class="mobile-logo-icon"><i data-lucide="landmark"></i></span>
-        Thai Dai
-      </a>
+      <a href="index.html" class="mobile-logo">Thai Dai</a>
       <div class="mobile-stats">
         <span><i data-lucide="flame"></i> 12</span>
         <span><i data-lucide="gem"></i> 245</span>
