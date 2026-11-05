@@ -36,18 +36,28 @@ Thai Dai is a static (GitHub Pages) Thai language-learning web app with two lear
 
 ## Lesson engine (`session-runner.js`)
 
-Step types:
-- **presentation** — input/shadowing, **never scored**
-- **tone_discrimination** — listen → identify pitch contour
-- **scrambled_syllable** — reconstruct phrase from shuffled blocks
-- **contextual_match** — scenario + pragmatic options
+**Scaffolding modes** (persistent `localStorage.thaiDaiScaffold`, default Standard):
+- **Novice (1)** — Thai + romanization visible, English in a collapsible drawer.
+- **Standard (2)** — Thai only; romanization/translation behind a "Peek" (eye) action (review-tagged).
+- **Strict (3)** — Thai + audio only; zero romanization, zero English.
 
-Scoring: `correct / scored`, where only question steps count.
+**Step types** (phase-tagged explore → drill → assess):
+- `presentation` (explore, **never scored**) — input/shadowing
+- `tone_discrimination` (drill) — audio-only → identify pitch contour
+- `minimal_pair` (drill) — audio-only → pick the correct Thai spelling
+- `morphology` (drill) — build a compound from root tiles
+- `sentence_assembler` (drill) — reorder Thai word tiles
+- `scrambled_syllable` (drill, legacy/speak-only) — reorder phonetic syllables
+- `audio_comprehension` (assess) — hear audio → pick the Thai sentence
+- `contextual_match` (assess) — scenario → Thai-only options
+
+Scoring: `correct / scored`; presentation excluded, peeking tags a step for review.
+Schema documented in `SCHEMA.md`.
 
 | Track | Engine |
 |---|---|
-| Speak & Read | All 13 lessons on the step engine — lesson 1 curated (Thai + contextual match), lessons 2–13 auto-converted to **presentation → tone → scrambled**. |
-| Speak Only | All 6 curriculum lessons auto-converted to **presentation → tone → scrambled** (32 active steps). Tone Lab + Street Scenarios keep their existing active cards. |
+| Speak & Read | All 13 lessons on the step engine — lesson 1 curated (all 8 types); lessons 2–13 auto-converted to **presentation → tone → audio_comprehension** with Thai-only options. |
+| Speak Only | All 6 curriculum lessons auto-converted to **presentation → tone → scrambled** (phonetic, no Thai script). Tone Lab + Street Scenarios keep their existing active cards. |
 
 ## Open items / decisions
 
