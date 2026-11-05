@@ -5,24 +5,34 @@
   "lessonTitle": "The Golden Words",
   "steps": [
     {
-      "stepId": "step-1-intro",
+      "stepId": "s1-intro",
       "type": "presentation",
+      "phase": "explore",
       "thai": "ขอบคุณครับ",
-      "romanized": "khòp-khun kráp",
-      "translation": "Thank you (polite male)",
-      "audioUrl": "/audio/khop-khun-krap.mp3",
-      "syllables": [
-        { "text": "khòp", "thai": "ขอบ", "tone": "low", "contour": "ˋ", "audioUrl": "/audio/khop_low.mp3" },
-        { "text": "khun", "thai": "คุณ", "tone": "mid", "contour": "ˉ", "audioUrl": "/audio/khun_mid.mp3" },
-        { "text": "kráp", "thai": "ครับ", "tone": "high", "contour": "ˊ", "audioUrl": "/audio/krap_high.mp3" }
-      ],
-      "note": "Particles 'kráp' (male) and 'khâ' (female) soften phrases and show respect."
+      "tts": "ขอบคุณครับ",
+      "hints": { "romanized": "khòp-khun kráp", "translation": "Thank you (polite male)" },
+      "note": "ครับ (kráp) is the polite male particle; ค่ะ (khâ) is the female form."
     },
     {
-      "stepId": "step-2-ear-training",
+      "stepId": "s2-minimal-pair",
+      "type": "minimal_pair",
+      "phase": "drill",
+      "prompt": "Listen. Which word did you hear?",
+      "tts": "ค่ะ",
+      "hints": { "romanized": "khâ vs khá", "translation": "polite particle vs question particle" },
+      "options": [
+        { "thai": "ค่ะ", "hints": { "romanized": "khâ (falling)", "translation": "polite particle (female)" } },
+        { "thai": "คะ",  "hints": { "romanized": "khá (high)",    "translation": "question particle (female)" } }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "stepId": "s3-tone",
       "type": "tone_discrimination",
-      "prompt": "Listen to the syllable. What tone is it?",
-      "audioUrl": "/audio/krap_high.mp3",
+      "phase": "drill",
+      "prompt": "Listen. What tone is it?",
+      "tts": "ครับ",
+      "hints": { "romanized": "kráp", "translation": "polite particle (male)" },
       "syllable": "kráp",
       "correctTone": "high",
       "options": [
@@ -34,28 +44,61 @@
       ]
     },
     {
-      "stepId": "step-3-reconstruct",
-      "type": "scrambled_syllable",
-      "prompt": "Assemble: 'Thank you' (polite male)",
-      "targetTranslation": "Thank you",
-      "correctSequence": ["khòp", "khun", "kráp"],
-      "bank": [
-        { "id": "s1", "text": "kráp", "thai": "ครับ", "tone": "high", "contour": "ˊ" },
-        { "id": "s2", "text": "khòp", "thai": "ขอบ", "tone": "low", "contour": "ˋ" },
-        { "id": "s3", "text": "khun", "thai": "คุณ", "tone": "mid", "contour": "ˉ" },
-        { "id": "s4", "text": "kâ", "thai": "คะ", "tone": "falling", "contour": "ˆ" }
-      ]
+      "stepId": "s4-assemble",
+      "type": "sentence_assembler",
+      "phase": "drill",
+      "prompt": "No sugar, please (male speaker).",
+      "tts": "ขอไม่ใส่น้ำตาลครับ",
+      "hints": { "romanized": "khǒr mâi sài nám-taan kráp", "translation": "No sugar, please (male)" },
+      "tiles": [
+        { "thai": "ขอ",     "hints": { "romanized": "khǒr",      "translation": "please / would like" } },
+        { "thai": "ไม่ใส่", "hints": { "romanized": "mâi sài",   "translation": "don't add" } },
+        { "thai": "น้ำตาล", "hints": { "romanized": "nám-taan",  "translation": "sugar" } },
+        { "thai": "ครับ",   "hints": { "romanized": "kráp",      "translation": "polite particle (male)" } }
+      ],
+      "correctSequence": [0, 1, 2, 3]
     },
     {
-      "stepId": "step-4-context",
-      "type": "contextual_match",
-      "scenario": "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
-      "correctIndex": 0,
+      "stepId": "s5-morphology",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for \u2018Restroom\u2019.",
+      "compound": "ห้องน้ำ",
+      "hints": { "romanized": "hâwng-náam", "translation": "Restroom" },
+      "roots": [
+        { "thai": "ห้อง", "meaning": "room" },
+        { "thai": "น้ำ", "meaning": "water" },
+        { "thai": "เย็น", "meaning": "cold" },
+        { "thai": "กิน", "meaning": "eat" }
+      ],
+      "correctRoots": [0, 1]
+    },
+    {
+      "stepId": "s6-listen",
+      "type": "audio_comprehension",
+      "phase": "assess",
+      "prompt": "Listen and choose what you heard.",
+      "tts": "ขอบคุณมากครับ",
+      "hints": { "romanized": "khòp-khun mâak kráp", "translation": "Thank you very much (male)" },
       "options": [
-        { "text": "ขอบคุณครับ", "romanized": "khòp-khun kráp", "explanation": "Polite thank you for male speakers." },
-        { "text": "สวัสดีครับ", "romanized": "sà-wàt-dii kráp", "explanation": "Means 'hello', not 'thank you'." },
-        { "text": "ขอโทษครับ", "romanized": "khɔ̌ɔ-thôot kráp", "explanation": "Means 'sorry / excuse me'." }
-      ]
+        { "thai": "ขอบคุณมากครับ", "hints": { "romanized": "khòp-khun mâak kráp", "translation": "Thank you very much (male)" } },
+        { "thai": "ขอโทษครับ",     "hints": { "romanized": "khǎaw-thôot kráp",    "translation": "Sorry / Excuse me (male)" } },
+        { "thai": "สวัสดีครับ",    "hints": { "romanized": "sà-wàt-dii kráp",     "translation": "Hello (male)" } }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "stepId": "s7-context",
+      "type": "contextual_match",
+      "phase": "assess",
+      "scenario": "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
+      "hints": { "romanized": "khòp-khun kráp", "translation": "Thank you (polite male)" },
+      "options": [
+        { "thai": "ขอบคุณครับ", "hints": { "romanized": "khòp-khun kráp", "translation": "Thank you (polite male)" } },
+        { "thai": "สวัสดีครับ", "hints": { "romanized": "sà-wàt-dii kráp", "translation": "Hello (male)" } },
+        { "thai": "ขอโทษครับ", "hints": { "romanized": "khǎaw-thôot kráp", "translation": "Sorry / Excuse me (male)" } }
+      ],
+      "correctIndex": 0
     }
   ]
 }

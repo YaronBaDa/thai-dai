@@ -1,12 +1,25 @@
 /* ============================================================
-   Thai Dai — Step-based lesson engine (active language acquisition)
-   Step types: presentation, tone_discrimination,
-               scrambled_syllable, contextual_match
-   Score rule: presentation steps are NEVER scored.
+   Thai Dai — Step-based lesson engine (active acquisition, v2)
+   ============================================================
+   Step types:
+     presentation          (explore) — never scored
+     tone_discrimination   (drill)   — audio-only, identify pitch contour
+     minimal_pair           (drill)   — audio-only, pick the Thai spelling
+     morphology             (drill)   — build a compound from root tiles
+     sentence_assembler     (drill)   — reorder Thai word tiles
+     scrambled_syllable     (drill)   — legacy, reorder phonetic syllables (speak-only)
+     audio_comprehension    (assess)  — hear audio, pick the Thai sentence
+     contextual_match       (assess)  — scenario, Thai-only options
+
+   Scaffolding modes (persistent, per user):
+     1 = Novice      — Thai + tone-marked romanization; English in a drawer
+     2 = Standard    — Thai only; romanization/translation behind "Peek" (review-tagged)
+     3 = Strict      — Thai + audio only; zero romanization, zero English
+
+   Score rule: presentation is NEVER scored. Peeking tags the step for review.
    ============================================================ */
 
-// ---- sample lesson data (new multi-step schema) ----
-// Mirrors lesson-1.json; runtime uses this synchronous copy (audio via TTS).
+// ---- curated lesson 1 (demonstrates every question type) ----
 window.STEP_LESSONS = {
   1: {
     unitId: "unit-1",
@@ -15,26 +28,26 @@ window.STEP_LESSONS = {
     lessonTitle: "The Golden Words",
     steps: [
       {
-        stepId: "step-1-intro",
-        type: "presentation",
-        thai: "ขอบคุณครับ",
-        romanized: "khòp-khun kráp",
-        translation: "Thank you (polite male)",
-        tts: "ขอบคุณครับ",
-        syllables: [
-          { text: "khòp", thai: "ขอบ", tone: "low",  contour: "ˋ" },
-          { text: "khun", thai: "คุณ", tone: "mid",  contour: "ˉ" },
-          { text: "kráp", thai: "ครับ", tone: "high", contour: "ˊ" }
-        ],
-        note: "Particles 'kráp' (male) and 'khâ' (female) soften phrases and show respect."
+        stepId: "s1-intro", type: "presentation", phase: "explore",
+        thai: "ขอบคุณครับ", tts: "ขอบคุณครับ",
+        hints: { romanized: "khòp-khun kráp", translation: "Thank you (polite male)" },
+        note: "ครับ (kráp) is the polite male particle; ค่ะ (khâ) is the female form."
       },
       {
-        stepId: "step-2-ear-training",
-        type: "tone_discrimination",
-        prompt: "Listen to the syllable. What tone is it?",
-        tts: "ครับ",
-        syllable: "kráp",
-        correctTone: "high",
+        stepId: "s2-minimal-pair", type: "minimal_pair", phase: "drill",
+        prompt: "Listen. Which word did you hear?", tts: "ค่ะ",
+        hints: { romanized: "khâ vs khá", translation: "polite particle vs question particle" },
+        options: [
+          { thai: "ค่ะ", hints: { romanized: "khâ (falling)", translation: "polite particle (female)" } },
+          { thai: "คะ",  hints: { romanized: "khá (high)",    translation: "question particle (female)" } }
+        ],
+        correctIndex: 0
+      },
+      {
+        stepId: "s3-tone", type: "tone_discrimination", phase: "drill",
+        prompt: "Listen. What tone is it?", tts: "ครับ",
+        hints: { romanized: "kráp", translation: "polite particle (male)" },
+        syllable: "kráp", correctTone: "high",
         options: [
           { id: "mid",     label: "Mid",     contour: "ˉ" },
           { id: "low",     label: "Low",     contour: "ˋ" },
@@ -44,28 +57,50 @@ window.STEP_LESSONS = {
         ]
       },
       {
-        stepId: "step-3-reconstruct",
-        type: "scrambled_syllable",
-        prompt: "Assemble: 'Thank you' (polite male)",
-        targetTranslation: "Thank you",
-        correctSequence: ["khòp", "khun", "kráp"],
-        bank: [
-          { id: "s1", text: "kráp", thai: "ครับ", tone: "high",    contour: "ˊ" },
-          { id: "s2", text: "khòp", thai: "ขอบ", tone: "low",     contour: "ˋ" },
-          { id: "s3", text: "khun", thai: "คุณ", tone: "mid",     contour: "ˉ" },
-          { id: "s4", text: "kâ",   thai: "คะ",  tone: "falling", contour: "ˆ" }
-        ]
+        stepId: "s4-assemble", type: "sentence_assembler", phase: "drill",
+        prompt: "No sugar, please (male speaker).", tts: "ขอไม่ใส่น้ำตาลครับ",
+        hints: { romanized: "khǒr mâi sài nám-taan kráp", translation: "No sugar, please (male)" },
+        tiles: [
+          { thai: "ขอ",     hints: { romanized: "khǒr",      translation: "please / would like" } },
+          { thai: "ไม่ใส่", hints: { romanized: "mâi sài",   translation: "don't add" } },
+          { thai: "น้ำตาล", hints: { romanized: "nám-taan",  translation: "sugar" } },
+          { thai: "ครับ",   hints: { romanized: "kráp",      translation: "polite particle (male)" } }
+        ],
+        correctSequence: [0, 1, 2, 3]
       },
       {
-        stepId: "step-4-context",
-        type: "contextual_match",
-        scenario: "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
-        correctIndex: 0,
+        stepId: "s5-morphology", type: "morphology", phase: "drill",
+        prompt: "Construct the word for \u2018Restroom\u2019.", compound: "ห้องน้ำ",
+        hints: { romanized: "hâwng-náam", translation: "Restroom" },
+        roots: [
+          { thai: "ห้อง", meaning: "room" },
+          { thai: "น้ำ", meaning: "water" },
+          { thai: "เย็น", meaning: "cold" },
+          { thai: "กิน", meaning: "eat" }
+        ],
+        correctRoots: [0, 1]
+      },
+      {
+        stepId: "s6-listen", type: "audio_comprehension", phase: "assess",
+        prompt: "Listen and choose what you heard.", tts: "ขอบคุณมากครับ",
+        hints: { romanized: "khòp-khun mâak kráp", translation: "Thank you very much (male)" },
         options: [
-          { text: "ขอบคุณครับ", romanized: "khòp-khun kráp", explanation: "Polite thank you for male speakers." },
-          { text: "สวัสดีครับ", romanized: "sà-wàt-dii kráp", explanation: "Means 'hello', not 'thank you'." },
-          { text: "ขอโทษครับ", romanized: "khɔ̌ɔ-thôot kráp", explanation: "Means 'sorry / excuse me'." }
-        ]
+          { thai: "ขอบคุณมากครับ", hints: { romanized: "khòp-khun mâak kráp", translation: "Thank you very much (male)" } },
+          { thai: "ขอโทษครับ",     hints: { romanized: "khǎaw-thôot kráp",    translation: "Sorry / Excuse me (male)" } },
+          { thai: "สวัสดีครับ",    hints: { romanized: "sà-wàt-dii kráp",     translation: "Hello (male)" } }
+        ],
+        correctIndex: 0
+      },
+      {
+        stepId: "s7-context", type: "contextual_match", phase: "assess",
+        scenario: "A 7-Eleven clerk hands you your change and receipt. How do you politely say thank you?",
+        hints: { romanized: "khòp-khun kráp", translation: "Thank you (polite male)" },
+        options: [
+          { thai: "ขอบคุณครับ", hints: { romanized: "khòp-khun kráp", translation: "Thank you (polite male)" } },
+          { thai: "สวัสดีครับ", hints: { romanized: "sà-wàt-dii kráp", translation: "Hello (male)" } },
+          { thai: "ขอโทษครับ", hints: { romanized: "khǎaw-thôot kráp", translation: "Sorry / Excuse me (male)" } }
+        ],
+        correctIndex: 0
       }
     ]
   }
@@ -80,21 +115,38 @@ const STEP_TONES = {
   rising:  { label: "Rising",  contour: "ˇ" }
 };
 
+const STEP_TONE_OPTS = [
+  { id: "mid",     label: "Mid",     contour: "ˉ" },
+  { id: "low",     label: "Low",     contour: "ˋ" },
+  { id: "high",    label: "High",    contour: "ˊ" },
+  { id: "falling", label: "Falling", contour: "ˆ" },
+  { id: "rising",  label: "Rising",  contour: "ˇ" }
+];
+
+const STEP_PHASES = { explore: "Explore", drill: "Drill", assess: "Assessment" };
+
 // ---- session state ----
 const stepSession = {
   lessonId: null,
+  soIndex: undefined,
   steps: [],
   index: 0,
   correct: 0,
   totalScored: 0,
   answered: false,
+  peeked: false,
+  peekCount: 0,
   userSequence: [],
+  selectedRoots: [],
   bankItems: [],
-  correctSeq: []
+  tiles: [],
+  correctSeq: [],
+  correctRoots: []
 };
 
 function stepIsScored(type) {
-  return type === "tone_discrimination" || type === "scrambled_syllable" || type === "contextual_match";
+  return ["tone_discrimination", "minimal_pair", "morphology", "sentence_assembler",
+          "scrambled_syllable", "audio_comprehension", "contextual_match"].indexOf(type) >= 0;
 }
 
 function stepShuffle(arr) {
@@ -104,6 +156,42 @@ function stepShuffle(arr) {
     const t = a[i]; a[i] = a[j]; a[j] = t;
   }
   return a;
+}
+
+// ---- hints: accepts new {hints:{romanized,translation}} or legacy top-level fields ----
+function stepHints(step) {
+  if (step && step.hints) return { romanized: step.hints.romanized || "", translation: step.hints.translation || "" };
+  return { romanized: (step && step.romanized) || "", translation: (step && step.translation) || "" };
+}
+function optHints(o) {
+  if (o && o.hints) return { romanized: o.hints.romanized || "", translation: o.hints.translation || "" };
+  return { romanized: (o && o.romanized) || "", translation: (o && o.explanation) || "" };
+}
+
+// ---- scaffolding mode ----
+function stepModeLevel() {
+  try {
+    const m = parseInt(localStorage.getItem("thaiDaiScaffold") || "2", 10);
+    return (m === 1 || m === 2 || m === 3) ? m : 2;
+  } catch (e) { return 2; }
+}
+function stepSetMode(m) {
+  try { localStorage.setItem("thaiDaiScaffold", String(m)); } catch (e) {}
+  stepRender();
+}
+function stepApplyModeClass() {
+  const modal = document.getElementById("lessonModal");
+  if (!modal) return;
+  modal.classList.remove("mode-1", "mode-2", "mode-3");
+  modal.classList.add("mode-" + stepModeLevel());
+}
+function stepPeek() {
+  stepSession.peeked = !stepSession.peeked;
+  if (stepSession.peeked) stepSession.peekCount++;
+  const card = document.querySelector(".step-card");
+  if (card) card.classList.toggle("peeked", stepSession.peeked);
+  const btn = document.getElementById("peekBtn");
+  if (btn) btn.classList.toggle("active", stepSession.peeked);
 }
 
 // ---- audio (TTS fallback; swap for audioUrl playback when files exist) ----
@@ -130,6 +218,7 @@ function stepStartLesson(id) {
   stepSession.steps = lesson.steps;
   stepSession.index = 0;
   stepSession.correct = 0;
+  stepSession.peekCount = 0;
   stepSession.totalScored = lesson.steps.filter(function (s) { return stepIsScored(s.type); }).length;
   stepSession.answered = false;
   stepSession.userSequence = [];
@@ -143,6 +232,7 @@ function stepStartLesson(id) {
   if (hearts) hearts.style.display = "none";
   document.getElementById("lessonModal").classList.add("active");
   document.body.classList.add("modal-open");
+  stepApplyModeClass();
   stepRender();
 }
 
@@ -157,23 +247,56 @@ function stepRender() {
   const step = stepSession.steps[stepSession.index];
   const area = document.querySelector(".exercise-area");
   const footer = document.querySelector(".lesson-footer");
+  stepApplyModeClass();
   stepSession.answered = false;
+  stepSession.peeked = false;
   stepSession.userSequence = [];
+  stepSession.selectedRoots = [];
   document.getElementById("progressFill").style.width = Math.round((stepSession.index / stepSession.steps.length) * 100) + "%";
-  if (step.type === "presentation") area.innerHTML = stepHTMLPresentation(step);
-  else if (step.type === "tone_discrimination") area.innerHTML = stepHTMLTone(step);
-  else if (step.type === "scrambled_syllable") area.innerHTML = stepHTMLScrambled(step);
-  else if (step.type === "contextual_match") area.innerHTML = stepHTMLContextual(step);
+
+  area.innerHTML = stepToolbar(step) + stepCardHTML(step);
 
   if (step.type === "presentation") {
     footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepAdvance()">Continue →</button>';
-  } else if (step.type === "scrambled_syllable") {
-    footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepCheckScrambled()" disabled>Check</button>';
+  } else if (step.type === "scrambled_syllable" || step.type === "sentence_assembler" || step.type === "morphology") {
+    footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepCheckBuilder()" disabled>Check</button>';
   } else {
     footer.innerHTML = '<button class="btn btn-primary" id="stepNextBtn" onclick="stepAdvance()" disabled>Continue →</button>';
   }
   if (window.lucide) lucide.createIcons();
   stepPersistSave();
+}
+
+function stepCardHTML(step) {
+  switch (step.type) {
+    case "presentation":         return stepHTMLPresentation(step);
+    case "tone_discrimination":  return stepHTMLTone(step);
+    case "minimal_pair":         return stepHTMLMinimalPair(step);
+    case "morphology":           return stepHTMLMorphology(step);
+    case "sentence_assembler":   return stepHTMLAssembler(step);
+    case "scrambled_syllable":   return stepHTMLScrambled(step);
+    case "audio_comprehension":  return stepHTMLAudioComp(step);
+    case "contextual_match":     return stepHTMLContextual(step);
+    default:                     return '<div class="step-card"></div>';
+  }
+}
+
+function stepToolbar(step) {
+  const ph = step.phase || "drill";
+  const m = stepModeLevel();
+  const h = stepHints(step);
+  const peekAllowed = m === 2 && (h.romanized || h.translation);
+  return '<div class="step-toolbar">' +
+    '<span class="phase-badge phase-' + ph + '">' + (STEP_PHASES[ph] || "Drill") + '</span>' +
+    '<div class="scaffold-seg">' +
+      '<button class="scaffold-btn' + (m === 1 ? " active" : "") + '" data-mode="1" onclick="stepSetMode(1)">Novice</button>' +
+      '<button class="scaffold-btn' + (m === 2 ? " active" : "") + '" data-mode="2" onclick="stepSetMode(2)">Standard</button>' +
+      '<button class="scaffold-btn' + (m === 3 ? " active" : "") + '" data-mode="3" onclick="stepSetMode(3)">Strict</button>' +
+    '</div>' +
+    (peekAllowed
+      ? '<button class="peek-btn" id="peekBtn" onclick="stepPeek()" title="Peek hints (marks for review)"><i data-lucide="eye"></i></button>'
+      : '') +
+    '</div>';
 }
 
 function stepSetNext(label, handler) {
@@ -207,39 +330,140 @@ function stepComplete() {
   } else {
     markLessonCompleted(stepSession.lessonId);
   }
-  alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct.");
+  const peekNote = stepSession.peekCount > 0 ? (" • " + stepSession.peekCount + " peeked") : "";
+  alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct." + peekNote);
 }
 
-// ---- renderers ----
+// ===================== renderers =====================
+
+// shared: romanized + translation lines, visibility CSS-driven by mode/peek
+function stepRomanizedHTML(step) {
+  const r = stepHints(step).romanized;
+  return r ? '<div class="step-romanized">' + r + '</div>' : "";
+}
+function stepTranslationHTML(step) {
+  const t = stepHints(step).translation;
+  if (!t) return "";
+  if (stepModeLevel() === 1) {
+    return '<details class="step-drawer"><summary>Translation</summary><div class="step-translation">' + t + '</div></details>';
+  }
+  return '<div class="step-translation">' + t + '</div>';
+}
+function stepAudioBtn(text, cls) {
+  return '<button class="step-audio' + (cls ? " " + cls : "") + '" onclick="stepSpeak(\'' + text + '\')"><i data-lucide="volume-2"></i></button>';
+}
+
 function stepHTMLPresentation(step) {
-  const syls = (step.syllables || []).map(function (s) {
-    return '<button class="syl-chip" onclick="stepSpeak(\'' + (s.thai || step.tts || s.text) + '\')">' +
-      '<span>' + s.text + '</span><span class="syl-tone">' + s.contour + '</span></button>';
-  }).join("");
+  const h = stepHints(step);
   var main = step.thai
-    ? '<div class="step-thai">' + step.thai + '</div><div class="step-romanized">' + step.romanized + '</div>'
-    : '<div class="step-thai" style="font-family:var(--font-phonetic)">' + step.romanized + '</div>';
+    ? '<div class="step-thai">' + step.thai + '</div>' + stepRomanizedHTML(step)
+    : '<div class="step-thai" style="font-family:var(--font-phonetic)">' + h.romanized + '</div>';
   return '<div class="step-card">' +
     '<div class="step-phase">Listen &amp; Repeat</div>' +
     main +
-    '<div class="step-translation">' + step.translation + '</div>' +
-    '<button class="step-audio" onclick="stepSpeak(\'' + (step.tts || step.thai) + '\')"><i data-lucide="volume-2"></i></button>' +
-    '<div class="step-syllables">' + syls + '</div>' +
+    stepTranslationHTML(step) +
+    stepAudioBtn(step.tts || step.thai) +
     (step.note ? '<div class="step-note">' + step.note + '</div>' : '') +
     '</div>';
 }
 
 function stepHTMLTone(step) {
-  const opts = (step.options || []).map(function (o) {
+  const opts = (step.options || STEP_TONE_OPTS).map(function (o) {
     return '<button class="tone-option" data-tone="' + o.id + '" onclick="stepToneAnswer(this, \'' + o.id + '\')">' +
       '<span class="tone-label">' + o.label + '</span>' +
       '<span class="tone-contour">' + o.contour + '</span></button>';
   }).join("");
   return '<div class="step-card">' +
     '<div class="step-phase">Ear Training</div>' +
-    '<p class="step-prompt">' + step.prompt + '</p>' +
-    '<button class="step-audio" onclick="stepSpeak(\'' + (step.tts || "") + '\')"><i data-lucide="volume-2"></i></button>' +
+    '<p class="step-prompt">' + (step.prompt || "Listen. What tone is it?") + '</p>' +
+    stepAudioBtn(step.tts || "") +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
     '<div class="tone-options">' + opts + '</div>' +
+    '</div>';
+}
+
+function stepHTMLMinimalPair(step) {
+  const opts = (step.options || []).map(function (o, i) {
+    const oh = optHints(o);
+    return '<button class="context-option" data-idx="' + i + '" onclick="stepChoiceAnswer(this, ' + i + ')">' +
+      '<div class="ctx-thai">' + o.thai + '</div>' +
+      '<div class="opt-roman">' + oh.romanized + '</div>' +
+      '<div class="opt-eng">' + oh.translation + '</div></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">Minimal Pair</div>' +
+    '<p class="step-prompt">' + (step.prompt || "Which word did you hear?") + '</p>' +
+    stepAudioBtn(step.tts || "", "step-audio-lg") +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
+    '<div class="context-options">' + opts + '</div>' +
+    '</div>';
+}
+
+function stepHTMLAudioComp(step) {
+  const opts = (step.options || []).map(function (o, i) {
+    const oh = optHints(o);
+    return '<button class="context-option" data-idx="' + i + '" onclick="stepChoiceAnswer(this, ' + i + ')">' +
+      '<div class="ctx-thai">' + o.thai + '</div>' +
+      '<div class="opt-roman">' + oh.romanized + '</div>' +
+      '<div class="opt-eng">' + oh.translation + '</div></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">Listening</div>' +
+    '<p class="step-prompt">' + (step.prompt || "Listen and choose what you heard.") + '</p>' +
+    stepAudioBtn(step.tts || "", "step-audio-lg") +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
+    '<div class="context-options">' + opts + '</div>' +
+    '</div>';
+}
+
+function stepHTMLContextual(step) {
+  const opts = (step.options || []).map(function (o, i) {
+    const oh = optHints(o);
+    return '<button class="context-option" data-idx="' + i + '" onclick="stepChoiceAnswer(this, ' + i + ')">' +
+      '<div class="ctx-thai">' + o.thai + '</div>' +
+      '<div class="opt-roman">' + oh.romanized + '</div>' +
+      '<div class="opt-eng">' + oh.translation + '</div></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">In Context</div>' +
+    '<p class="step-scenario">' + step.scenario + '</p>' +
+    stepAudioBtn(step.tts || "") +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
+    '<div class="context-options">' + opts + '</div>' +
+    '</div>';
+}
+
+// ---- builder steps (assembler / morphology / legacy scrambled) ----
+function stepHTMLAssembler(step) {
+  stepSession.tiles = step.tiles.slice();
+  stepSession.correctSeq = step.correctSequence;
+  stepSession.userSequence = [];
+  stepSession.selectedRoots = [];
+  return '<div class="step-card">' +
+    '<div class="step-phase">Build the Sentence</div>' +
+    '<p class="step-prompt">' + step.prompt + '</p>' +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
+    '<div class="syl-slot" id="sylSlot"></div>' +
+    '<div class="syl-bank" id="sylBank">' + stepHTMLTileBank() + '</div>' +
+    '</div>';
+}
+
+function stepHTMLMorphology(step) {
+  stepSession.tiles = step.roots.map(function (r) { return { thai: r.thai, meaning: r.meaning }; });
+  stepSession.correctRoots = step.correctRoots;
+  stepSession.userSequence = [];
+  stepSession.selectedRoots = [];
+  const roots = (step.roots || []).map(function (r, i) {
+    return '<button class="root-chip" data-idx="' + i + '" onclick="stepRootTap(' + i + ')">' +
+      '<span class="root-thai">' + r.thai + '</span>' +
+      '<span class="root-meaning">' + (r.meaning || "") + '</span></button>';
+  }).join("");
+  return '<div class="step-card">' +
+    '<div class="step-phase">Word Builder</div>' +
+    '<p class="step-prompt">' + step.prompt + '</p>' +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
+    '<div class="syl-slot" id="sylSlot"></div>' +
+    '<div class="syl-bank" id="sylBank">' + roots + '</div>' +
     '</div>';
 }
 
@@ -247,24 +471,109 @@ function stepHTMLScrambled(step) {
   stepSession.bankItems = stepShuffle(step.bank.slice());
   stepSession.correctSeq = step.correctSequence;
   stepSession.userSequence = [];
+  stepSession.selectedRoots = [];
   return '<div class="step-card">' +
     '<div class="step-phase">Build the Phrase</div>' +
     '<p class="step-prompt">' + step.prompt + '</p>' +
+    stepRomanizedHTML(step) + stepTranslationHTML(step) +
     '<div class="syl-slot" id="sylSlot"></div>' +
     '<div class="syl-bank" id="sylBank">' + stepHTMLBank() + '</div>' +
     '</div>';
 }
 
-function stepChipHTML(b) {
-  return '<button class="syl-chip" data-id="' + b.id + '" onclick="stepChipTap(\'' + b.id + '\')">' +
-    '<span>' + b.text + '</span><span class="syl-tone">' + b.contour + '</span></button>';
+function stepHTMLTileBank() {
+  return stepSession.tiles.map(function (t, i) {
+    if (stepSession.userSequence.indexOf(i) >= 0) return "";
+    return '<button class="tile-chip" data-idx="' + i + '" onclick="stepTileTap(' + i + ')">' + t.thai + '</button>';
+  }).join("");
+}
+
+function stepTileTap(idx) {
+  if (stepSession.answered) return;
+  const pos = stepSession.userSequence.indexOf(idx);
+  if (pos >= 0) stepSession.userSequence.splice(pos, 1);
+  else stepSession.userSequence.push(idx);
+  stepSyncBuilderUI();
+}
+
+function stepRootTap(idx) {
+  if (stepSession.answered) return;
+  const pos = stepSession.selectedRoots.indexOf(idx);
+  if (pos >= 0) stepSession.selectedRoots.splice(pos, 1);
+  else stepSession.selectedRoots.push(idx);
+  stepSyncBuilderUI();
+}
+
+function stepSyncBuilderUI() {
+  const slot = document.getElementById("sylSlot");
+  const bank = document.getElementById("sylBank");
+  const isMorph = stepSession.steps[stepSession.index].type === "morphology";
+  if (slot) {
+    if (isMorph) {
+      slot.innerHTML = stepSession.selectedRoots.map(function (i) {
+        const r = stepSession.tiles[i];
+        return '<span class="tile-chip placed">' + r.thai + '</span>';
+      }).join("");
+    } else {
+      slot.innerHTML = stepSession.userSequence.map(function (i) {
+        const t = stepSession.tiles[i];
+        return '<span class="tile-chip placed">' + t.thai + '</span>';
+      }).join("");
+    }
+  }
+  if (bank) {
+    if (isMorph) {
+      const roots = stepSession.steps[stepSession.index].roots;
+      bank.innerHTML = roots.map(function (r, i) {
+        if (stepSession.selectedRoots.indexOf(i) >= 0) return "";
+        return '<button class="root-chip" data-idx="' + i + '" onclick="stepRootTap(' + i + ')">' +
+          '<span class="root-thai">' + r.thai + '</span>' +
+          '<span class="root-meaning">' + (r.meaning || "") + '</span></button>';
+      }).join("");
+    } else {
+      bank.innerHTML = stepHTMLTileBank();
+    }
+  }
+  const btn = document.getElementById("stepNextBtn");
+  if (btn) {
+    const want = isMorph ? stepSession.correctRoots.length : stepSession.correctSeq.length;
+    const have = isMorph ? stepSession.selectedRoots.length : stepSession.userSequence.length;
+    btn.disabled = have !== want;
+  }
+}
+
+function stepCheckBuilder() {
+  if (stepSession.answered) return;
+  const step = stepSession.steps[stepSession.index];
+  const isMorph = step.type === "morphology";
+  stepSession.answered = true;
+  let correct = false;
+  if (isMorph) {
+    const got = stepSession.selectedRoots.slice().sort().join("-");
+    const want = step.correctRoots.slice().sort().join("-");
+    correct = got === want;
+  } else {
+    correct = step.correctSequence.join("-") === stepSession.userSequence.join("-");
+  }
+  const slot = document.getElementById("sylSlot");
+  if (correct) {
+    stepSession.correct++;
+    if (slot) slot.classList.add("correct");
+    stepSetNext("Continue →", stepAdvance);
+  } else {
+    if (slot) slot.classList.add("wrong");
+    stepSetNext("Got it →", stepAdvance);
+  }
 }
 
 function stepHTMLBank() {
   return stepSession.bankItems.filter(function (b) { return stepSession.userSequence.indexOf(b.id) < 0; })
     .map(stepChipHTML).join("");
 }
-
+function stepChipHTML(b) {
+  return '<button class="syl-chip" data-id="' + b.id + '" onclick="stepChipTap(\'' + b.id + '\')">' +
+    '<span>' + b.text + '</span><span class="syl-tone">' + b.contour + '</span></button>';
+}
 function stepChipTap(id) {
   if (stepSession.answered) return;
   const idx = stepSession.userSequence.indexOf(id);
@@ -281,7 +590,6 @@ function stepChipTap(id) {
   const btn = document.getElementById("stepNextBtn");
   if (btn) btn.disabled = stepSession.userSequence.length !== stepSession.correctSeq.length;
 }
-
 function stepCheckScrambled() {
   if (stepSession.answered) return;
   stepSession.answered = true;
@@ -295,20 +603,6 @@ function stepCheckScrambled() {
     if (slot) slot.classList.add("wrong");
     stepSetNext("Got it →", stepAdvance);
   }
-}
-
-function stepHTMLContextual(step) {
-  const opts = step.options.map(function (o, i) {
-    return '<button class="context-option" data-idx="' + i + '" onclick="stepContextAnswer(this, ' + i + ')">' +
-      '<div class="ctx-thai">' + o.text + '</div>' +
-      '<div class="ctx-roman">' + o.romanized + '</div>' +
-      '<div class="ctx-exp">' + o.explanation + '</div></button>';
-  }).join("");
-  return '<div class="step-card">' +
-    '<div class="step-phase">In Context</div>' +
-    '<p class="step-scenario">' + step.scenario + '</p>' +
-    '<div class="context-options">' + opts + '</div>' +
-    '</div>';
 }
 
 // ---- answer handlers ----
@@ -331,7 +625,7 @@ function stepToneAnswer(el, tone) {
   }
 }
 
-function stepContextAnswer(el, idx) {
+function stepChoiceAnswer(el, idx) {
   if (stepSession.answered) return;
   stepSession.answered = true;
   const step = stepSession.steps[stepSession.index];
@@ -356,13 +650,6 @@ function stepContextAnswer(el, idx) {
   try {
     if (typeof SO_CURRICULUM === "undefined") return;
     var GLYPH = { low: "ˋ", mid: "ˉ", high: "ˊ", falling: "ˆ", rising: "ˇ" };
-    var TONE_OPTS = [
-      { id: "mid", label: "Mid", contour: "ˉ" },
-      { id: "low", label: "Low", contour: "ˋ" },
-      { id: "high", label: "High", contour: "ˊ" },
-      { id: "falling", label: "Falling", contour: "ˆ" },
-      { id: "rising", label: "Rising", contour: "ˇ" }
-    ];
     function toneOf(syl) {
       if (/[àèìòù]/.test(syl)) return "low";
       if (/[âêîôû]/.test(syl)) return "falling";
@@ -385,16 +672,16 @@ function stepContextAnswer(el, idx) {
           var ph = String(item.phonetic || "").replace(/\{\{particle\}\}/g, "kráp");
           var tts = item.tts || "";
           if (item.type === "phrase_builder") {
-            steps.push({ stepId: "p_" + item.id, type: "presentation", romanized: ph, translation: item.english, tts: tts, syllables: [] });
+            steps.push({ stepId: "p_" + item.id, type: "presentation", phase: "explore", romanized: ph, translation: item.english, tts: tts, hints: { romanized: ph, translation: item.english } });
           } else {
             var sTone = splitSyls(ph).map(function (x) { var t = toneOf(x); return { text: x, tone: t, contour: GLYPH[t] }; });
-            steps.push({ stepId: "p_" + item.id, type: "presentation", romanized: ph, translation: item.english, tts: tts, syllables: sTone });
+            steps.push({ stepId: "p_" + item.id, type: "presentation", phase: "explore", romanized: ph, translation: item.english, tts: tts, hints: { romanized: ph, translation: item.english } });
             if (sTone.length) {
               var pick = sTone[0];
-              steps.push({ stepId: "t_" + item.id, type: "tone_discrimination", prompt: 'Listen. What tone is "' + pick.text + '"?', tts: tts, syllable: pick.text, correctTone: pick.tone, options: TONE_OPTS });
+              steps.push({ stepId: "t_" + item.id, type: "tone_discrimination", phase: "drill", prompt: "Listen. What tone is it?", tts: tts, syllable: pick.text, correctTone: pick.tone, hints: { romanized: ph, translation: item.english }, options: STEP_TONE_OPTS });
             }
             if (!/[\/,]/.test(ph) && sTone.length >= 2) {
-              steps.push({ stepId: "s_" + item.id, type: "scrambled_syllable", prompt: 'Assemble: "' + item.english + '"', targetTranslation: item.english, correctSequence: sTone.map(function (x) { return x.text; }), bank: sTone.map(function (x, i) { return { id: "s" + i, text: x.text, tone: x.tone, contour: x.contour }; }) });
+              steps.push({ stepId: "s_" + item.id, type: "scrambled_syllable", phase: "drill", prompt: 'Assemble: "' + item.english + '"', targetTranslation: item.english, correctSequence: sTone.map(function (x) { return x.text; }), hints: { romanized: ph, translation: item.english }, bank: sTone.map(function (x, i) { return { id: "s" + i, text: x.text, tone: x.tone, contour: x.contour }; }) });
             }
           }
         });
@@ -413,6 +700,7 @@ function stepStartSO(i) {
   stepSession.steps = lesson.steps;
   stepSession.index = 0;
   stepSession.correct = 0;
+  stepSession.peekCount = 0;
   stepSession.totalScored = lesson.steps.filter(function (s) { return stepIsScored(s.type); }).length;
   stepSession.answered = false;
   stepSession.userSequence = [];
@@ -420,26 +708,21 @@ function stepStartSO(i) {
   if (hearts) hearts.style.display = "none";
   document.getElementById("lessonModal").classList.add("active");
   document.body.classList.add("modal-open");
+  stepApplyModeClass();
   stepRender();
   return true;
 }
 
 
 window.THAI_LIT = {
-  "pom cheu": "My name is... (male)","sawasdee": "Hello / Goodbye", "sawasdee krab": "Hello (male)", "sawasdee ka": "Hello (female)", "khun": "You (polite)", "phom cheu": "My name is... (male)", "chan cheu": "My name is... (female)", "khun cheu arai": "What is your name?", "khob khun": "Thank you", "khob khun mak ka": "Thank you very much (female)", "yin dee": "You're welcome / Glad to", "dee jai thi dai roojak": "Nice to meet you", "sabai dee mai": "How are you?", "laa gawn": "Goodbye", "khaw thot": "Sorry / Excuse me", "mai pen rai": "It's okay / Never mind", "neung": "One", "see": "Four", "haa": "Five", "sip": "Ten", "yee sip": "Twenty", "thao rai": "How much?", "gee baht": "How many baht?", "phaeng": "Expensive", "thuk": "Cheap / Correct", "lot dai mai": "Can you discount?", "thuk gwa nee dai mai": "Can it be cheaper than this?", "ra kha tao rai": "What is the price?", "chan ao arai nee ka": "I'll take this one (female)", "pet": "Spicy", "wan": "Sweet", "priaw": "Sour", "jeut": "Bland / Not salty", "mai pet": "Not spicy", "pet mak": "Very spicy", "nid noi": "A little bit", "ao": "Want / Take", "mai ao": "Don't want", "chob": "Like", "aroi": "Delicious", "nam": "Water", "khao": "Rice / Meal", "kuay tiao": "Noodles", "pad thai": "Pad Thai", "chan gin jay ka": "I'm vegetarian (female)", "check bin krab": "Check please (male)", "check bin": "Bill / Check", "chan im laew ka": "I'm full (female)", "kor krab": "I would like [X] (male)", "meter": "Turn on the meter", "pai thi": "Go to [place]", "glai mai": "Is it far?", "reo noi krab": "A bit faster please (male)", "liaw sai": "Turn left", "liaw khwa": "Turn right", "dtrong pai": "Go straight", "jawt dtrong nee": "Stop here", "klap rot": "U-turn", "phaeng pai": "Too expensive", "dai krab": "Yes / Okay (male)", "chan ha khun khwa ka": "I'll find another one (female)", "na khrap": "Here / This one (male)", "mai dtong thon": "Keep the change", "khob khun ka laew joo gan": "Thanks, see you (female)", "chok dee": "Good luck", "bpai": "Go", "maa": "Come", "nai": "Where", "arai": "What", "meuan gan": "Same / Me too", "gin khao": "Eat rice / Have a meal", "hong nam": "Bathroom", "rot fai": "Train", "rot mee": "Bus", "sanam bin": "Airport", "ta naam": "Pier / Ferry dock", "rot dtap": "Traffic jam", "pang": "Bread", "kaffe": "Coffee", "nam khaeng": "Ice", "nam pla": "Fish sauce", "nam man": "Cooking oil / Gasoline", "nam sot": "Drinking water", "nam phon la mai": "Fruit juice", "cha yen": "Iced tea", "cha ron": "Hot tea", "bia": "Beer", "lao": "Liquor / Spirits", "rot tam ruat": "Police car", "hong yaak": "Hospital", "ran ahan": "Restaurant", "dtalaat": "Market", "tlot": "All the way / Through", "hong nam yuu thi nai": "Where is the bathroom?", "kit thung": "Miss (someone)", "rak": "Love", "jing jing": "Really / Truly", "mai chai": "No (it isn't)", "chai": "Yes (it is)", "dai": "Can / Get / Okay", "mai dai": "Cannot / Not okay"};
+  "pom cheu": "My name is... (male)","sawasdee": "Hello / Goodbye", "sawasdee krab": "Hello (male)", "sawasdee ka": "Hello (female)", "khun": "You (polite)", "phom cheu": "My name is... (male)", "chan cheu": "My name is... (female)", "khun cheu arai": "What is your name?", "khob khun": "Thank you", "khob khun mak ka": "Thank you very much (female)", "yin dee": "You're welcome / Glad to", "dee jai thi dai roojak": "Nice to meet you", "sabai dee mai": "How are you?", "laa gawn": "Goodbye", "khaw thot": "Sorry / Excuse me", "mai pen rai": "It's okay / Never mind", "neung": "One", "see": "Four", "haa": "Five", "sip": "Ten", "yee sip": "Twenty", "thao rai": "How much?", "gee baht": "How many baht?", "phaeng": "Expensive", "thuk": "Cheap / Correct", "lot dai mai": "Can you discount?", "thuk gwa nee dai mai": "Can it be cheaper than this?", "ra kha tao rai": "What is the price?", "chan ao arai nee ka": "I'll take this one (female)", "pet": "Spicy", "wan": "Sweet", "priaw": "Sour", "jeut": "Bland / Not salty", "mai pet": "Not spicy", "pet mak": "Very spicy", "nid noi": "A little bit", "ao": "Want / Take", "mai ao": "Don't want", "chob": "Like", "aroi": "Delicious", "nam": "Water", "khao": "Rice / Meal", "kuay tiao": "Noodles", "pad thai": "Pad Thai", "chan gin jay ka": "I'm vegetarian (female)", "check bin krab": "Check please (male)", "check bin": "Bill / Check", "chan im laew ka": "I'm full (female)", "kor krab": "I would like [X] (male)", "meter": "Turn on the meter", "pai thi": "Go to [place]", "glai mai": "Is it far?", "reo noi krab": "A bit faster please (male)", "liaw sai": "Turn left", "liaw khwa": "Turn right", "dtrong pai": "Go straight", "jawt dtrong nee": "Stop here", "klap rot": "U-turn", "phaeng pai": "Too expensive", "dai krab": "Yes / Okay (male)", "chan ha khun khwa ka": "I'll find another one (female)", "na khrap": "Here / This one (male)", "mai dtong thon": "Keep the change", "khob khun ka laew joo gan": "Thanks, see you (female)", "chok dee": "Good luck"
+};
 
-// ===== Read-mode lessons 2-13 -> active step lessons =====
+// ===== Read-mode lessons 2-13 -> active step lessons (Thai-only, no English crutch) =====
 (function () {
   try {
     if (typeof lessonData === "undefined") return;
     var GLYPH = { low: "ˋ", mid: "ˉ", high: "ˊ", falling: "ˆ", rising: "ˇ" };
-    var TONE_OPTS = [
-      { id: "mid", label: "Mid", contour: "ˉ" },
-      { id: "low", label: "Low", contour: "ˋ" },
-      { id: "high", label: "High", contour: "ˊ" },
-      { id: "falling", label: "Falling", contour: "ˆ" },
-      { id: "rising", label: "Rising", contour: "ˇ" }
-    ];
     function toneOf(syl) {
       if (/[àèìòù]/.test(syl)) return "low";
       if (/[âêîôû]/.test(syl)) return "falling";
@@ -455,31 +738,55 @@ window.THAI_LIT = {
       s = s.replace(/\byoure\b/gi, "You're").replace(/\bim\b/gi, "I'm").replace(/\bdont\b/gi, "Don't").replace(/\bits\b/gi, "It's").replace(/\buturn\b/gi, "U-turn");
       return s.charAt(0).toUpperCase() + s.slice(1);
     }
+    function engOf(value) { return (window.THAI_LIT && window.THAI_LIT[value]) || cleanEng(value || ""); }
 
     Object.keys(lessonData).forEach(function (id) {
-      if (window.STEP_LESSONS[id]) return; // skip already-curated lesson 1
+      if (window.STEP_LESSONS[id]) return; // skip curated lesson 1
       var exercises = lessonData[id] || [];
       var steps = [];
+
+      // build Thai -> {romanized, translation} reverse index for distractor hints
+      var thaiInfo = {};
+      exercises.forEach(function (ex) {
+        (ex.options || []).forEach(function (o) {
+          if (o.thai && !thaiInfo[o.thai]) {
+            thaiInfo[o.thai] = { romanized: strip(o.romanized || ""), translation: engOf(o.value) };
+          }
+        });
+      });
+      var allThai = Object.keys(thaiInfo);
+
       exercises.forEach(function (ex, ei) {
         var opts = ex.options || [];
         var correctOpt = opts.find(function (o) { return o.value === ex.correct; }) || opts[0];
         if (!correctOpt) return;
         var thai = correctOpt.thai || "";
         var rom = strip(correctOpt.romanized || "");
-        var eng = (window.THAI_LIT && window.THAI_LIT[correctOpt.value]) || cleanEng(correctOpt.value || "");
+        var eng = engOf(correctOpt.value);
         var sTone = syls(rom).map(function (x) { var t = toneOf(x); return { text: x, tone: t, contour: GLYPH[t] }; });
-        // presentation
-        steps.push({ stepId: "p_" + id + "_" + ei, type: "presentation", thai: thai, romanized: rom, translation: eng, tts: thai, syllables: sTone });
-        // tone discrimination
+
+        // 1. presentation (explore)
+        steps.push({ stepId: "p_" + id + "_" + ei, type: "presentation", phase: "explore", thai: thai, tts: thai, hints: { romanized: rom, translation: eng } });
+
+        // 2. tone discrimination (drill) — audio-only
         if (sTone.length) {
           var pick = sTone[0];
-          steps.push({ stepId: "t_" + id + "_" + ei, type: "tone_discrimination", prompt: 'Listen. What tone is "' + pick.text + '"?', tts: thai, syllable: pick.text, correctTone: pick.tone, options: TONE_OPTS });
+          steps.push({ stepId: "t_" + id + "_" + ei, type: "tone_discrimination", phase: "drill", prompt: "Listen. What tone is it?", tts: thai, syllable: pick.text, correctTone: pick.tone, hints: { romanized: rom, translation: eng }, options: STEP_TONE_OPTS });
         }
-        // scrambled syllable (active recall)
-        if (!/[\/,]/.test(rom) && sTone.length >= 2) {
-          steps.push({ stepId: "s_" + id + "_" + ei, type: "scrambled_syllable", prompt: 'Assemble: "' + eng + '"', targetTranslation: eng, correctSequence: sTone.map(function (x) { return x.text; }), bank: sTone.map(function (x, i) { return { id: "s" + i, text: x.text, tone: x.tone, contour: x.contour }; }) });
+
+        // 3. audio comprehension (assess) — Thai-only options
+        var distractors = allThai.filter(function (t) { return t !== thai; });
+        distractors = stepShuffle(distractors).slice(0, 3);
+        if (distractors.length >= 2) {
+          var choices = stepShuffle([thai].concat(distractors)).map(function (t) {
+            var info = thaiInfo[t] || {};
+            return { thai: t, hints: { romanized: info.romanized || "", translation: info.translation || "" } };
+          });
+          var correctIndex = choices.findIndex(function (o) { return o.thai === thai; });
+          steps.push({ stepId: "a_" + id + "_" + ei, type: "audio_comprehension", phase: "assess", prompt: "Listen and choose what you heard.", tts: thai, correctIndex: correctIndex, hints: { romanized: rom, translation: eng }, options: choices });
         }
       });
+
       if (steps.length) {
         window.STEP_LESSONS[id] = { unitId: "read_" + id, unitTitle: "Read & Write", lessonId: "lesson-" + id, lessonTitle: "Lesson " + id, steps: steps };
       }
