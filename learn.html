@@ -4392,7 +4392,10 @@
           updateAuthUI();
           if (user) {
             syncEnabled = true;
-            loadCloudProgress();
+            loadCloudProgress().then(() => {
+              // push local onboarding/profile up after merge (first sign-in capture)
+              if (localStorage.getItem('thaiDaiOnboarded') === 'true') saveCloudProgress();
+            });
             loadCloudReviews();
           }
         });
@@ -4432,6 +4435,8 @@
         completedLessons: JSON.parse(localStorage.getItem('thaiDaiCompletedLessons') || '[]'),
         xp: parseInt(localStorage.getItem('thaiDaiXP') || '0'),
         streak: parseInt(localStorage.getItem('thaiDaiStreak') || '0'),
+        onboarded: localStorage.getItem('thaiDaiOnboarded') === 'true',
+        user: localStorage.getItem('thaiDaiUser') || null,
         lastVisit: new Date().toISOString(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
@@ -4449,6 +4454,8 @@
           if (data.completedLessons) localStorage.setItem('thaiDaiCompletedLessons', JSON.stringify(data.completedLessons));
           if (data.xp) localStorage.setItem('thaiDaiXP', String(data.xp));
           if (data.streak) localStorage.setItem('thaiDaiStreak', String(data.streak));
+          if (data.onboarded) localStorage.setItem('thaiDaiOnboarded', 'true');
+          if (data.user) localStorage.setItem('thaiDaiUser', data.user);
           updateLessonUI();
         }
       } catch (e) { console.error('Load failed', e); }
@@ -4478,9 +4485,9 @@
       if (!el) return;
       if (currentUser) {
         const email = currentUser.email || currentUser.uid.slice(0, 8) + '...';
-        el.innerHTML = `<span style="color:var(--primary)">●</span> ${email} <button onclick="signOut()" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:0.75rem;text-decoration:underline;">Sign out</button>`;
+        el.innerHTML = `<span style="color:var(--accent-sage)">●</span> ${email} <button onclick="signOut()" style="background:none;border:none;color:var(--text-tertiary);cursor:pointer;font-size:0.75rem;text-decoration:underline;">Sign out</button>`;
       } else {
-        el.innerHTML = `<button onclick="showAuthModal()" style="background:var(--primary);color:#fff;border:none;border-radius:999px;padding:0.25rem 0.75rem;font-size:0.75rem;cursor:pointer;font-weight:700;">Sign In</button>`;
+        el.innerHTML = `<button onclick="showAuthModal()" style="background:var(--accent-cta-bg);color:var(--accent-cta-text);border:none;border-radius:999px;padding:0.25rem 0.75rem;font-size:0.75rem;cursor:pointer;font-weight:700;font-family:var(--font-english);">Sign In</button>`;
       }
     }
 
@@ -4488,15 +4495,15 @@
       const modal = document.createElement('div');
       modal.id = 'authModal';
       modal.innerHTML = `
-        <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('authModal').remove()">
-          <div style="background:#fff;padding:2rem;border-radius:16px;max-width:360px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
-            <h3 style="margin-bottom:1rem;font-family:Quicksand,sans-serif;font-weight:800;">Sign In / Sign Up</h3>
-            <input type="email" id="authEmail" placeholder="Email" style="width:100%;padding:0.75rem;border:2px solid var(--border);border-radius:8px;margin-bottom:0.5rem;font-family:Nunito;">
-            <input type="password" id="authPassword" placeholder="Password (6+ chars)" style="width:100%;padding:0.75rem;border:2px solid var(--border);border-radius:8px;margin-bottom:1rem;font-family:Nunito;">
-            <button onclick="handleAuthAction('signin')" style="width:100%;padding:0.75rem;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:800;cursor:pointer;margin-bottom:0.5rem;">Sign In</button>
-            <button onclick="handleAuthAction('signup')" style="width:100%;padding:0.75rem;background:#fff;color:var(--primary);border:2px solid var(--primary);border-radius:8px;font-weight:800;cursor:pointer;margin-bottom:0.5rem;">Create Account</button>
-            <button onclick="signInAnonymously();document.getElementById('authModal').remove();" style="width:100%;padding:0.5rem;background:none;color:var(--text-light);border:none;font-size:0.875rem;cursor:pointer;">Continue Anonymously</button>
-            <p style="margin-top:1rem;font-size:0.75rem;color:var(--text-light);text-align:center;">Sync progress across devices</p>
+        <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,17,0.45);z-index:2000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('authModal').remove()">
+          <div style="background:var(--bg-card);padding:2rem;border-radius:20px;max-width:360px;width:90%;border:1px solid var(--border-subtle);box-shadow:0 8px 32px rgba(28,51,42,0.14);">
+            <h3 style="margin-bottom:1rem;font-family:var(--font-english);font-weight:700;color:var(--text-primary);">Sign In / Sign Up</h3>
+            <input type="email" id="authEmail" placeholder="Email" style="width:100%;padding:0.75rem;border:1px solid var(--border-subtle);background:var(--bg-card-subtle);color:var(--text-primary);border-radius:12px;margin-bottom:0.5rem;font-family:var(--font-english);">
+            <input type="password" id="authPassword" placeholder="Password (6+ chars)" style="width:100%;padding:0.75rem;border:1px solid var(--border-subtle);background:var(--bg-card-subtle);color:var(--text-primary);border-radius:12px;margin-bottom:1rem;font-family:var(--font-english);">
+            <button onclick="handleAuthAction('signin')" style="width:100%;padding:0.75rem;background:var(--accent-cta-bg);color:var(--accent-cta-text);border:none;border-radius:14px;font-weight:700;cursor:pointer;margin-bottom:0.5rem;font-family:var(--font-english);">Sign In</button>
+            <button onclick="handleAuthAction('signup')" style="width:100%;padding:0.75rem;background:var(--bg-card);color:var(--accent-terracotta);border:1px solid var(--accent-terracotta);border-radius:14px;font-weight:700;cursor:pointer;margin-bottom:0.5rem;font-family:var(--font-english);">Create Account</button>
+            <button onclick="signInAnonymously();document.getElementById('authModal').remove();" style="width:100%;padding:0.5rem;background:none;color:var(--text-tertiary);border:none;font-size:0.875rem;cursor:pointer;font-family:var(--font-english);">Continue Anonymously</button>
+            <p style="margin-top:1rem;font-size:0.75rem;color:var(--text-tertiary);text-align:center;font-family:var(--font-english);">Sync progress across devices</p>
           </div>
         </div>`;
       document.body.appendChild(modal);
