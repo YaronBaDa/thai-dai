@@ -1100,6 +1100,9 @@
   </style>
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>svg.lucide{width:1em;height:1em;vertical-align:-0.125em;}</style>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <!-- Header -->
@@ -1121,7 +1124,7 @@
       <nav>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
-        <a href="learn.html" class="btn btn-ghost">Sign In</a>
+        <a href="learn.html" class="btn btn-ghost" data-auth="signin" onclick="openAuthModal(); return false;">Sign In</a>
         <a href="onboarding.html" class="btn btn-primary">Sign Up</a>
       </nav>
       <button class="hamburger-btn" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
@@ -1136,7 +1139,7 @@
     <a href="#features" onclick="toggleMobileNav()">Features</a>
     <a href="#how-it-works" onclick="toggleMobileNav()">How It Works</a>
     <a href="#pricing" onclick="toggleMobileNav()">Pricing</a>
-    <a href="learn.html" class="btn btn-ghost" onclick="toggleMobileNav()">Sign In</a>
+    <a href="learn.html" class="btn btn-ghost" data-auth="signin" onclick="toggleMobileNav(); openAuthModal(); return false;">Sign In</a>
     <a href="onboarding.html" class="btn btn-primary" onclick="toggleMobileNav()">Sign Up — Free</a>
   </div>
 
@@ -1148,7 +1151,7 @@
         <p>Join thousands of expats in Thailand who are mastering Thai with bite-sized lessons, gamified practice, and real-world conversations. Free forever.</p>
         <div class="hero-cta">
           <a href="onboarding.html" class="btn btn-primary">Sign Up — Free</a>
-          <a href="learn.html" class="btn btn-outline">Sign In</a>
+          <a href="learn.html" class="btn btn-outline" data-auth="signin" onclick="openAuthModal(); return false;">Sign In</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -1512,5 +1515,90 @@
     })();
   </script>
 <script>if(window.lucide)lucide.createIcons();</script>
+<script>
+(function () {
+  const firebaseConfig = {
+      apiKey: "AIzaSyDQEp1jUT-_l5LWu_PMlXfLMs0fX_7A0HM",
+      authDomain: "thai-dai-app-c07ac.firebaseapp.com",
+      projectId: "thai-dai-app-c07ac",
+      storageBucket: "thai-dai-app-c07ac.firebasestorage.app",
+      messagingSenderId: "743021632316",
+      appId: "1:743021632316:web:1518ad930362d60dcf1c39"
+    };
+
+  var auth = null, db = null;
+  try {
+    if (typeof firebase === 'undefined') return;
+    if (firebaseConfig.apiKey.indexOf('YOUR_') === 0) return;
+    var app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+  } catch (e) { return; }
+
+  function signInLinks() {
+    return document.querySelectorAll('a[data-auth="signin"]');
+  }
+  function signedInUI(user) {
+    signInLinks().forEach(function (a) {
+      a.textContent = user ? ('Continue as ' + (user.email || (user.uid || '').slice(0, 8))) : 'Sign In';
+    });
+  }
+
+  window.openAuthModal = function () {
+    if (auth && auth.currentUser) { location.href = 'learn.html'; return; }
+    var modal = document.createElement('div');
+    modal.id = 'authModal';
+    modal.innerHTML = `
+        <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,17,0.45);z-index:2000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('authModal').remove()">
+          <div style="background:#FAF7F2;padding:2rem;border-radius:20px;max-width:360px;width:90%;border:1px solid rgba(111,102,92,0.16);box-shadow:0 8px 32px rgba(28,51,42,0.14);">
+            <h3 style="margin-bottom:1rem;font-family:'IBM Plex Sans Thai Looped',sans-serif;font-weight:700;color:#1C332A;">Sign In / Sign Up</h3>
+            <input type="email" id="authEmail" placeholder="Email" style="width:100%;padding:0.75rem;border:1px solid rgba(111,102,92,0.16);background:#EFE8DF;color:#1C332A;border-radius:12px;margin-bottom:0.5rem;font-family:'IBM Plex Sans Thai Looped',sans-serif;box-sizing:border-box;">
+            <input type="password" id="authPassword" placeholder="Password (6+ chars)" style="width:100%;padding:0.75rem;border:1px solid rgba(111,102,92,0.16);background:#EFE8DF;color:#1C332A;border-radius:12px;margin-bottom:1rem;font-family:'IBM Plex Sans Thai Looped',sans-serif;box-sizing:border-box;">
+            <button onclick="landingAuth('signin')" style="width:100%;padding:0.75rem;background:#1C332A;color:#FAF7F2;border:none;border-radius:14px;font-weight:700;cursor:pointer;margin-bottom:0.5rem;font-family:'IBM Plex Sans Thai Looped',sans-serif;">Sign In</button>
+            <button onclick="landingAuth('signup')" style="width:100%;padding:0.75rem;background:#FAF7F2;color:#D36248;border:1px solid #D36248;border-radius:14px;font-weight:700;cursor:pointer;margin-bottom:0.5rem;font-family:'IBM Plex Sans Thai Looped',sans-serif;">Create Account</button>
+            <button onclick="landingAnonymous()" style="width:100%;padding:0.5rem;background:none;color:#9B9185;border:none;font-size:0.875rem;cursor:pointer;font-family:'IBM Plex Sans Thai Looped',sans-serif;">Continue Anonymously</button>
+            <p style="margin-top:1rem;font-size:0.75rem;color:#9B9185;text-align:center;font-family:'IBM Plex Sans Thai Looped',sans-serif;">Sync progress across devices</p>
+          </div>
+        </div>`;
+    document.body.appendChild(modal);
+    if (window.lucide) lucide.createIcons();
+  };
+
+  window.landingAuth = function (action) {
+    var email = document.getElementById('authEmail').value.trim();
+    var pw = document.getElementById('authPassword').value;
+    if (!email || (pw || '').length < 6) { alert('Enter your email and a password of 6+ characters.'); return; }
+    var p = action === 'signin'
+      ? auth.signInWithEmailAndPassword(email, pw)
+      : auth.createUserWithEmailAndPassword(email, pw);
+    p.then(function (cred) { afterSignIn(cred.user); }).catch(function (e) { alert(e.message); });
+  };
+
+  window.landingAnonymous = function () {
+    auth.signInAnonymously().then(function () { afterSignIn(null); }).catch(function (e) { alert(e.message); });
+  };
+
+  function afterSignIn(user) {
+    var m = document.getElementById('authModal'); if (m) m.remove();
+    var cu = user || (auth && auth.currentUser);
+    if (!cu || cu.isAnonymous) { location.href = 'onboarding.html'; return; }
+    db.collection('users').doc(cu.uid).get().then(function (doc) {
+      var p = (doc.exists && doc.data().progress) || {};
+      if (p.onboarded) {
+        localStorage.setItem('thaiDaiOnboarded', 'true');
+        if (p.user) localStorage.setItem('thaiDaiUser', p.user);
+        if (p.completedLessons) localStorage.setItem('thaiDaiCompletedLessons', JSON.stringify(p.completedLessons));
+        if (p.xp) localStorage.setItem('thaiDaiXP', String(p.xp));
+        if (p.streak) localStorage.setItem('thaiDaiStreak', String(p.streak));
+        location.href = 'learn.html';
+      } else {
+        location.href = 'onboarding.html';
+      }
+    }).catch(function () { location.href = 'onboarding.html'; });
+  }
+
+  auth.onAuthStateChanged(function (user) { signedInUI(user); });
+})();
+</script>
 </body>
 </html>
