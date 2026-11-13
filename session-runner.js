@@ -103,7 +103,423 @@ window.STEP_LESSONS = {
         correctIndex: 0
       }
     ]
-  }
+  },
+  14: {
+  "unitId": "unit-vocab",
+  "unitTitle": "Vocabulary",
+  "lessonId": "lesson-root-words-water",
+  "lessonTitle": "Root Words: Water",
+  "steps": [
+    {
+      "stepId": "w1-root",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำ",
+      "tts": "น้ำ",
+      "hints": {
+        "romanized": "nám",
+        "translation": "water"
+      },
+      "note": "Thai compounds words: น้ำ (water) + [word] builds a water-based word."
+    },
+    {
+      "stepId": "w2-ice",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำแข็ง",
+      "tts": "น้ำแข็ง",
+      "hints": {
+        "romanized": "nám-khǎeng",
+        "translation": "ice"
+      }
+    },
+    {
+      "stepId": "w3-ice-build",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for 'ice'.",
+      "compound": "น้ำแข็ง",
+      "hints": {
+        "romanized": "nám-khǎeng",
+        "translation": "ice"
+      },
+      "roots": [
+        {
+          "thai": "น้ำ",
+          "meaning": "water"
+        },
+        {
+          "thai": "แข็ง",
+          "meaning": "hard"
+        },
+        {
+          "thai": "เย็น",
+          "meaning": "cold"
+        },
+        {
+          "thai": "ปลา",
+          "meaning": "fish"
+        }
+      ],
+      "correctRoots": [
+        0,
+        1
+      ]
+    },
+    {
+      "stepId": "w4-plain",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำเปล่า",
+      "tts": "น้ำเปล่า",
+      "hints": {
+        "romanized": "nám-plàaw",
+        "translation": "plain water"
+      }
+    },
+    {
+      "stepId": "w5-plain-build",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for 'plain water'.",
+      "compound": "น้ำเปล่า",
+      "hints": {
+        "romanized": "nám-plàaw",
+        "translation": "plain water"
+      },
+      "roots": [
+        {
+          "thai": "น้ำ",
+          "meaning": "water"
+        },
+        {
+          "thai": "เปล่า",
+          "meaning": "plain / empty"
+        },
+        {
+          "thai": "แข็ง",
+          "meaning": "hard"
+        },
+        {
+          "thai": "ตาล",
+          "meaning": "palm"
+        }
+      ],
+      "correctRoots": [
+        0,
+        1
+      ]
+    },
+    {
+      "stepId": "w6-fishsauce",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำปลา",
+      "tts": "น้ำปลา",
+      "hints": {
+        "romanized": "nám-plaa",
+        "translation": "fish sauce"
+      }
+    },
+    {
+      "stepId": "w7-fishsauce-build",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for 'fish sauce'.",
+      "compound": "น้ำปลา",
+      "hints": {
+        "romanized": "nám-plaa",
+        "translation": "fish sauce"
+      },
+      "roots": [
+        {
+          "thai": "น้ำ",
+          "meaning": "water"
+        },
+        {
+          "thai": "ปลา",
+          "meaning": "fish"
+        },
+        {
+          "thai": "ส้ม",
+          "meaning": "orange"
+        },
+        {
+          "thai": "ผลไม้",
+          "meaning": "fruit"
+        }
+      ],
+      "correctRoots": [
+        0,
+        1
+      ]
+    },
+    {
+      "stepId": "w8-juice",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำผลไม้",
+      "tts": "น้ำผลไม้",
+      "hints": {
+        "romanized": "nám-pǒn-lá-máai",
+        "translation": "fruit juice"
+      }
+    },
+    {
+      "stepId": "w9-juice-build",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for 'fruit juice'.",
+      "compound": "น้ำผลไม้",
+      "hints": {
+        "romanized": "nám-pǒn-lá-máai",
+        "translation": "fruit juice"
+      },
+      "roots": [
+        {
+          "thai": "น้ำ",
+          "meaning": "water"
+        },
+        {
+          "thai": "ผลไม้",
+          "meaning": "fruit"
+        },
+        {
+          "thai": "ปลา",
+          "meaning": "fish"
+        },
+        {
+          "thai": "ส้ม",
+          "meaning": "orange"
+        }
+      ],
+      "correctRoots": [
+        0,
+        1
+      ]
+    },
+    {
+      "stepId": "w10-sugar",
+      "type": "presentation",
+      "phase": "explore",
+      "thai": "น้ำตาล",
+      "tts": "น้ำตาล",
+      "hints": {
+        "romanized": "nám-taan",
+        "translation": "sugar"
+      }
+    },
+    {
+      "stepId": "w11-sugar-build",
+      "type": "morphology",
+      "phase": "drill",
+      "prompt": "Construct the word for 'sugar'.",
+      "compound": "น้ำตาล",
+      "hints": {
+        "romanized": "nám-taan",
+        "translation": "sugar"
+      },
+      "roots": [
+        {
+          "thai": "น้ำ",
+          "meaning": "water"
+        },
+        {
+          "thai": "ตาล",
+          "meaning": "palm"
+        },
+        {
+          "thai": "เปล่า",
+          "meaning": "plain"
+        },
+        {
+          "thai": "แข็ง",
+          "meaning": "hard"
+        }
+      ],
+      "correctRoots": [
+        0,
+        1
+      ]
+    },
+    {
+      "stepId": "w12-tone",
+      "type": "tone_discrimination",
+      "phase": "drill",
+      "prompt": "Listen. What tone is it?",
+      "tts": "แข็ง",
+      "syllable": "khǎeng",
+      "correctTone": "rising",
+      "hints": {
+        "romanized": "khǎeng",
+        "translation": "hard"
+      },
+      "options": [
+        {
+          "id": "mid",
+          "label": "Mid",
+          "contour": "ˉ"
+        },
+        {
+          "id": "low",
+          "label": "Low",
+          "contour": "ˋ"
+        },
+        {
+          "id": "high",
+          "label": "High",
+          "contour": "ˊ"
+        },
+        {
+          "id": "falling",
+          "label": "Falling",
+          "contour": "ˆ"
+        },
+        {
+          "id": "rising",
+          "label": "Rising",
+          "contour": "ˇ"
+        }
+      ]
+    },
+    {
+      "stepId": "w13-minpair",
+      "type": "minimal_pair",
+      "phase": "drill",
+      "prompt": "Listen. Which word did you hear?",
+      "tts": "ขาว",
+      "hints": {
+        "romanized": "khǎao vs khâo",
+        "translation": "white vs rice"
+      },
+      "options": [
+        {
+          "thai": "ขาว",
+          "hints": {
+            "romanized": "khǎao (rising)",
+            "translation": "white"
+          }
+        },
+        {
+          "thai": "ข้าว",
+          "hints": {
+            "romanized": "khâo (falling)",
+            "translation": "rice"
+          }
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "stepId": "w14-listen",
+      "type": "audio_comprehension",
+      "phase": "assess",
+      "prompt": "Listen and choose what you heard.",
+      "tts": "น้ำแข็ง",
+      "hints": {
+        "romanized": "nám-khǎeng",
+        "translation": "ice"
+      },
+      "options": [
+        {
+          "thai": "น้ำแข็ง",
+          "hints": {
+            "romanized": "nám-khǎeng",
+            "translation": "ice"
+          }
+        },
+        {
+          "thai": "น้ำเปล่า",
+          "hints": {
+            "romanized": "nám-plàaw",
+            "translation": "plain water"
+          }
+        },
+        {
+          "thai": "น้ำปลา",
+          "hints": {
+            "romanized": "nám-plaa",
+            "translation": "fish sauce"
+          }
+        }
+      ],
+      "correctIndex": 0
+    },
+    {
+      "stepId": "w15-assemble",
+      "type": "sentence_assembler",
+      "phase": "drill",
+      "prompt": "I'd like plain water (male speaker).",
+      "tts": "ขอน้ำเปล่าครับ",
+      "hints": {
+        "romanized": "khǒr nám-plàaw kráp",
+        "translation": "I'd like plain water (male)"
+      },
+      "tiles": [
+        {
+          "thai": "ขอ",
+          "hints": {
+            "romanized": "khǒr",
+            "translation": "please / would like"
+          }
+        },
+        {
+          "thai": "น้ำเปล่า",
+          "hints": {
+            "romanized": "nám-plàaw",
+            "translation": "plain water"
+          }
+        },
+        {
+          "thai": "ครับ",
+          "hints": {
+            "romanized": "kráp",
+            "translation": "polite particle (male)"
+          }
+        }
+      ],
+      "correctSequence": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "stepId": "w16-context",
+      "type": "contextual_match",
+      "phase": "assess",
+      "scenario": "The waiter asks what you'd like to drink. You want plain water. What do you say (male)?",
+      "hints": {
+        "romanized": "khǒr nám-plàaw kráp",
+        "translation": "I'd like plain water (male)"
+      },
+      "options": [
+        {
+          "thai": "ขอน้ำเปล่าครับ",
+          "hints": {
+            "romanized": "khǒr nám-plàaw kráp",
+            "translation": "I'd like plain water (male)"
+          }
+        },
+        {
+          "thai": "ขอน้ำแข็งครับ",
+          "hints": {
+            "romanized": "khǒr nám-khǎeng kráp",
+            "translation": "I'd like ice (male)"
+          }
+        },
+        {
+          "thai": "ขอน้ำปลาครับ",
+          "hints": {
+            "romanized": "khǒr nám-plaa kráp",
+            "translation": "I'd like fish sauce (male)"
+          }
+        }
+      ],
+      "correctIndex": 0
+    }
+  ]
+}
 };
 
 // ---- tone table ----
@@ -207,6 +623,34 @@ function stepSpeak(text, rate) {
   const th = voices.find(function (v) { return (v.lang || "").toLowerCase().indexOf("th") === 0; });
   if (th) u.voice = th;
   window.speechSynthesis.speak(u);
+}
+
+
+// ---- spaced repetition (SRS) bridge to learn.html recordAnswer ----
+function stepTargetThai(step) {
+  if (!step) return "";
+  switch (step.type) {
+    case "tone_discrimination": return step.tts || step.syllable || "";
+    case "minimal_pair":
+    case "audio_comprehension":
+    case "contextual_match":
+      return (step.options && step.options[step.correctIndex] && step.options[step.correctIndex].thai) || step.tts || "";
+    case "morphology": return step.compound || "";
+    case "sentence_assembler": {
+      if (step.targetThai) return step.targetThai;
+      var seq = step.correctSequence || [];
+      return seq.map(function (i) { return (step.tiles && step.tiles[i]) ? step.tiles[i].thai : ""; }).join("");
+    }
+    case "scrambled_syllable": return (step.correctSequence || []).join("");
+    default: return "";
+  }
+}
+function stepRecordAnswer(correct) {
+  try {
+    if (typeof recordAnswer !== "function") return;
+    var thai = stepTargetThai(stepSession.steps[stepSession.index]);
+    if (thai) recordAnswer(thai, correct);
+  } catch (e) {}
 }
 
 // ---- controller ----
@@ -555,6 +999,7 @@ function stepCheckBuilder() {
   } else {
     correct = step.correctSequence.join("-") === stepSession.userSequence.join("-");
   }
+  stepRecordAnswer(correct);
   const slot = document.getElementById("sylSlot");
   if (correct) {
     stepSession.correct++;
@@ -594,6 +1039,7 @@ function stepCheckScrambled() {
   if (stepSession.answered) return;
   stepSession.answered = true;
   const correct = stepSession.correctSeq.join("-") === stepSession.userSequence.join("-");
+  stepRecordAnswer(correct);
   const slot = document.getElementById("sylSlot");
   if (correct) {
     stepSession.correct++;
@@ -611,6 +1057,7 @@ function stepToneAnswer(el, tone) {
   stepSession.answered = true;
   const step = stepSession.steps[stepSession.index];
   const correct = step.correctTone === tone;
+  stepRecordAnswer(correct);
   document.querySelectorAll(".tone-option").forEach(function (o) {
     o.classList.remove("correct", "wrong");
     if (o.getAttribute("data-tone") === step.correctTone) o.classList.add("correct");
@@ -630,6 +1077,7 @@ function stepChoiceAnswer(el, idx) {
   stepSession.answered = true;
   const step = stepSession.steps[stepSession.index];
   const correct = idx === step.correctIndex;
+  stepRecordAnswer(correct);
   document.querySelectorAll(".context-option").forEach(function (o, i) {
     o.classList.remove("correct", "wrong");
     if (i === step.correctIndex) o.classList.add("correct");

@@ -1466,6 +1466,23 @@
             </div>
           </div>
         </div>
+
+        <!-- Unit 5: Vocabulary (Root Words) -->
+        <div class="unit-section">
+          <div class="unit-header">
+            <div class="unit-icon"><i data-lucide="sprout"></i></div>
+            <div class="unit-info">
+              <span class="unit-label">Unit 5</span><h3>Vocabulary</h3>
+              <p>Root Words &amp; Compounds &bull; 1 Lesson</p>
+            </div>
+          </div>
+          <div class="lessons-path">
+            <div class="lesson-node" onclick="startLesson(14)">
+              <div class="lesson-circle current"><i data-lucide="droplets"></i></div>
+              <div class="lesson-label">Water</div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -3947,6 +3964,13 @@
         const label = node.querySelector('.lesson-label');
         
         if (!circle) return;
+
+        if (lessonId >= 14) {
+          circle.classList.remove('locked', 'completed');
+          circle.classList.add('current');
+          if (label) label.style.opacity = '1';
+          return;
+        }
         
         if (completed.includes(lessonId)) {
           circle.classList.remove('locked', 'current');
