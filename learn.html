@@ -1311,6 +1311,9 @@
 .settings-section{display:flex;flex-direction:column;gap:0.45rem;}
 .settings-label{font-family:var(--font-english);font-size:0.72rem;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em;}
 .settings-hint{font-family:var(--font-english);font-size:0.78rem;color:var(--text-secondary);margin:0;line-height:1.4;}
+.track-indicator{display:flex;justify-content:center;margin-bottom:0.6rem;}
+.track-pill{display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.9rem;border-radius:999px;background:var(--bg-card-subtle);border:1px solid var(--border-subtle);font-family:var(--font-english);font-size:0.78rem;font-weight:600;color:var(--text-secondary);}
+.track-pill svg{width:15px;height:15px;color:var(--accent-terracotta);}
 </style>
 </head>
 <body>
@@ -1372,12 +1375,6 @@
               Profile
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" onclick="openSettings(); return false;">
-              <span class="nav-icon"><i data-lucide="settings"></i></span>
-              Settings
-            </a>
-          </li>
         </ul>
       </nav>
       <div class="user-stats">
@@ -1402,6 +1399,9 @@
         </div>
         <button class="settings-gear" onclick="openSettings()" aria-label="Settings"><i data-lucide="settings"></i></button>
       </div>
+
+      <!-- Track indicator -->
+      <div class="track-indicator" id="trackIndicator"></div>
 
       <!-- Word bank button -->
       <div class="learner-controls" id="learnerControls"></div>
@@ -4458,6 +4458,7 @@
       updateAuthUI();
       updateReviewUI();
       updateStats();
+      renderTrackIndicator();
       if (window.lucide) lucide.createIcons();
       
       // Check if user has onboarded
@@ -4728,6 +4729,16 @@
       host.innerHTML = count > 0
         ? '<button class="btn btn-primary" style="width:100%" onclick="startReviewSession()"><i data-lucide="rotate-ccw"></i> Review ' + count + ' due word' + (count === 1 ? '' : 's') + '</button>'
         : '<p class="settings-hint">' + (total > 0 ? 'No words due — all caught up!' : 'No words yet — finish a lesson to start your word bank.') + '</p>';
+    }
+
+    function renderTrackIndicator() {
+      const el = document.getElementById('trackIndicator');
+      if (!el) return;
+      const isSO = (typeof soTrack === 'function') && soTrack() === 'speak_only';
+      el.innerHTML = '<span class="track-pill">' +
+        (isSO ? '<i data-lucide="headphones"></i> Speak Only' : '<i data-lucide="book-open"></i> Read & Write') +
+        '</span>';
+      if (window.lucide) lucide.createIcons();
     }
 
     function renderSettings() {
