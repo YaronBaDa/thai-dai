@@ -1377,8 +1377,8 @@
         </button>
       </div>
         <div class="stat-row">
-          <div class="stat-item fire"><i data-lucide="flame"></i> 12</div>
-          <div class="stat-item gem"><i data-lucide="gem"></i> 245</div>
+          <div class="stat-item fire"><i data-lucide="flame"></i> <span id="statStreak">12</span></div>
+          <div class="stat-item gem"><i data-lucide="gem"></i> <span id="statGems">245</span></div>
           <div class="stat-item heart"><i data-lucide="heart"></i> 5</div>
         </div>
       </div>
@@ -4424,6 +4424,7 @@
       updateLessonUI();
       updateAuthUI();
       updateReviewUI();
+      updateStats();
       if (window.lucide) lucide.createIcons();
       
       // Check if user has onboarded
@@ -4686,6 +4687,13 @@
           '<i data-lucide="book-marked"></i> My Words · ' + words.length + ' learned · ' + due + ' due' + (mastered ? ' · ' + mastered + ' mastered' : '') +
         '</button>';
       if (window.lucide) lucide.createIcons();
+    }
+
+    function updateStats() {
+      const elS = document.getElementById('statStreak');
+      const elG = document.getElementById('statGems');
+      if (elS) elS.textContent = parseInt(localStorage.getItem('thaiDaiStreak') || '0');
+      if (elG) elG.textContent = parseInt(localStorage.getItem('thaiDaiGems') || '0');
     }
 
     function openWordBank() {

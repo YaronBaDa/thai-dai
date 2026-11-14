@@ -668,6 +668,28 @@ function stepTargetThai(step) {
     default: return "";
   }
 }
+function stepChime(correct) {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const ctx = window._stepAudioCtx || (window._stepAudioCtx = new AC());
+    if (ctx.state === "suspended") ctx.resume();
+    const now = ctx.currentTime;
+    const tone = function (freq, at, dur, vol) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.value = freq;
+      o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.exponentialRampToValueAtTime(vol, at + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+      o.start(at); o.stop(at + dur + 0.02);
+    };
+    if (correct) { tone(659.25, now, 0.11, 0.10); tone(880, now + 0.07, 0.13, 0.10); }
+    else { tone(196, now, 0.14, 0.07); }
+  } catch (e) {}
+}
 function stepTargetMeaning(step) {
   if (!step) return "";
   return stepHints(step).translation || "";
@@ -810,6 +832,7 @@ function stepComplete() {
   area.innerHTML = stepHTMLComplete(correct, scored, peeked, xp, gems);
   footer.innerHTML = '<button class="btn btn-primary" onclick="closeLesson()">Back to Path</button>';
   if (window.lucide) lucide.createIcons();
+  if (typeof updateStats === "function") updateStats();
   stepConfetti();
 }
 
@@ -1073,6 +1096,7 @@ function stepCheckBuilder() {
     correct = step.correctSequence.join("-") === stepSession.userSequence.join("-");
   }
   stepRecordAnswer(correct);
+  stepChime(correct);
   const slot = document.getElementById("sylSlot");
   if (correct) {
     stepSession.correct++;
@@ -1115,6 +1139,7 @@ function stepCheckScrambled() {
   stepSession.answered = true;
   const correct = stepSession.correctSeq.join("-") === stepSession.userSequence.join("-");
   stepRecordAnswer(correct);
+  stepChime(correct);
   const slot = document.getElementById("sylSlot");
   if (correct) {
     stepSession.correct++;
@@ -1135,6 +1160,7 @@ function stepToneAnswer(el, tone) {
   const step = stepSession.steps[stepSession.index];
   const correct = step.correctTone === tone;
   stepRecordAnswer(correct);
+  stepChime(correct);
   document.querySelectorAll(".tone-option").forEach(function (o) {
     o.classList.remove("correct", "wrong");
     if (o.getAttribute("data-tone") === step.correctTone) o.classList.add("correct");
@@ -1156,6 +1182,7 @@ function stepChoiceAnswer(el, idx) {
   const step = stepSession.steps[stepSession.index];
   const correct = idx === step.correctIndex;
   stepRecordAnswer(correct);
+  stepChime(correct);
   document.querySelectorAll(".context-option").forEach(function (o, i) {
     o.classList.remove("correct", "wrong");
     if (i === step.correctIndex) o.classList.add("correct");
