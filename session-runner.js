@@ -798,15 +798,22 @@ function stepComplete() {
   } else {
     markLessonCompleted(stepSession.lessonId);
   }
+  const xp = correct * 10;
+  const gems = correct * 2;
+  try {
+    localStorage.setItem("thaiDaiXP", String(parseInt(localStorage.getItem("thaiDaiXP") || "0") + xp));
+    localStorage.setItem("thaiDaiGems", String(parseInt(localStorage.getItem("thaiDaiGems") || "0") + gems));
+  } catch (e) {}
   document.getElementById("progressFill").style.width = "100%";
   const area = document.querySelector(".exercise-area");
   const footer = document.querySelector(".lesson-footer");
-  area.innerHTML = stepHTMLComplete(correct, scored, peeked);
+  area.innerHTML = stepHTMLComplete(correct, scored, peeked, xp, gems);
   footer.innerHTML = '<button class="btn btn-primary" onclick="closeLesson()">Back to Path</button>';
   if (window.lucide) lucide.createIcons();
+  stepConfetti();
 }
 
-function stepHTMLComplete(correct, scored, peeked) {
+function stepHTMLComplete(correct, scored, peeked, xp, gems) {
   const pct = scored ? Math.round((correct / scored) * 100) : 100;
   const msg = pct === 100 ? "Perfect!" : pct >= 75 ? "Great work!" : pct >= 50 ? "Nice progress!" : "Keep going!";
   return '<div class="step-card complete-card">' +
@@ -815,8 +822,33 @@ function stepHTMLComplete(correct, scored, peeked) {
     '<div class="complete-msg">' + msg + '</div>' +
     '<div class="complete-score">' + correct + '<span class="complete-total"> / ' + scored + '</span></div>' +
     '<div class="complete-pct">' + pct + '% correct</div>' +
+    '<div class="complete-rewards">' +
+      '<span class="complete-reward xp"><i data-lucide="zap"></i> +' + xp + ' XP</span>' +
+      '<span class="complete-reward gems"><i data-lucide="gem"></i> +' + gems + ' gems</span>' +
+    '</div>' +
     (peeked > 0 ? '<div class="complete-peek">' + peeked + ' hint' + (peeked === 1 ? "" : "s") + ' peeked</div>' : '') +
     '</div>';
+}
+
+// confetti celebration (GPU-composited transform/opacity only)
+function stepConfetti() {
+  try {
+    const layer = document.createElement("div");
+    layer.className = "confetti-layer";
+    const colors = ["#D36248", "#D88941", "#4E6E5D", "#1C332A", "#FAF7F2"];
+    for (let i = 0; i < 90; i++) {
+      const p = document.createElement("span");
+      p.className = "confetti-piece";
+      p.style.left = Math.random() * 100 + "%";
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDelay = (Math.random() * 0.7) + "s";
+      p.style.animationDuration = (1.7 + Math.random() * 1.5) + "s";
+      p.style.transform = "rotate(" + Math.floor(Math.random() * 360) + "deg)";
+      layer.appendChild(p);
+    }
+    document.body.appendChild(layer);
+    setTimeout(function () { if (layer.parentNode) layer.parentNode.removeChild(layer); }, 3400);
+  } catch (e) {}
 }
 
 // ===================== renderers =====================

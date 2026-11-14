@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1C332A">
   <title>Learn Thai - Thai Dai</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
   <style>
     :root {
       /* === Siam Clay & Botanicals === */
@@ -31,9 +31,9 @@
       --radius-button: 20px;
 
       /* Fonts */
-      --font-thai: 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Anuphan', sans-serif;
+      --font-thai: 'IBM Plex Sans Thai Looped', 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Anuphan', sans-serif;
       --font-phonetic: 'Fraunces', 'Playfair Display', Georgia, serif;
-      --font-english: 'Inter', 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-english: 'IBM Plex Sans Thai Looped', 'IBM Plex Sans Thai', -apple-system, sans-serif;
       --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
 
       /* Legacy aliases -> new system */
@@ -1289,6 +1289,18 @@
 .wb-badge.mastered{background:rgba(78,110,93,0.14);color:var(--accent-sage);}
 .wb-badge.learning{background:rgba(216,137,65,0.14);color:var(--accent-amber);}
 .wb-empty{font-family:var(--font-english);font-size:0.9rem;color:var(--text-secondary);padding:1.5rem 1.25rem;text-align:center;line-height:1.5;}
+.confetti-layer{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:3000;overflow:hidden;}
+.confetti-piece{position:absolute;top:-24px;width:10px;height:16px;border-radius:2px;opacity:0.95;will-change:transform,opacity;animation:confetti-fall 2.6s cubic-bezier(0.3,0.6,0.5,1) forwards;}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:0.95;}100%{transform:translateY(110vh) rotate(680deg);opacity:0;}}
+@keyframes pulse-pop{0%{transform:scale(1);}45%{transform:scale(1.035);}100%{transform:scale(1);}}
+@keyframes shake-x{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
+.context-option.correct,.tone-option.correct,.syl-slot.correct{animation:pulse-pop 0.3s ease;}
+.context-option.wrong,.tone-option.wrong,.syl-slot.wrong{animation:shake-x 0.35s ease;}
+.complete-rewards{display:flex;gap:0.75rem;margin-top:0.5rem;}
+.complete-reward{display:inline-flex;align-items:center;gap:0.3rem;padding:0.35rem 0.8rem;border-radius:999px;background:var(--bg-card-subtle);font-family:var(--font-english);font-size:0.85rem;font-weight:700;color:var(--text-primary);}
+.complete-reward svg{width:15px;height:15px;}
+.complete-reward.xp svg{color:var(--accent-amber);}
+.complete-reward.gems svg{color:var(--accent-terracotta);}
 </style>
 </head>
 <body>
