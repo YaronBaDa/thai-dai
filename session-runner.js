@@ -593,7 +593,7 @@ function stepModeLevel() {
 }
 function stepSetMode(m) {
   try { localStorage.setItem("thaiDaiScaffold", String(m)); } catch (e) {}
-  if (typeof renderLearnerControls === "function") renderLearnerControls();
+  if (typeof renderDifficultySettings === "function") renderDifficultySettings();
   if (stepSession.steps && stepSession.steps.length > 0) stepRender();
 }
 function stepApplyModeClass() {

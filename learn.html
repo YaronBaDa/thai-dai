@@ -1264,8 +1264,6 @@
 .complete-pct{font-size:0.95rem;color:var(--text-secondary);font-family:var(--font-english);}
 .complete-peek{font-size:0.8rem;color:var(--text-tertiary);font-family:var(--font-english);margin-top:0.25rem;}
 .learner-controls{display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1.25rem;align-items:center;}
-.difficulty-row{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;justify-content:center;}
-.difficulty-label{font-family:var(--font-english);font-size:0.72rem;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em;}
 .difficulty-hint{font-family:var(--font-english);font-size:0.72rem;color:var(--text-tertiary);margin:0;text-align:center;}
 .words-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;border-radius:999px;background:var(--bg-card);border:1px solid var(--border-subtle);color:var(--text-primary);font-family:var(--font-english);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
 .words-btn:hover{border-color:var(--accent-terracotta);}
@@ -1301,6 +1299,18 @@
 .complete-reward svg{width:15px;height:15px;}
 .complete-reward.xp svg{color:var(--accent-amber);}
 .complete-reward.gems svg{color:var(--accent-terracotta);}
+.settings-gear{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--border-subtle);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:all 0.15s;flex-shrink:0;}
+.settings-gear:hover{border-color:var(--accent-terracotta);color:var(--text-primary);}
+.settings-gear svg{width:18px;height:18px;}
+.settings-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,17,0.45);z-index:2500;display:flex;align-items:center;justify-content:center;}
+.settings-card{background:var(--bg-card);border-radius:20px;max-width:400px;width:92%;max-height:85vh;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 8px 32px rgba(28,51,42,0.14);}
+.settings-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border-subtle);}
+.settings-header h3{font-family:var(--font-english);font-size:1.1rem;font-weight:800;color:var(--text-primary);margin:0;}
+.settings-close{background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:0.25rem;display:flex;}
+.settings-body{overflow-y:auto;padding:1rem 1.25rem 1.25rem;display:flex;flex-direction:column;gap:1.15rem;}
+.settings-section{display:flex;flex-direction:column;gap:0.45rem;}
+.settings-label{font-family:var(--font-english);font-size:0.72rem;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em;}
+.settings-hint{font-family:var(--font-english);font-size:0.78rem;color:var(--text-secondary);margin:0;line-height:1.4;}
 </style>
 </head>
 <body>
@@ -1315,6 +1325,7 @@
         <span><i data-lucide="flame"></i> 12</span>
         <span><i data-lucide="gem"></i> 245</span>
       </div>
+      <button class="settings-gear" onclick="openSettings()" aria-label="Settings"><i data-lucide="settings"></i></button>
     </div>
 
     <!-- Sidebar Overlay -->
@@ -1362,7 +1373,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" onclick="openSettings(); return false;">
               <span class="nav-icon"><i data-lucide="settings"></i></span>
               Settings
             </a>
@@ -1370,12 +1381,6 @@
         </ul>
       </nav>
       <div class="user-stats">
-      <div id="authStatus" style="margin-bottom:0.75rem;font-size:0.75rem;"></div>
-      <div class="stat-row" style="margin-bottom:0.5rem;">
-        <button id="reviewBtn" onclick="startReviewSession()" style="display:none;width:100%;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:0.5rem;font-weight:800;font-size:0.875rem;cursor:pointer;align-items:center;justify-content:center;gap:0.5rem;">
-          <i data-lucide="rotate-ccw"></i> Review <span id="reviewCount" style="background:#fff;color:var(--accent);border-radius:999px;padding:0.125rem 0.5rem;font-size:0.75rem;">0</span>
-        </button>
-      </div>
         <div class="stat-row">
           <div class="stat-item fire"><i data-lucide="flame"></i> <span id="statStreak">12</span></div>
           <div class="stat-item gem"><i data-lucide="gem"></i> <span id="statGems">245</span></div>
@@ -1395,11 +1400,10 @@
             <div style="font-size:0.75rem;color:var(--text-light)">15 / 25 XP</div>
           </div>
         </div>
+        <button class="settings-gear" onclick="openSettings()" aria-label="Settings"><i data-lucide="settings"></i></button>
       </div>
 
-      <div class="track-switcher" id="trackSwitcher"></div>
-
-      <!-- Learner controls: difficulty + word bank -->
+      <!-- Word bank button -->
       <div class="learner-controls" id="learnerControls"></div>
 
       <!-- Learning Path -->
@@ -1617,6 +1621,35 @@
       <!-- Footer -->
       <div class="lesson-footer">
         <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()" disabled>Check</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="settings-overlay" id="settingsModal" style="display:none;" onclick="if(event.target===this)closeSettings()">
+    <div class="settings-card">
+      <div class="settings-header">
+        <h3>Settings</h3>
+        <button class="settings-close" onclick="closeSettings()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-section">
+          <div class="settings-label">Learning Track</div>
+          <div id="settingsTrack"></div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Difficulty</div>
+          <div id="settingsDifficulty"></div>
+          <p class="settings-hint" id="settingsHint"></p>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Account</div>
+          <div id="settingsAccount"></div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-label">Review</div>
+          <div id="settingsReview"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -4556,7 +4589,7 @@
     }
 
     function updateAuthUI() {
-      const el = document.getElementById('authStatus');
+      const el = document.getElementById('settingsAccount');
       if (!el) return;
       if (currentUser) {
         const email = currentUser.email || currentUser.uid.slice(0, 8) + '...';
@@ -4656,37 +4689,62 @@
     }
 
     function updateReviewUI() {
-      const count = getDueReviews();
-      const el = document.getElementById('reviewCount');
-      const btn = document.getElementById('reviewBtn');
-      if (el) el.textContent = count;
-      if (btn) btn.style.display = count > 0 ? 'flex' : 'none';
-      if (typeof renderLearnerControls === 'function') renderLearnerControls();
+      if (typeof renderWordBankButton === 'function') renderWordBankButton();
+      if (typeof renderReviewSettings === 'function') renderReviewSettings();
     }
 
 
-    function renderLearnerControls() {
-      const host = document.getElementById('learnerControls');
+    function renderDifficultySettings() {
+      const host = document.getElementById('settingsDifficulty');
       if (!host) return;
       const m = (typeof stepModeLevel === 'function') ? stepModeLevel() : 2;
+      const hints = { 1: 'Shows pronunciation + meaning', 2: 'Thai only — tap the eye to peek', 3: 'Thai + audio only' };
+      host.innerHTML = '<div class="scaffold-seg">' +
+        '<button class="scaffold-btn' + (m === 1 ? ' active' : '') + '" data-mode="1" onclick="stepSetMode(1)">Beginner</button>' +
+        '<button class="scaffold-btn' + (m === 2 ? ' active' : '') + '" data-mode="2" onclick="stepSetMode(2)">Standard</button>' +
+        '<button class="scaffold-btn' + (m === 3 ? ' active' : '') + '" data-mode="3" onclick="stepSetMode(3)">Advanced</button>' +
+        '</div>';
+      const hint = document.getElementById('settingsHint');
+      if (hint) hint.textContent = hints[m] || '';
+    }
+
+    function renderWordBankButton() {
+      const host = document.getElementById('learnerControls');
+      if (!host) return;
       const words = getReviews();
       const due = words.filter(r => r.nextReview <= Date.now()).length;
       const mastered = words.filter(r => r.interval >= 21).length;
-      const hints = { 1: 'Shows pronunciation + meaning', 2: 'Thai only — tap the eye to peek', 3: 'Thai + audio only' };
-      host.innerHTML =
-        '<div class="difficulty-row">' +
-          '<span class="difficulty-label">Difficulty</span>' +
-          '<div class="scaffold-seg">' +
-            '<button class="scaffold-btn' + (m === 1 ? ' active' : '') + '" data-mode="1" onclick="stepSetMode(1)">Beginner</button>' +
-            '<button class="scaffold-btn' + (m === 2 ? ' active' : '') + '" data-mode="2" onclick="stepSetMode(2)">Standard</button>' +
-            '<button class="scaffold-btn' + (m === 3 ? ' active' : '') + '" data-mode="3" onclick="stepSetMode(3)">Advanced</button>' +
-          '</div>' +
-        '</div>' +
-        '<p class="difficulty-hint">' + (hints[m] || '') + '</p>' +
-        '<button class="words-btn" onclick="openWordBank()">' +
-          '<i data-lucide="book-marked"></i> My Words · ' + words.length + ' learned · ' + due + ' due' + (mastered ? ' · ' + mastered + ' mastered' : '') +
+      host.innerHTML = '<button class="words-btn" onclick="openWordBank()">' +
+        '<i data-lucide="book-marked"></i> My Words · ' + words.length + ' learned · ' + due + ' due' + (mastered ? ' · ' + mastered + ' mastered' : '') +
         '</button>';
       if (window.lucide) lucide.createIcons();
+    }
+
+    function renderReviewSettings() {
+      const host = document.getElementById('settingsReview');
+      if (!host) return;
+      const count = getDueReviews();
+      const total = getReviews().length;
+      host.innerHTML = count > 0
+        ? '<button class="btn btn-primary" style="width:100%" onclick="startReviewSession()"><i data-lucide="rotate-ccw"></i> Review ' + count + ' due word' + (count === 1 ? '' : 's') + '</button>'
+        : '<p class="settings-hint">' + (total > 0 ? 'No words due — all caught up!' : 'No words yet — finish a lesson to start your word bank.') + '</p>';
+    }
+
+    function renderSettings() {
+      if (typeof soInjectModeSwitch === 'function') soInjectModeSwitch();
+      if (typeof renderDifficultySettings === 'function') renderDifficultySettings();
+      if (typeof updateAuthUI === 'function') updateAuthUI();
+      if (typeof renderReviewSettings === 'function') renderReviewSettings();
+    }
+
+    function openSettings() {
+      renderSettings();
+      document.getElementById('settingsModal').style.display = 'flex';
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
     }
 
     function updateStats() {
@@ -5527,7 +5585,7 @@ function soStartLesson(i) {
 
 // ---- mode switch + init ----
 function soInjectModeSwitch() {
-  const host = document.getElementById('trackSwitcher');
+  const host = document.getElementById('settingsTrack');
   if (!host) return;
   const isSO = soTrack() === 'speak_only';
   host.innerHTML =
@@ -5551,8 +5609,6 @@ function soInit() {
   soInjectModeSwitch();
   if (soTrack() !== 'speak_only') return;
   document.body.classList.add('so-mode');
-  const rb = document.getElementById('reviewBtn');
-  if (rb) rb.style.display = 'none';
   soLessons = soBuildLessons();
   const path = document.querySelector('.learning-path');
   if (path) path.innerHTML = soRenderPath();
