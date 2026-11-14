@@ -258,7 +258,7 @@
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
-      padding: 1.5rem 0;
+      padding: 1.5rem 0 6rem;
     }
 
     .unit-section {
@@ -322,6 +322,9 @@
     }
 
     .lesson-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       position: relative;
       cursor: pointer;
       transition: transform 0.2s;
@@ -1302,6 +1305,7 @@
 .settings-gear{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--border-subtle);background:var(--bg-card);color:var(--text-secondary);cursor:pointer;transition:all 0.15s;flex-shrink:0;}
 .settings-gear:hover{border-color:var(--accent-terracotta);color:var(--text-primary);}
 .settings-gear svg{width:18px;height:18px;}
+@media (max-width: 768px){.top-bar .settings-gear{display:none;}}
 .settings-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,17,0.45);z-index:2500;display:flex;align-items:center;justify-content:center;}
 .settings-card{background:var(--bg-card);border-radius:20px;max-width:400px;width:92%;max-height:85vh;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 8px 32px rgba(28,51,42,0.14);}
 .settings-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border-subtle);}
