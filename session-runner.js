@@ -609,6 +609,28 @@ function stepPeek() {
   const btn = document.getElementById("peekBtn");
   if (btn) btn.classList.toggle("active", stepSession.peeked);
 }
+// reveal hints without counting a manual peek (used on wrong answers to teach)
+function stepRevealHints() {
+  const card = document.querySelector(".step-card");
+  if (card) card.classList.add("peeked");
+}
+// show the correct builder answer in the slot on a wrong answer
+function stepShowCorrectBuilder() {
+  const step = stepSession.steps[stepSession.index];
+  const slot = document.getElementById("sylSlot");
+  if (!slot) return;
+  if (step.type === "morphology") {
+    slot.innerHTML = '<span class="tile-chip placed">' + step.compound + '</span>';
+  } else if (step.type === "sentence_assembler") {
+    slot.innerHTML = (step.correctSequence || []).map(function (i) {
+      return '<span class="tile-chip placed">' + step.tiles[i].thai + '</span>';
+    }).join("");
+  } else {
+    slot.innerHTML = (step.correctSequence || []).map(function (t) {
+      return '<span class="tile-chip placed">' + t + '</span>';
+    }).join("");
+  }
+}
 
 // ---- audio (TTS fallback; swap for audioUrl playback when files exist) ----
 function stepSpeak(text, rate) {
@@ -758,8 +780,9 @@ function stepAdvance() {
 }
 
 function stepComplete() {
-  closeLesson();
   const scored = stepSession.totalScored;
+  const correct = stepSession.correct;
+  const peeked = stepSession.peekCount;
   stepPersistClear();
   if (typeof stepSession.soIndex !== "undefined" && stepSession.soIndex !== null) {
     try {
@@ -774,8 +797,25 @@ function stepComplete() {
   } else {
     markLessonCompleted(stepSession.lessonId);
   }
-  const peekNote = stepSession.peekCount > 0 ? (" • " + stepSession.peekCount + " peeked") : "";
-  alert("Lesson complete! You got " + stepSession.correct + "/" + scored + " correct." + peekNote);
+  document.getElementById("progressFill").style.width = "100%";
+  const area = document.querySelector(".exercise-area");
+  const footer = document.querySelector(".lesson-footer");
+  area.innerHTML = stepHTMLComplete(correct, scored, peeked);
+  footer.innerHTML = '<button class="btn btn-primary" onclick="closeLesson()">Back to Path</button>';
+  if (window.lucide) lucide.createIcons();
+}
+
+function stepHTMLComplete(correct, scored, peeked) {
+  const pct = scored ? Math.round((correct / scored) * 100) : 100;
+  const msg = pct === 100 ? "Perfect!" : pct >= 75 ? "Great work!" : pct >= 50 ? "Nice progress!" : "Keep going!";
+  return '<div class="step-card complete-card">' +
+    '<div class="complete-icon"><i data-lucide="party-popper"></i></div>' +
+    '<div class="complete-title">Lesson complete!</div>' +
+    '<div class="complete-msg">' + msg + '</div>' +
+    '<div class="complete-score">' + correct + '<span class="complete-total"> / ' + scored + '</span></div>' +
+    '<div class="complete-pct">' + pct + '% correct</div>' +
+    (peeked > 0 ? '<div class="complete-peek">' + peeked + ' hint' + (peeked === 1 ? "" : "s") + ' peeked</div>' : '') +
+    '</div>';
 }
 
 // ===================== renderers =====================
@@ -1007,7 +1047,9 @@ function stepCheckBuilder() {
     stepSetNext("Continue →", stepAdvance);
   } else {
     if (slot) slot.classList.add("wrong");
-    stepSetNext("Got it →", stepAdvance);
+    stepRevealHints();
+    stepShowCorrectBuilder();
+    stepSetNext("Continue →", stepAdvance);
   }
 }
 
@@ -1047,7 +1089,9 @@ function stepCheckScrambled() {
     stepSetNext("Continue →", stepAdvance);
   } else {
     if (slot) slot.classList.add("wrong");
-    stepSetNext("Got it →", stepAdvance);
+    stepRevealHints();
+    stepShowCorrectBuilder();
+    stepSetNext("Continue →", stepAdvance);
   }
 }
 
@@ -1068,7 +1112,8 @@ function stepToneAnswer(el, tone) {
     stepSetNext("Continue →", stepAdvance);
   } else {
     el.classList.add("wrong");
-    stepSetNext("Got it →", stepAdvance);
+    stepRevealHints();
+    stepSetNext("Continue →", stepAdvance);
   }
 }
 
@@ -1088,7 +1133,8 @@ function stepChoiceAnswer(el, idx) {
     stepSetNext("Continue →", stepAdvance);
   } else {
     el.classList.add("wrong");
-    stepSetNext("Got it →", stepAdvance);
+    stepRevealHints();
+    stepSetNext("Continue →", stepAdvance);
   }
 }
 
