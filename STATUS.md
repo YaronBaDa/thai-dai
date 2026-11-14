@@ -37,9 +37,9 @@ Thai Dai is a static (GitHub Pages) Thai language-learning web app with two lear
 ## Lesson engine (`session-runner.js`)
 
 **Scaffolding modes** (persistent `localStorage.thaiDaiScaffold`, default Standard):
-- **Novice (1)** — Thai + romanization visible, English in a collapsible drawer.
+- **Beginner (1)** — Thai + romanization visible, English in a collapsible drawer.
 - **Standard (2)** — Thai only; romanization/translation behind a "Peek" (eye) action (review-tagged).
-- **Strict (3)** — Thai + audio only; zero romanization, zero English.
+- **Advanced (3)** — Thai + audio only; zero romanization, zero English.
 
 **Step types** (phase-tagged explore → drill → assess):
 - `presentation` (explore, **never scored**) — input/shadowing
@@ -52,6 +52,7 @@ Thai Dai is a static (GitHub Pages) Thai language-learning web app with two lear
 - `contextual_match` (assess) — scenario → Thai-only options
 
 Scoring: `correct / scored`; presentation excluded, peeking tags a step for review.
+Difficulty is set once on the path screen (Beginner/Standard/Advanced); a **My Words** word bank shows learned / due / mastered vocabulary.
 Schema documented in `SCHEMA.md`.
 
 | Track | Engine |

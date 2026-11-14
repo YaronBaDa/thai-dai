@@ -1263,6 +1263,32 @@
 .complete-total{font-size:1.4rem;color:var(--text-tertiary);font-weight:600;}
 .complete-pct{font-size:0.95rem;color:var(--text-secondary);font-family:var(--font-english);}
 .complete-peek{font-size:0.8rem;color:var(--text-tertiary);font-family:var(--font-english);margin-top:0.25rem;}
+.learner-controls{display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1.25rem;align-items:center;}
+.difficulty-row{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;justify-content:center;}
+.difficulty-label{font-family:var(--font-english);font-size:0.72rem;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em;}
+.difficulty-hint{font-family:var(--font-english);font-size:0.72rem;color:var(--text-tertiary);margin:0;text-align:center;}
+.words-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;border-radius:999px;background:var(--bg-card);border:1px solid var(--border-subtle);color:var(--text-primary);font-family:var(--font-english);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.words-btn:hover{border-color:var(--accent-terracotta);}
+.words-btn svg{width:16px;height:16px;color:var(--accent-terracotta);}
+.wb-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,15,17,0.45);z-index:2000;display:flex;align-items:center;justify-content:center;}
+.wb-card{background:var(--bg-card);border-radius:20px;max-width:420px;width:92%;max-height:80vh;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 8px 32px rgba(28,51,42,0.14);}
+.wb-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border-subtle);}
+.wb-header h3{font-family:var(--font-english);font-size:1.1rem;font-weight:800;color:var(--text-primary);margin:0;}
+.wb-close{background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:0.25rem;display:flex;}
+.wb-stats{display:flex;gap:0.5rem;padding:1rem 1.25rem 0.5rem;}
+.wb-stat{flex:1;text-align:center;background:var(--bg-card-subtle);border-radius:14px;padding:0.7rem 0.4rem;}
+.wb-num{display:block;font-family:var(--font-english);font-size:1.4rem;font-weight:800;color:var(--accent-terracotta);}
+.wb-label{font-family:var(--font-english);font-size:0.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;}
+.wb-list{overflow-y:auto;padding:0.5rem 1.25rem 1.25rem;display:flex;flex-direction:column;gap:0.5rem;}
+.wb-row{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.6rem 0.85rem;background:var(--bg-card-subtle);border-radius:12px;}
+.wb-thai{font-family:var(--font-thai);font-size:1.1rem;font-weight:600;color:var(--text-primary);}
+.wb-meta{display:flex;flex-direction:column;align-items:flex-end;gap:0.15rem;}
+.wb-meaning{font-family:var(--font-english);font-size:0.75rem;color:var(--text-secondary);text-align:right;}
+.wb-badge{font-family:var(--font-english);font-size:0.65rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:999px;text-transform:uppercase;letter-spacing:0.05em;}
+.wb-badge.due{background:rgba(211,98,72,0.14);color:var(--accent-terracotta);}
+.wb-badge.mastered{background:rgba(78,110,93,0.14);color:var(--accent-sage);}
+.wb-badge.learning{background:rgba(216,137,65,0.14);color:var(--accent-amber);}
+.wb-empty{font-family:var(--font-english);font-size:0.9rem;color:var(--text-secondary);padding:1.5rem 1.25rem;text-align:center;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -1360,6 +1386,9 @@
       </div>
 
       <div class="track-switcher" id="trackSwitcher"></div>
+
+      <!-- Learner controls: difficulty + word bank -->
+      <div class="learner-controls" id="learnerControls"></div>
 
       <!-- Learning Path -->
       <div class="learning-path">
@@ -4562,12 +4591,14 @@
       if (syncEnabled) saveCloudReviews();
     }
 
-    function recordAnswer(questionThai, correct) {
+    function recordAnswer(questionThai, correct, meaning) {
       const reviews = getReviews();
       let card = reviews.find(r => r.thai === questionThai);
       if (!card) {
-        card = { thai: questionThai, interval: 1, repetitions: 0, ef: 2.5, nextReview: Date.now(), history: [] };
+        card = { thai: questionThai, meaning: meaning || "", interval: 1, repetitions: 0, ef: 2.5, nextReview: Date.now(), history: [] };
         reviews.push(card);
+      } else if (meaning && !card.meaning) {
+        card.meaning = meaning;
       }
       card.history.push({ date: Date.now(), correct });
       if (card.history.length > 10) card.history.shift();
@@ -4617,7 +4648,69 @@
       const btn = document.getElementById('reviewBtn');
       if (el) el.textContent = count;
       if (btn) btn.style.display = count > 0 ? 'flex' : 'none';
+      if (typeof renderLearnerControls === 'function') renderLearnerControls();
     }
+
+
+    function renderLearnerControls() {
+      const host = document.getElementById('learnerControls');
+      if (!host) return;
+      const m = (typeof stepModeLevel === 'function') ? stepModeLevel() : 2;
+      const words = getReviews();
+      const due = words.filter(r => r.nextReview <= Date.now()).length;
+      const mastered = words.filter(r => r.interval >= 21).length;
+      const hints = { 1: 'Shows pronunciation + meaning', 2: 'Thai only — tap the eye to peek', 3: 'Thai + audio only' };
+      host.innerHTML =
+        '<div class="difficulty-row">' +
+          '<span class="difficulty-label">Difficulty</span>' +
+          '<div class="scaffold-seg">' +
+            '<button class="scaffold-btn' + (m === 1 ? ' active' : '') + '" data-mode="1" onclick="stepSetMode(1)">Beginner</button>' +
+            '<button class="scaffold-btn' + (m === 2 ? ' active' : '') + '" data-mode="2" onclick="stepSetMode(2)">Standard</button>' +
+            '<button class="scaffold-btn' + (m === 3 ? ' active' : '') + '" data-mode="3" onclick="stepSetMode(3)">Advanced</button>' +
+          '</div>' +
+        '</div>' +
+        '<p class="difficulty-hint">' + (hints[m] || '') + '</p>' +
+        '<button class="words-btn" onclick="openWordBank()">' +
+          '<i data-lucide="book-marked"></i> My Words · ' + words.length + ' learned · ' + due + ' due' + (mastered ? ' · ' + mastered + ' mastered' : '') +
+        '</button>';
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openWordBank() {
+      const words = getReviews();
+      const due = words.filter(r => r.nextReview <= Date.now()).length;
+      const mastered = words.filter(r => r.interval >= 21).length;
+      let body;
+      if (words.length === 0) {
+        body = '<div class="wb-empty">No words yet — finish a lesson and your vocabulary will show up here, ready for review.</div>';
+      } else {
+        const sorted = words.slice().sort(function (a, b) { return a.nextReview - b.nextReview; });
+        const rows = sorted.map(function (r) {
+          const isDue = r.nextReview <= Date.now();
+          const isMastered = r.interval >= 21;
+          const badge = isDue ? '<span class="wb-badge due">Due</span>' : isMastered ? '<span class="wb-badge mastered">Mastered</span>' : '<span class="wb-badge learning">Learning</span>';
+          const meaning = r.meaning ? '<div class="wb-meaning">' + r.meaning + '</div>' : '';
+          return '<div class="wb-row"><div class="wb-thai">' + r.thai + '</div><div class="wb-meta">' + meaning + badge + '</div></div>';
+        }).join('');
+        body = '<div class="wb-stats">' +
+          '<div class="wb-stat"><span class="wb-num">' + words.length + '</span><span class="wb-label">Learned</span></div>' +
+          '<div class="wb-stat"><span class="wb-num">' + due + '</span><span class="wb-label">Due</span></div>' +
+          '<div class="wb-stat"><span class="wb-num">' + mastered + '</span><span class="wb-label">Mastered</span></div>' +
+          '</div><div class="wb-list">' + rows + '</div>';
+      }
+      const modal = document.createElement('div');
+      modal.id = 'wordBankModal';
+      modal.innerHTML = `
+        <div class="wb-overlay" onclick="if(event.target===this)document.getElementById('wordBankModal').remove()">
+          <div class="wb-card">
+            <div class="wb-header"><h3>My Words</h3><button class="wb-close" onclick="document.getElementById('wordBankModal').remove()"><i data-lucide="x"></i></button></div>
+            ${body}
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+      if (window.lucide) lucide.createIcons();
+    }
+
 
     function startReviewSession() {
       const dueCount = getDueReviews();

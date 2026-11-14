@@ -10,9 +10,9 @@ Stored in `localStorage.thaiDaiScaffold` (`1` | `2` | `3`), default **2**.
 
 | Level | Name | Thai script | Romanization | English | Audio |
 |---|---|---|---|---|---|
-| 1 | Novice | ✅ | ✅ visible | 🗂 in a collapsible drawer | ✅ |
+| 1 | Beginner | ✅ | ✅ visible | 🗂 in a collapsible drawer | ✅ |
 | 2 | Standard (default) | ✅ | 👁 behind "Peek" | 👁 behind "Peek" | ✅ |
-| 3 | Strict | ✅ | ❌ | ❌ | ✅ |
+| 3 | Advanced | ✅ | ❌ | ❌ | ✅ |
 
 - "Peek" (eye icon) reveals romanization + translation for the current card and tags the step
   **for review** (tracked in `stepSession.peekCount`).

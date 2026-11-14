@@ -593,7 +593,8 @@ function stepModeLevel() {
 }
 function stepSetMode(m) {
   try { localStorage.setItem("thaiDaiScaffold", String(m)); } catch (e) {}
-  stepRender();
+  if (typeof renderLearnerControls === "function") renderLearnerControls();
+  if (stepSession.steps && stepSession.steps.length > 0) stepRender();
 }
 function stepApplyModeClass() {
   const modal = document.getElementById("lessonModal");
@@ -667,11 +668,16 @@ function stepTargetThai(step) {
     default: return "";
   }
 }
+function stepTargetMeaning(step) {
+  if (!step) return "";
+  return stepHints(step).translation || "";
+}
 function stepRecordAnswer(correct) {
   try {
     if (typeof recordAnswer !== "function") return;
-    var thai = stepTargetThai(stepSession.steps[stepSession.index]);
-    if (thai) recordAnswer(thai, correct);
+    var step = stepSession.steps[stepSession.index];
+    var thai = stepTargetThai(step);
+    if (thai) recordAnswer(thai, correct, stepTargetMeaning(step));
   } catch (e) {}
 }
 
@@ -754,11 +760,6 @@ function stepToolbar(step) {
   const peekAllowed = m === 2 && (h.romanized || h.translation);
   return '<div class="step-toolbar">' +
     '<span class="phase-badge phase-' + ph + '">' + (STEP_PHASES[ph] || "Drill") + '</span>' +
-    '<div class="scaffold-seg">' +
-      '<button class="scaffold-btn' + (m === 1 ? " active" : "") + '" data-mode="1" onclick="stepSetMode(1)">Novice</button>' +
-      '<button class="scaffold-btn' + (m === 2 ? " active" : "") + '" data-mode="2" onclick="stepSetMode(2)">Standard</button>' +
-      '<button class="scaffold-btn' + (m === 3 ? " active" : "") + '" data-mode="3" onclick="stepSetMode(3)">Strict</button>' +
-    '</div>' +
     (peekAllowed
       ? '<button class="peek-btn" id="peekBtn" onclick="stepPeek()" title="Peek hints (marks for review)"><i data-lucide="eye"></i></button>'
       : '') +
