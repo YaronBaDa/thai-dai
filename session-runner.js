@@ -633,8 +633,8 @@ function stepShowCorrectBuilder() {
   }
 }
 
-// ---- audio (TTS fallback; swap for audioUrl playback when files exist) ----
-function stepSpeak(text, rate) {
+// ---- audio: real recordings first, browser TTS fallback ----
+function stepTTS(text, rate) {
   if (!text || !("speechSynthesis" in window)) return;
   try { window.speechSynthesis.cancel(); } catch (e) {}
   const u = new SpeechSynthesisUtterance(text);
@@ -646,6 +646,29 @@ function stepSpeak(text, rate) {
   const th = voices.find(function (v) { return (v.lang || "").toLowerCase().indexOf("th") === 0; });
   if (th) u.voice = th;
   window.speechSynthesis.speak(u);
+}
+
+function stepSpeak(text, rate) {
+  if (!text) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  const map = window.THAI_AUDIO || {};
+  const url = map[text];
+  if (url) stepPlayAudio(url, text, rate);
+  else stepTTS(text, rate);
+}
+
+function stepPlayAudio(url, text, rate) {
+  try {
+    if (window._stepAudioEl) { try { window._stepAudioEl.pause(); window._stepAudioEl = null; } catch (e) {} }
+    const audio = new Audio(url);
+    window._stepAudioEl = audio;
+    let fellBack = false;
+    audio.onerror = function () { if (!fellBack) { fellBack = true; stepTTS(text, rate); } };
+    audio.playbackRate = rate || 1;
+    audio.play();
+  } catch (e) {
+    stepTTS(text, rate);
+  }
 }
 
 
